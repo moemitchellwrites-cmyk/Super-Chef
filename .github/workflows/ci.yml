@@ -58,7 +58,7 @@ jobs:
             # XCTest screenshots the screen when a UI test fails; publish those with the logs.
             xcrun xcresulttool export attachments --path ci-out/uitests.xcresult \
               --output-path ci-out/uitest-failures > /dev/null 2>&1 || true
-            rm -rf ci-out/uitests.xcresult
+            rm -rf ci-out/uitests.xcresult ci-out/uitest-failures/*.mp4
             exit 1
           fi
           rm -rf ci-out/uitests.xcresult

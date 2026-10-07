@@ -118,11 +118,14 @@ struct RoundView: View {
             .aspectRatio(WokScene.logicalSize.width / WokScene.logicalSize.height, contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             .background {
+                // Where the wok sits in the round's coordinate space, so a drag knows when it is over it.
                 GeometryReader { proxy in
-                    Color.clear.preference(key: WokFrameKey.self, value: proxy.frame(in: .named(Self.space)))
+                    let frame = proxy.frame(in: .named(Self.space))
+                    Color.clear
+                        .onAppear { wokFrame = frame }
+                        .onChange(of: frame) { _, moved in wokFrame = moved }
                 }
             }
-            .onPreferenceChange(WokFrameKey.self) { wokFrame = $0 }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .accessibilityElement()
             .accessibilityLabel(wokSummary)
@@ -295,13 +298,6 @@ struct RoundView: View {
         .tint(.orange)
         .disabled(!round.canServe)
         .accessibilityIdentifier("serve")
-    }
-}
-
-private struct WokFrameKey: PreferenceKey {
-    static let defaultValue: CGRect = .zero
-    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
-        value = nextValue()
     }
 }
 

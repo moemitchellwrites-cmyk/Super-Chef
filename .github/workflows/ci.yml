@@ -5,11 +5,71 @@ on:
     branches: [main]
   pull_request:
 
+# The last step publishes this run's logs and simulator screenshots to the
+# `ci-output` branch, which is how the cloud session (no Mac, no Xcode) reads them.
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  scoring:
-    name: scoring (Swift, macOS)
+  build:
+    name: package tests, iOS app, screenshots
     runs-on: macos-15
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - run: swift build
-      - run: swift test
+
+      - name: Toolchain
+        run: |
+          mkdir -p ci-out
+          { xcodebuild -version; swift --version; } 2>&1 | tee ci-out/toolchain.txt
+
+      - name: swift build
+        run: |
+          set -o pipefail
+          swift build 2>&1 | tee ci-out/swift-build.log
+
+      - name: swift test
+        run: |
+          set -o pipefail
+          swift test 2>&1 | tee ci-out/swift-test.log
+
+      - name: Build the iOS app for the simulator
+        run: |
+          if ! xcodebuild -project App/Pantry.xcodeproj -scheme Pantry -configuration Debug \
+              -destination 'generic/platform=iOS Simulator' -derivedDataPath build \
+              CODE_SIGNING_ALLOWED=NO build > ci-out/xcodebuild.log 2>&1; then
+            grep -E "error:|error " ci-out/xcodebuild.log | head -60 || true
+            tail -40 ci-out/xcodebuild.log
+            exit 1
+          fi
+          tail -3 ci-out/xcodebuild.log
+
+      - name: Run the app in the simulator and take screenshots
+        run: scripts/ci-screenshots.sh build/Build/Products/Debug-iphonesimulator/Pantry.app ci-out
+
+      - name: Keep logs and screenshots with the run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-output
+          path: ci-out
+          if-no-files-found: ignore
+
+      - name: Publish logs and screenshots to the ci-output branch
+        if: always()
+        continue-on-error: true
+        env:
+          TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p ci-out && cd ci-out
+          printf 'commit %s\nrun %s\nref %s\nstatus %s\n' "$HEAD_SHA" "$GITHUB_RUN_ID" "$GITHUB_REF" "${{ job.status }}" > RUN.txt
+          git init -q -b ci-output
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "CI output for $HEAD_SHA (run $GITHUB_RUN_ID)"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ci-output

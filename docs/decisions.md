@@ -28,8 +28,8 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 
 ## PD-002: Build inside the Studio-Companion repository under `pantry/` for now
 - Date: 2026-10-07
-- Made by: Claude
-- Status: proposed
+- Made by: Claude; accepted by Moe 2026-10-07, including the split
+- Status: accepted
 - Context: The brief positions the game as a separate SkasieHI product. Step one is a dependency-free Swift package; creating a new GitHub repository is an outward-facing act Moe should name and own.
 - Decision: The package lives at `pantry/` with its own docs and its own CI job. It shares nothing with the studio code.
 - Rationale: Keeps today's work verifiable on the existing CI without blocking on a repository decision.
@@ -67,18 +67,19 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 
 ## PD-007: Technique scores the vessel, and the method only when the player chose one
 - Date: 2026-10-07
-- Made by: Claude
-- Status: proposed (UX part needs Moe)
+- Made by: Claude; accepted by Moe 2026-10-07
+- Status: accepted (the method tap is an acceptance criterion of PB-002)
 - Context: The brief gives technique 10 points for "vessel and technique match", but the described UX only lets the player pick a vessel.
 - Decision: `Attempt.method` is optional. With a method: vessel 6, method 4. Without: vessel 10. Proposal: add a one-tap method choice (stir-fry, braise, deep-fry, poach...) to the round; it is one of the most teachable things about a cuisine and costs nothing in time.
 
 ## PD-008: Keep the brief's score composition; flag that it is coverage-heavy
 - Date: 2026-10-07
-- Made by: Claude (objection recorded; Moe to decide)
-- Status: proposed
+- Made by: Claude (objection recorded); Moe accepted the proposal 2026-10-07
+- Status: accepted
 - Context: With 40/35/15/10, a mapo tofu with the right pantry but five times the doubanjiang and ten times the sugar scores 85, the "known-good" threshold. Two ingredients (doubanjiang, peppercorn) decide 24 of the coverage points and 23 of the ratio points.
 - Decision: Ship the composition as written; add the over-sauced case to the goldens with a 55 to 90 range so the behaviour is visible.
 - Proposal: a required family that is present but whose key ratio is off by more than 3x earns only half its coverage credit ("present, but wrong amount"). That drops the over-sauced mapo to about 79 without touching the point split.
+- Outcome (2026-10-07): implemented. "Key ratio" means a ratio band the family is the numerator of; the denominator family is not penalised. Reported as a `wrongAmount` miss. The over-sauced mapo golden moved from 85 to 79; no other golden moved.
 
 ## PD-009: The golden test contract
 - Date: 2026-10-07
@@ -93,3 +94,9 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Status: accepted
 - Decision: `DishProfile.palette` lists the 12 to 20 ingredient ids a round offers, hand-authored, with at least one decoy from a neighbouring cuisine and one from inside the cuisine. Validation checks the good attempt is buildable from it.
 - Rationale: Decoy design is where the learning happens (brief); it is content, not UI logic.
+
+## PD-011: Definition of done approved
+- Date: 2026-10-07
+- Made by: Moe (on Claude's proposal)
+- Status: accepted
+- Decision: `definition-of-done.md` as proposed is the bar. Nothing is complete until it meets it.

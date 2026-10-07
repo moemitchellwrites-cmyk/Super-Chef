@@ -1,6 +1,6 @@
 # Pantry: Definition of Done
 
-- Status: **PROPOSED** by Claude, 2026-10-07. Needs Moe's approval.
+- Status: **APPROVED** by Moe, 2026-10-07 (PD-011)
 
 Nothing is marked complete until every item that applies is met.
 

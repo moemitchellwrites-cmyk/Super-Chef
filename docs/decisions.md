@@ -101,3 +101,94 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Made by: Moe (on Claude's proposal)
 - Status: accepted
 - Decision: `definition-of-done.md` as proposed is the bar. Nothing is complete until it meets it.
+
+## PD-012: The palette is SwiftUI, the wok is SpriteKit; tap or drag to add
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The brief gives SpriteKit "drag, drop, and particle effects in the pan" and also says "tap to add". The backlog item says drag-and-drop. Ingredient names run to two lines, and a palette drawn in SpriteKit is invisible to VoiceOver and to UI tests.
+- Decision: The palette, stepper, method chips and serve button are SwiftUI. The wok, the pile of ingredients and every visual twin are one SpriteKit scene. A chip is tapped to add it, or dragged: SwiftUI tracks the drag, lights the wok's rim while the chip is over it, and hands the drop point to the scene. Both gestures stay.
+- Rationale: Tap is the one-thumb, 60-to-120-second path; drag is the toy. Text, layout and accessibility are SwiftUI's strengths; physics and particles are SpriteKit's.
+- Consequences: A drop outside the wok does nothing. The scene has no touch handling of its own.
+
+## PD-013: One amount ladder per ingredient; the player never picks a unit
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (the units shown to US players stay open under PB-100)
+- Context: The brief offers "a dial or stepper" in pinch, tsp, tbsp, cup and 100 g. A unit picker plus a number is two controls per ingredient, twelve or more times a round.
+- Decision: Volume ingredients share one 21-step ladder that climbs pinch, ¼ tsp ... 1 tbsp ... ¼ cup ... 4 cups. Weight-only ingredients step 5 g to 1 kg in 22 steps. A new ingredient starts at one of its default unit (1 tsp, 1 tbsp, 1 cup) or 100 g, which is never tuned to the dish. The control is minus, plus and a slider over the same steps.
+- Rationale: Steps are roughly geometric because the scorer compares ratios in log space (PD-004), so each tap is a similar move in score terms. `StepperReachabilityTests` rebuilds every good golden on the ladder: all ten still score 100.
+- Consequences: Amounts between steps can't be entered. If the chef's red pen produces a profile that needs a finer step, that test fails and names it.
+
+## PD-014: Placeholder sounds are synthesised in code
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (replaced by Moe's recordings in PB-011)
+- Context: The brief suggests public-domain or licensed libraries for the MVP.
+- Decision: `PlaceholderSynth` generates the five cues (sizzle, boil, splash, clatter, flame) as samples at launch. No audio files in the repository.
+- Rationale: Nothing to license, attribute or audit, nothing binary to review, and the cues are deterministic so they can be tested. They are placeholders either way; time spent choosing library sounds is time not spent on the recordings that ship.
+- Consequences: They sound like placeholders. PB-011 swaps the buffers for files without touching the cue names.
+
+## PD-015: A cooking method is required before serving
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (amends the UX half of PD-007; the scorer still accepts an attempt without a method)
+- Context: PD-007 scores the vessel alone (10 points) when no method is given, and vessel 6 plus method 4 when one is. With one vessel on screen, a player who skips the method tap gets all 10 for free and one who guesses risks 4.
+- Decision: The serve button stays disabled, and says "Choose how to cook it", until a method is picked. The round offers every method some dish in the cuisine uses (six for Sichuan), so wrong ones are always on the table.
+- Rationale: The method is one of the most teachable things about a cuisine (PD-007); it shouldn't be optional homework.
+
+## PD-016: The audio session is ambient
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Decision: `AVAudioSession` category `.ambient`. The game obeys the silent switch and plays over the player's own music or podcast instead of stopping it. There is also a mute button on the round screen.
+- Rationale: It is a commute game. Killing someone's podcast on launch is how a game gets deleted. Every cue has a visual twin, so silence costs nothing.
+
+## PD-017: The app is a thin shell around the package
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (the bundle identifier needs Moe)
+- Decision: Three package targets: `PantryScoring` (engine and content), `PantryGame` (the round as plain values: ladder, round state, cues, synth; no UI frameworks) and `PantryUI` (SwiftUI, SpriteKit, AVAudioEngine). `App/Pantry.xcodeproj` holds one Swift file and the asset catalog and links `PantryUI`. iPhone only, portrait only, iOS 17.
+- Rationale: Rules that live in `PantryGame` are tested by `swift test` and can be compiled in the cloud session. Adding a source file never touches the hand-written project file.
+- Consequences: The bundle identifier is `ai.skasiehi.pantry`, a placeholder. Moe names the real one and the Apple team before TestFlight (PB-006).
+
+## PD-018: CI builds the app, plays a scripted round and publishes what it saw
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The cloud session can't run Xcode or a simulator, and can't download workflow logs or artifacts.
+- Decision: One CI job: `swift build`, `swift test`, an iOS Simulator build of the app, then `scripts/ci-screenshots.sh` launches it on an iPhone 16 and an iPhone SE, plays a scripted round (`-pantryDemo`) and screenshots it. The last step force-pushes that run's logs and screenshots to the `ci-output` branch. App work goes through pull requests.
+- Rationale: A green build says the code compiles. A screenshot says the screen fits an SE and the round plays. The branch is the only channel the cloud session can read.
+- Consequences: `ci-output` is rewritten every run and holds nothing else. The workflow has `contents: write` for that push. The demo script ships in the app, muted and inert without its launch argument.
+
+## PD-019: PB-002 ships one vessel; the vessel choice is PB-008
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The backlog scopes PB-002 to "one wok". Mouth-watering chicken is a pot dish, so in the wok it tops out at 94.
+- Decision: Keep the scope. `Round.vessel` exists and defaults to the wok; choosing a vessel (wok or pot, with the flame click the brief asks for) is PB-008, ahead of the session loop.
+- Rationale: The scene had to be proven with one vessel first. A test pins the list of dishes the wok shortchanges to exactly that one.
+
+## PD-020: The palette order is shuffled per round
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Decision: `Round` shuffles the profile's palette with a seeded generator. The app seeds randomly; tests and the CI demo fix the seed.
+- Rationale: Profiles list real ingredients first and decoys last. Shown in that order, the bottom row of the palette is the answer key.
+
+## PD-021: Ingredients carry a short name, and no label says where an ingredient is from
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The first simulator screenshots showed palette chips breaking words ("Cornstarc-h") and truncating ("Fermente-d black..."). One decoy was labelled "Hunan chopped salted chilies (duojiao)".
+- Decision: `Ingredient.shortName` (optional) is what a chip shows; validation requires it whenever `name` is over 22 characters. Twenty-two ingredients have one. Duojiao's name drops "Hunan". A test fails if any label names a cuisine or country.
+- Rationale: A chip has room for two short lines. Telling Sichuan from Hunan is the lesson (brief, "Decoy design"), so the label can't do it for the player.
+- Consequences: The field is optional and additive, so `schemaVersion` stays 1. Closes PB-105.
+
+## PD-022: UI tests drive the real screen on CI
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: Drag-and-drop is PB-002's headline, and the cloud session can't touch a phone.
+- Decision: `App/PantryUITests` runs on an iPhone 16 simulator in CI: drag a chip into the wok, drop one outside it, tap to add, step the amount, switch between ingredients, pick a method, serve, take an ingredient out.
+- Rationale: It proves the gestures work. It can't say whether they feel good; that stays with Moe.

@@ -51,6 +51,19 @@ jobs:
       - name: Run the app in the simulator and take screenshots
         run: scripts/ci-screenshots.sh build/Build/Products/Debug-iphonesimulator/Pantry.app ci-out
 
+      - name: UI tests on the simulator (drag, tap, step, serve)
+        run: |
+          if ! xcodebuild test -project App/Pantry.xcodeproj -scheme Pantry \
+              -destination 'platform=iOS Simulator,name=iPhone 16' -derivedDataPath build \
+              -resultBundlePath ci-out/uitests.xcresult > ci-out/uitests.log 2>&1; then
+            grep -E "error:|failed|Failing tests" ci-out/uitests.log | head -60 || true
+            tail -40 ci-out/uitests.log
+            rm -rf ci-out/uitests.xcresult
+            exit 1
+          fi
+          rm -rf ci-out/uitests.xcresult
+          grep -E "Test Case .* (passed|failed)|Executed" ci-out/uitests.log | tail -12
+
       - name: Keep logs and screenshots with the run
         if: always()
         uses: actions/upload-artifact@v4

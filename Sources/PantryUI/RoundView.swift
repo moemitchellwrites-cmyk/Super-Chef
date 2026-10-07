@@ -123,7 +123,7 @@ struct RoundView: View {
         if round.entries.isEmpty { return "Wok, empty" }
         let contents = round.entries.compactMap { entry -> String? in
             guard let ingredient = round.ingredient(entry.ingredientId), let measure = round.measure(for: entry.ingredientId) else { return nil }
-            return "\(measure.label) \(ingredient.shortName)"
+            return "\(measure.label) \(ingredient.chipName)"
         }
         return "Wok with " + contents.joined(separator: ", ")
     }
@@ -193,7 +193,7 @@ struct RoundView: View {
                             Image(systemName: "trash")
                                 .frame(width: 32, height: 32)
                         }
-                        .accessibilityLabel("Take \(ingredient.shortName) out")
+                        .accessibilityLabel("Take \(ingredient.chipName) out")
                     }
                     HStack(spacing: 10) {
                         Button {
@@ -211,7 +211,7 @@ struct RoundView: View {
                             in: 0...Double(ladder.steps.count - 1),
                             step: 1
                         )
-                        .accessibilityLabel("Amount of \(ingredient.shortName)")
+                        .accessibilityLabel("Amount of \(ingredient.chipName)")
                         .accessibilityValue(measure.label)
                         Button {
                             model.stepSelected(by: 1)
@@ -299,26 +299,24 @@ private struct PaletteChip: View {
     let isSelected: Bool
 
     var body: some View {
-        HStack(spacing: 4) {
-            Text(IngredientLook(for: ingredient).emoji)
-                .font(.system(size: 18))
-            VStack(alignment: .leading, spacing: 0) {
-                Text(ingredient.shortName)
-                    .font(.system(size: 11, weight: .medium))
-                    .lineLimit(amount == nil ? 2 : 1)
-                    .minimumScaleFactor(0.7)
-                if let amount {
-                    Text(amount)
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(Color.orange)
-                        .lineLimit(1)
-                }
+        VStack(alignment: .leading, spacing: 0) {
+            // The emoji rides on the first line so the second gets the chip's full width.
+            Text("\(IngredientLook(for: ingredient).emoji) \(ingredient.chipName)")
+                .font(.system(size: 11, weight: .medium))
+                .lineLimit(2)
+                .allowsTightening(true)
+                .minimumScaleFactor(0.85)
+                .multilineTextAlignment(.leading)
+            if let amount {
+                Text(amount)
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(Color.orange)
+                    .lineLimit(1)
             }
-            Spacer(minLength: 0)
         }
         .padding(.horizontal, 6)
-        .frame(maxWidth: .infinity)
-        .frame(height: 40)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 44)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(amount == nil ? Color.gray.opacity(0.14) : Color.orange.opacity(0.16))

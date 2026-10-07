@@ -44,13 +44,22 @@ Do not mark anything complete until it meets the definition of done. Your job is
 
 ## Project facts
 
-- Stack (brief): native iOS 17+, SwiftUI with SpriteKit for the vessel scene, AVAudioEngine, SwiftData, StoreKit 2 later. This repository started as the scoring package; the app target lands with PB-002.
+- Stack (brief): native iOS 17+, SwiftUI with SpriteKit for the vessel scene, AVAudioEngine, SwiftData, StoreKit 2 later.
 - Layout:
-  - `Package.swift`: Swift package `Pantry`, library `PantryScoring`, platforms iOS 17 and macOS 14 (macOS so CI can test).
+  - `Package.swift`: Swift package `Pantry`, libraries `PantryScoring`, `PantryGame`, `PantryUI`; platforms iOS 17 and macOS 14 (macOS so CI can build and test all three).
   - `Sources/PantryScoring/`: `Models.swift` (data model: `Cuisine`, `Ingredient`, `DishProfile`, `Attempt`, `ScoreBreakdown`, `Miss`; `AmountUnit` and `CookingMethod` are named to avoid Foundation and ObjC runtime clashes), `Scorer.swift` (coverage 40 / ratio fit 35 / signature 15 / technique 10; tuning constants in `ScoreWeights`), `ContentLibrary.swift` (loads `Resources/<cuisine>/` and validates it).
   - `Sources/PantryScoring/Resources/sichuan/`: `cuisine.json`, `ingredients.json`, `dishes.json`. Each carries `schemaVersion`. Profiles refer to ingredient families, never ingredient ids. Every profile cites sources in `notes`.
+  - `Sources/PantryGame/`: the round as plain values, no UI imports: `Round`, `AmountLadder`, `SoundCue`, `IngredientLook`, `PlaceholderSynth`, `SeededGenerator`. **Put every rule here**, where it is tested and compiles on Linux.
+  - `Sources/PantryUI/`: SwiftUI, SpriteKit and AVFoundation only: `RoundView`, `RoundViewModel`, `WokScene`, `SoundPlayer`, `ScoreSheet`, `PantryRootView` (with the `-pantryDemo` script). Every file is wrapped in `#if canImport(SwiftUI) && canImport(SpriteKit)`. It must also compile for macOS 14 (`swift build` on CI), so no UIKit-only API without `#if os(iOS)`.
+  - `App/Pantry.xcodeproj`: hand-written project, one Swift file, links `PantryUI` from the local package. New source files go in the package, so the project file rarely changes. `App/PantryUITests/` is the UI test target (XCUITest; finds things by accessibility identifier: `chip-<ingredient id>`, `method-<method>`, `wok`, `amount`, `serve`, `score-total`). Bundle id `ai.skasiehi.pantry` is a placeholder (PD-017).
   - `Tests/PantryScoringTests/`: `GoldenTests` (contract in PD-009: good 85+, off-cuisine under 40, neighbour between and above off-cuisine, wrong-amounts below good), `ScorerTests` (invariants), `ContentTests` (validation). Goldens live in `Fixtures/goldens.json`.
-- Commands (from the repo root, on a Mac): `swift build`, `swift test`. CI (`.github/workflows/ci.yml`) runs both on macOS for every push to `main` and every pull request.
-- Can't be done in the cloud session: compiling Swift or running the app. Calibrate content changes with a Python mirror of `Scorer.swift` in the scratchpad (the mirror is rebuilt per session; keep it exact), push small, let CI verify. Moe verifies the app on their Mac.
+  - `Tests/PantryGameTests/`: `RoundTests`, `StepperReachabilityTests` (reads the scoring goldens by path), `SoundTests`.
+- Commands (from the repo root, on a Mac): `swift build`, `swift test`; the app runs from `App/Pantry.xcodeproj`. CI (`.github/workflows/ci.yml`) runs on every pull request and every push to `main`: build, test, iOS Simulator build, `scripts/ci-screenshots.sh`, then the UI tests.
+- Working from the cloud session (no Mac):
+  - `PantryScoring` and `PantryGame` compile and test on Linux. No Swift is preinstalled and swift.org is blocked; the SwiftWasm 5.10 toolchain from GitHub releases works for native builds (`github.com/swiftwasm/swift/releases`, `swift-wasm-5.10.0-RELEASE-ubuntu22.04_x86_64.tar.gz`, then `usr/bin/swift test`). Run it before pushing.
+  - `PantryUI` and the app only compile on CI. Work on a branch with a pull request.
+  - Reading CI: job and step status from `api.github.com/repos/<repo>/actions/runs/<id>/jobs`. Logs and artifacts can't be downloaded, so CI force-pushes them to the `ci-output` branch: `git fetch origin ci-output` and read `RUN.txt`, `*.log`, `status.txt` and the screenshots (PD-018).
+  - `gh` has no valid token here; `curl` to `api.github.com` is authenticated by the session proxy (send `Content-Type: application/json` on writes).
+  - Moe verifies feel on a phone; CI can't judge that.
 - Content rules: a new dish needs a profile with sources, a palette of 12 to 20 ids with decoys from a neighbouring cuisine and from inside the cuisine, and a good, an off-cuisine and a neighbour golden. `ContentLibrary.validate()` must return nothing.
 - History: built inside `moemitchellwrites-cmyk/Studio-Companion` under `pantry/` on 2026-10-07 and split out with history (PD-002, PB-007).

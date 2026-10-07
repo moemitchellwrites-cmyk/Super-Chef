@@ -193,11 +193,8 @@ extension CookingMethod {
 }
 
 extension Ingredient {
-    /// The name without its parenthetical gloss, for tight spaces:
-    /// "Doubanjiang (Pixian chili bean paste)" becomes "Doubanjiang".
-    public var shortName: String {
-        guard let open = name.firstIndex(of: "(") else { return name }
-        let trimmed = name[..<open].trimmingCharacters(in: .whitespaces)
-        return trimmed.isEmpty ? name : trimmed
+    /// What a palette chip shows: the content's short name, or the full name when it is short already.
+    public var chipName: String {
+        shortName ?? name
     }
 }

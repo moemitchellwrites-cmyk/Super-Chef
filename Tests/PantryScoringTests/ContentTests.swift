@@ -24,6 +24,20 @@ final class ContentTests: XCTestCase {
         }
     }
 
+    func testValidationCatchesLabelsTooLongForAChip() throws {
+        let library = try ContentLibrary.bundled()
+        let wordy = Ingredient(id: "wordy", name: "An ingredient with a very long name", family: "sugar", defaultUnit: .grams)
+        let padded = Ingredient(id: "padded", name: "Sugar", family: "sugar", defaultUnit: .grams,
+                                shortName: "A short name that is not short")
+        let blank = Ingredient(id: "blank", name: "Sugar", family: "sugar", defaultUnit: .grams, shortName: "")
+        let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients + [wordy, padded, blank],
+                                      dishes: library.dishes).validate()
+        XCTAssertTrue(problems.contains { $0.hasPrefix("wordy:") && $0.contains("no shortName") }, "\(problems)")
+        XCTAssertTrue(problems.contains { $0.hasPrefix("padded:") && $0.contains("shortName must be") }, "\(problems)")
+        XCTAssertTrue(problems.contains { $0.hasPrefix("blank:") && $0.contains("shortName must be") }, "\(problems)")
+        XCTAssertEqual(problems.count, 3, "\(problems)")
+    }
+
     func testValidationCatchesABrokenProfile() throws {
         let library = try ContentLibrary.bundled()
         var broken = try XCTUnwrap(library.dish(id: "mapo-tofu"))

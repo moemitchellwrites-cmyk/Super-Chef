@@ -25,12 +25,13 @@ public struct PantryRootView: View {
             guard model == nil else { return }
             do {
                 let library = try ContentLibrary.bundled()
-                let demo = DemoScript(arguments: ProcessInfo.processInfo.arguments)
+                let arguments = ProcessInfo.processInfo.arguments
+                let demo = DemoScript(arguments: arguments)
                 let loaded = RoundViewModel(
                     library: library,
                     dishId: demo?.dishId,
                     seed: demo == nil ? nil : 1,
-                    muted: demo != nil
+                    muted: demo != nil || arguments.contains("-pantryMuted")
                 )
                 model = loaded
                 await demo?.run(on: loaded)

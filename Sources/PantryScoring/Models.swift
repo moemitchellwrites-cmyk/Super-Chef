@@ -166,6 +166,9 @@ public struct Cuisine: Codable, Equatable, Sendable {
 public struct Ingredient: Codable, Equatable, Identifiable, Sendable {
     public var id: String
     public var name: String
+    /// A label short enough for a palette chip, when `name` isn't. Like `name`, it must
+    /// not say which cuisine the ingredient belongs to: that is the player's job.
+    public var shortName: String?
     /// Profiles refer to families, not ingredients, so substitutes score alike
     /// (firm and silken tofu are both `tofu`).
     public var family: String
@@ -177,9 +180,11 @@ public struct Ingredient: Codable, Equatable, Identifiable, Sendable {
     public var icon: String
 
     public init(id: String, name: String, family: String, defaultUnit: AmountUnit, gramsPerTeaspoon: Double? = nil,
-                potency: FlavorVector = FlavorVector(), soundCue: String = "clatter", icon: String = "generic") {
+                potency: FlavorVector = FlavorVector(), soundCue: String = "clatter", icon: String = "generic",
+                shortName: String? = nil) {
         self.id = id
         self.name = name
+        self.shortName = shortName
         self.family = family
         self.defaultUnit = defaultUnit
         self.gramsPerTeaspoon = gramsPerTeaspoon

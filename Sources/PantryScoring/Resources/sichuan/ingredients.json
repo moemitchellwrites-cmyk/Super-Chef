@@ -49,6 +49,7 @@
   {
    "id": "white-fish",
    "name": "White fish fillet",
+   "shortName": "White fish",
    "family": "fish",
    "defaultUnit": "grams",
    "potency": {},
@@ -58,6 +59,7 @@
   {
    "id": "doubanjiang",
    "name": "Doubanjiang (Pixian chili bean paste)",
+   "shortName": "Doubanjiang",
    "family": "doubanjiang",
    "defaultUnit": "tbsp",
    "potency": {
@@ -71,6 +73,7 @@
   {
    "id": "douchi",
    "name": "Fermented black beans (douchi)",
+   "shortName": "Fermented black beans",
    "family": "douchi",
    "defaultUnit": "tbsp",
    "potency": {
@@ -83,6 +86,7 @@
   {
    "id": "sichuan-peppercorn-whole",
    "name": "Sichuan peppercorns, whole",
+   "shortName": "Sichuan pepper, whole",
    "family": "sichuanPeppercorn",
    "defaultUnit": "tsp",
    "potency": {
@@ -95,6 +99,7 @@
   {
    "id": "sichuan-peppercorn-ground",
    "name": "Sichuan peppercorn, ground",
+   "shortName": "Sichuan pepper, ground",
    "family": "sichuanPeppercorn",
    "defaultUnit": "tsp",
    "potency": {
@@ -107,6 +112,7 @@
   {
    "id": "dried-chilies",
    "name": "Dried red chilies, whole",
+   "shortName": "Dried chilies",
    "family": "driedChili",
    "defaultUnit": "grams",
    "potency": {
@@ -130,6 +136,7 @@
   {
    "id": "chili-oil",
    "name": "Chili oil (hong you)",
+   "shortName": "Chili oil",
    "family": "chiliOil",
    "defaultUnit": "tbsp",
    "potency": {
@@ -142,6 +149,7 @@
   {
    "id": "pickled-chili",
    "name": "Pickled red chilies (pao la jiao)",
+   "shortName": "Pickled chilies",
    "family": "paojiao",
    "defaultUnit": "tbsp",
    "potency": {
@@ -155,6 +163,7 @@
   {
    "id": "garlic",
    "name": "Garlic, minced",
+   "shortName": "Garlic",
    "family": "garlic",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -165,6 +174,7 @@
   {
    "id": "ginger",
    "name": "Ginger, minced",
+   "shortName": "Ginger",
    "family": "ginger",
    "defaultUnit": "tsp",
    "potency": {},
@@ -175,6 +185,7 @@
   {
    "id": "scallion",
    "name": "Scallion, chopped",
+   "shortName": "Scallion",
    "family": "scallion",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -185,6 +196,7 @@
   {
    "id": "leek",
    "name": "Leek or green garlic, sliced",
+   "shortName": "Leek",
    "family": "leek",
    "defaultUnit": "grams",
    "potency": {},
@@ -219,6 +231,7 @@
   {
    "id": "black-vinegar",
    "name": "Chinkiang black vinegar",
+   "shortName": "Black vinegar",
    "family": "blackVinegar",
    "defaultUnit": "tbsp",
    "potency": {
@@ -285,6 +298,7 @@
   {
    "id": "sesame-oil",
    "name": "Toasted sesame oil",
+   "shortName": "Sesame oil",
    "family": "sesameOil",
    "defaultUnit": "tsp",
    "potency": {},
@@ -295,6 +309,7 @@
   {
    "id": "sesame-paste",
    "name": "Chinese sesame paste",
+   "shortName": "Sesame paste",
    "family": "sesamePaste",
    "defaultUnit": "tbsp",
    "potency": {
@@ -307,6 +322,7 @@
   {
    "id": "sesame-seeds",
    "name": "Toasted sesame seeds",
+   "shortName": "Sesame seeds",
    "family": "sesameSeed",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -317,6 +333,7 @@
   {
    "id": "peanuts",
    "name": "Roasted peanuts",
+   "shortName": "Peanuts",
    "family": "peanut",
    "defaultUnit": "grams",
    "potency": {},
@@ -348,6 +365,7 @@
   {
    "id": "yacai",
    "name": "Yacai (Yibin preserved mustard)",
+   "shortName": "Yacai pickled greens",
    "family": "yacai",
    "defaultUnit": "tbsp",
    "potency": {
@@ -360,6 +378,7 @@
   {
    "id": "sweet-bean-sauce",
    "name": "Sweet bean sauce (tianmianjiang)",
+   "shortName": "Sweet bean sauce",
    "family": "tianmianjiang",
    "defaultUnit": "tbsp",
    "potency": {
@@ -391,6 +410,7 @@
   {
    "id": "wheat-noodles",
    "name": "Fresh wheat noodles",
+   "shortName": "Wheat noodles",
    "family": "noodles",
    "defaultUnit": "grams",
    "potency": {},
@@ -400,6 +420,7 @@
   {
    "id": "glass-noodles",
    "name": "Glass noodles (dry)",
+   "shortName": "Glass noodles",
    "family": "glassNoodles",
    "defaultUnit": "grams",
    "potency": {},
@@ -520,7 +541,8 @@
   },
   {
    "id": "duojiao",
-   "name": "Hunan chopped salted chilies (duojiao)",
+   "name": "Chopped salted chilies (duojiao)",
+   "shortName": "Chopped salted chilies",
    "family": "duojiao",
    "defaultUnit": "tbsp",
    "potency": {

@@ -14,9 +14,33 @@ cuisine's grammar. The product brief is `docs/brief.md`; the project docs
   file, 65 ingredients (Sichuan pantry plus decoys from neighbouring cuisines),
   ten dish profiles. Hand-authored by Claude from the sources named in each
   profile's `notes`; awaiting chef review.
+- `Sources/PantryGame/`: one round as plain values, no UI frameworks.
+  `Round.swift` (what's in the wok, amounts, method, the attempt it becomes),
+  `AmountLadder.swift` (the stepper's steps), `SoundCue.swift` (cues, their
+  visual twins, placeholder art), `PlaceholderSynth.swift` (placeholder sounds
+  generated in code).
+- `Sources/PantryUI/`: the round screen. `RoundView.swift` (SwiftUI: palette,
+  stepper, method chips, serve), `WokScene.swift` (SpriteKit: the wok, the
+  pile, every visual twin), `SoundPlayer.swift` (AVAudioEngine),
+  `ScoreSheet.swift` (a stand-in until the judge line and cards),
+  `PantryRootView.swift` (entry point and the CI demo script).
+- `App/Pantry.xcodeproj`: the iOS app, a one-file shell around `PantryUI`.
+  iPhone, portrait, iOS 17.
 - `Tests/PantryScoringTests/`: golden tests (`Fixtures/goldens.json`: a good,
   an off-cuisine and a neighbour-cuisine attempt per dish, plus a wrong-amounts
   case), engine invariants, and content validation.
+- `Tests/PantryGameTests/`: round rules, the stepper (every good golden is
+  rebuilt on the stepper and must still score 85+), cues and the synth.
+- `scripts/ci-screenshots.sh`: plays a scripted round in the simulator on CI.
+
+## Playing a round
+
+Add ingredients by tapping a chip or dragging it into the wok. The selected
+ingredient's amount is set with minus, plus or the slider. Pick how to cook
+it, then serve. Every sound has a visual twin in the scene (sparks and steam,
+bubbles, droplets, a shaking pan, a flaring burner, and a comic-strip word),
+so the round plays the same muted. The dish menu in the header stands in for
+the session loop until PB-005.
 
 ## Scoring in one paragraph
 
@@ -34,6 +58,21 @@ caching judge feedback.
 
 ## Commands
 
-From this folder, on a Mac: `swift build`, `swift test`. CI runs both on
-macOS for every push. The cloud session can't run Swift; it calibrates the
-content with a Python mirror of the scorer and lets CI verify.
+On a Mac, from the repository root: `swift build`, `swift test`. To run the
+game, open `App/Pantry.xcodeproj` in Xcode 15 or newer and run the `Pantry`
+scheme on an iPhone or a simulator.
+
+CI (`.github/workflows/ci.yml`) runs on every pull request and every push to
+`main`: package build and tests, an iOS Simulator build of the app, then a
+scripted round on an iPhone 16 and an iPhone SE with screenshots, then the
+UI tests. That run's
+logs and screenshots are force-pushed to the `ci-output` branch; nothing else
+lives there.
+
+Launch arguments: `-pantryDemo` plays the scripted round (muted, fixed seed);
+add `-pantryDemoServe` to serve it and show the score. `-pantryMuted` starts
+with the sound off.
+
+`App/PantryUITests/` drives the real screen on a simulator (drag a chip into
+the wok, drop one outside it, tap, step, pick a method, serve). In Xcode:
+Product, Test.

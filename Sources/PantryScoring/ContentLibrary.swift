@@ -47,6 +47,9 @@ public struct ContentLibrary: Sendable {
         return ContentLibrary(cuisine: cuisine, ingredients: ingredients, dishes: dishes)
     }
 
+    /// The longest label a palette chip can show on two lines.
+    public static let shortNameLimit = 22
+
     public func dish(id: String) -> DishProfile? {
         dishes.first { $0.id == id }
     }
@@ -82,6 +85,12 @@ public struct ContentLibrary: Sendable {
             }
             if let perTeaspoon = ingredient.gramsPerTeaspoon, perTeaspoon <= 0 {
                 problems.append("\(ingredient.id): gramsPerTeaspoon must be positive")
+            }
+            if let shortName = ingredient.shortName, shortName.isEmpty || shortName.count > ContentLibrary.shortNameLimit {
+                problems.append("\(ingredient.id): shortName must be 1 to \(ContentLibrary.shortNameLimit) characters")
+            }
+            if ingredient.shortName == nil && ingredient.name.count > ContentLibrary.shortNameLimit {
+                problems.append("\(ingredient.id): name is over \(ContentLibrary.shortNameLimit) characters and has no shortName")
             }
             for axis in FlavorAxis.allCases where ingredient.potency[axis] < 0 {
                 problems.append("\(ingredient.id): negative potency on \(axis.rawValue)")

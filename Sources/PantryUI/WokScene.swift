@@ -221,7 +221,7 @@ final class WokScene: SKScene {
             .scale(to: settled * 1.5, duration: 0.1),
             .scale(to: settled, duration: 0.25),
         ]))
-        popWord(SoundCue.flame.word, at: CGPoint(x: centerX, y: 78), color: SKColor(red: 0.85, green: 0.20, blue: 0.10, alpha: 1))
+        popWord(SoundCue.flame.word, at: CGPoint(x: centerX + 118, y: 34), color: SKColor(red: 0.85, green: 0.20, blue: 0.10, alpha: 1))
     }
 
     /// Plays the motion that goes with an ingredient's sound cue, where it landed.
@@ -310,7 +310,7 @@ final class WokScene: SKScene {
         label.text = word
         label.fontSize = 24
         label.fontColor = color
-        label.position = CGPoint(x: min(max(point.x, 70), WokScene.logicalSize.width - 70), y: point.y)
+        label.position = CGPoint(x: min(max(point.x, 70), WokScene.logicalSize.width - 60), y: point.y)
         label.zRotation = random(-0.14...0.14)
         label.zPosition = 20
         label.setScale(0.4)

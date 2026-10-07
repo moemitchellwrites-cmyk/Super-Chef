@@ -158,9 +158,21 @@ final class RoundTests: XCTestCase {
         XCTAssertEqual(round.pieceCount(for: "garlic"), 4)
     }
 
-    func testShortNameDropsTheGloss() throws {
+    func testChipNamesAreShortDistinctAndDontNameACuisine() throws {
         let library = try ContentLibrary.bundled()
-        XCTAssertEqual(library.ingredient(id: "doubanjiang")?.shortName, "Doubanjiang")
-        XCTAssertEqual(library.ingredient(id: "garlic")?.shortName, library.ingredient(id: "garlic")?.name)
+        XCTAssertEqual(library.ingredient(id: "doubanjiang")?.chipName, "Doubanjiang")
+        XCTAssertEqual(library.ingredient(id: "sugar")?.chipName, "Sugar")
+        XCTAssertEqual(Set(library.ingredients.map(\.chipName)).count, library.ingredients.count)
+        // Where an ingredient comes from is what the player is here to learn. "Sichuan pepper"
+        // and "Shaoxing wine" are the things' names; a decoy labelled with its home is an answer key.
+        let giveaways = ["hunan", "cantonese", "thai", "vietnam", "japan", "korea", "ital", "india"]
+        for ingredient in library.ingredients {
+            XCTAssertLessThanOrEqual(ingredient.chipName.count, ContentLibrary.shortNameLimit, ingredient.id)
+            for label in [ingredient.name, ingredient.chipName] {
+                for word in giveaways {
+                    XCTAssertFalse(label.lowercased().contains(word), "\(ingredient.id): \"\(label)\" names a cuisine")
+                }
+            }
+        }
     }
 }

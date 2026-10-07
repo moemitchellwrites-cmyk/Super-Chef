@@ -1,0 +1,1999 @@
+{
+ "schemaVersion": 1,
+ "attempts": [
+  {
+   "id": "mapo-tofu.good",
+   "dishId": "mapo-tofu",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "mapo-tofu.off",
+   "dishId": "mapo-tofu",
+   "kind": "offCuisine",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "note": "an Italian cook's tofu",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cream",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 60,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "black-pepper",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "mapo-tofu.neighbor",
+   "dishId": "mapo-tofu",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "Hunan-style: duojiao, no peppercorn",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "duojiao",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "mapo-tofu.overSauced",
+   "dishId": "mapo-tofu",
+   "kind": "wrongAmounts",
+   "vessel": "wok",
+   "method": "braise",
+   "note": "right pantry, 5x the paste and 10x the sugar",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 225,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 40,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 55,
+    "max": 90
+   }
+  },
+  {
+   "id": "kung-pao-chicken.good",
+   "dishId": "kung-pao-chicken",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 350,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 70,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dark-soy",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "water",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "kung-pao-chicken.off",
+   "dishId": "kung-pao-chicken",
+   "kind": "offCuisine",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "a Thai-leaning sweet chili chicken",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 350,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "fish-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "coconut-milk",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ketchup",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "kung-pao-chicken.neighbor",
+   "dishId": "kung-pao-chicken",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "Cantonese takeout version: hoisin, no peppercorn, no vinegar",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 350,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 70,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 6,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "hoisin",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "water",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.good",
+   "dishId": "yuxiang-eggplant",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "eggplant",
+     "amount": 500,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "pickled-chili",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 1.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.off",
+   "dishId": "yuxiang-eggplant",
+   "kind": "offCuisine",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "note": "a caponata",
+   "lines": [
+    {
+     "ingredientId": "eggplant",
+     "amount": 500,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "tomato",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.neighbor",
+   "dishId": "yuxiang-eggplant",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "numbing added where it does not belong, and fish in a fish-fragrant dish",
+   "lines": [
+    {
+     "ingredientId": "eggplant",
+     "amount": 500,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "white-fish",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "dan-dan-noodles.good",
+   "dishId": "dan-dan-noodles",
+   "kind": "good",
+   "vessel": "pot",
+   "method": "boil",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 120,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "yacai",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-oil",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "dan-dan-noodles.off",
+   "dishId": "dan-dan-noodles",
+   "kind": "offCuisine",
+   "vessel": "pot",
+   "method": "boil",
+   "note": "a miso ramen",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "miso",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "mirin",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "dan-dan-noodles.neighbor",
+   "dishId": "dan-dan-noodles",
+   "kind": "neighbor",
+   "vessel": "pot",
+   "method": "boil",
+   "note": "a sesame noodle: paste and soy, no chili oil, no peppercorn",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cucumber",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "water",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "twice-cooked-pork.good",
+   "dishId": "twice-cooked-pork",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "pork-belly",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sweet-bean-sauce",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "leek",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dark-soy",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "twice-cooked-pork.off",
+   "dishId": "twice-cooked-pork",
+   "kind": "offCuisine",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "note": "a Korean bulgogi-ish pork",
+   "lines": [
+    {
+     "ingredientId": "pork-belly",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "gochujang",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "mirin",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "twice-cooked-pork.neighbor",
+   "dishId": "twice-cooked-pork",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "Hunan: duojiao and no bean paste, with a slurry",
+   "lines": [
+    {
+     "ingredientId": "pork-belly",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "duojiao",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "leek",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 60,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.good",
+   "dishId": "dry-fried-green-beans",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "dry-fry",
+   "lines": [
+    {
+     "ingredientId": "green-beans",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "yacai",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 1.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 0.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.off",
+   "dishId": "dry-fried-green-beans",
+   "kind": "offCuisine",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "note": "green beans with butter and parmesan",
+   "lines": [
+    {
+     "ingredientId": "green-beans",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "black-pepper",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.neighbor",
+   "dishId": "dry-fried-green-beans",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "a wet Cantonese stir-fry: oyster sauce, stock and slurry",
+   "lines": [
+    {
+     "ingredientId": "green-beans",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "oyster-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "shuizhu-fish.good",
+   "dishId": "shuizhu-fish",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "white-fish",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "bean-sprouts",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 25,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 600,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "egg-white",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "shuizhu-fish.off",
+   "dishId": "shuizhu-fish",
+   "kind": "offCuisine",
+   "vessel": "pot",
+   "method": "poach",
+   "note": "a Thai coconut fish curry",
+   "lines": [
+    {
+     "ingredientId": "white-fish",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "coconut-milk",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "lemongrass",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "fish-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "curry-powder",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "shuizhu-fish.neighbor",
+   "dishId": "shuizhu-fish",
+   "kind": "neighbor",
+   "vessel": "pot",
+   "method": "poach",
+   "note": "a clear fish soup: no paste, no chili, no peppercorn",
+   "lines": [
+    {
+     "ingredientId": "white-fish",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "napa-cabbage",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 600,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "white-pepper",
+     "amount": 0.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "kou-shui-chicken.good",
+   "dishId": "kou-shui-chicken",
+   "kind": "good",
+   "vessel": "pot",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "chili-oil",
+     "amount": 4,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 1.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 12,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "kou-shui-chicken.off",
+   "dishId": "kou-shui-chicken",
+   "kind": "offCuisine",
+   "vessel": "pot",
+   "method": "poach",
+   "note": "a Thai larb-style dressing",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "fish-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lemongrass",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "kou-shui-chicken.neighbor",
+   "dishId": "kou-shui-chicken",
+   "kind": "neighbor",
+   "vessel": "pot",
+   "method": "poach",
+   "note": "bang bang chicken drifting Cantonese: sesame and hoisin, no chili oil, no numbing",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "hoisin",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 12,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cucumber",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "laziji.good",
+   "dishId": "laziji",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "deep-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-seeds",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "laziji.off",
+   "dishId": "laziji",
+   "kind": "offCuisine",
+   "vessel": "baking-dish",
+   "method": "bake",
+   "note": "a curry-rubbed baked chicken",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "curry-powder",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ketchup",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "laziji.neighbor",
+   "dishId": "laziji",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "Korean-ish: gochujang glaze, no dried chilies, no numbing",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "gochujang",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-seeds",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.good",
+   "dishId": "ants-climbing-a-tree",
+   "kind": "good",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "glass-noodles",
+     "amount": 120,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dark-soy",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 0.5,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 85,
+    "max": 100
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.off",
+   "dishId": "ants-climbing-a-tree",
+   "kind": "offCuisine",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "note": "a creamy pork pasta",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cream",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 50,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "black-pepper",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "min": 0,
+    "max": 39
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.neighbor",
+   "dishId": "ants-climbing-a-tree",
+   "kind": "neighbor",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "note": "Cantonese drift: oyster sauce where the doubanjiang should be",
+   "lines": [
+    {
+     "ingredientId": "glass-noodles",
+     "amount": 120,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "oyster-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1.5,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "min": 25,
+    "max": 65
+   }
+  }
+ ]
+}

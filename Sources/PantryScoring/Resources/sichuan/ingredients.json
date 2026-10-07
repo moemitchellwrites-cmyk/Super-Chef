@@ -1,0 +1,710 @@
+{
+ "schemaVersion": 1,
+ "ingredients": [
+  {
+   "id": "firm-tofu",
+   "name": "Firm tofu",
+   "family": "tofu",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "splash",
+   "icon": "tofu"
+  },
+  {
+   "id": "silken-tofu",
+   "name": "Silken tofu",
+   "family": "tofu",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "splash",
+   "icon": "tofu"
+  },
+  {
+   "id": "ground-pork",
+   "name": "Ground pork",
+   "family": "groundPork",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "meat"
+  },
+  {
+   "id": "pork-belly",
+   "name": "Pork belly",
+   "family": "porkBelly",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "meat"
+  },
+  {
+   "id": "chicken-thigh",
+   "name": "Chicken thigh",
+   "family": "chicken",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "meat"
+  },
+  {
+   "id": "white-fish",
+   "name": "White fish fillet",
+   "family": "fish",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "splash",
+   "icon": "fish"
+  },
+  {
+   "id": "doubanjiang",
+   "name": "Doubanjiang (Pixian chili bean paste)",
+   "family": "doubanjiang",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "heat": 0.4,
+    "umami": 0.7
+   },
+   "soundCue": "sizzle",
+   "icon": "jar",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "douchi",
+   "name": "Fermented black beans (douchi)",
+   "family": "douchi",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.8
+   },
+   "soundCue": "clatter",
+   "icon": "jar",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "sichuan-peppercorn-whole",
+   "name": "Sichuan peppercorns, whole",
+   "family": "sichuanPeppercorn",
+   "defaultUnit": "tsp",
+   "potency": {
+    "numbing": 5.0
+   },
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 2.0
+  },
+  {
+   "id": "sichuan-peppercorn-ground",
+   "name": "Sichuan peppercorn, ground",
+   "family": "sichuanPeppercorn",
+   "defaultUnit": "tsp",
+   "potency": {
+    "numbing": 6.0
+   },
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "dried-chilies",
+   "name": "Dried red chilies, whole",
+   "family": "driedChili",
+   "defaultUnit": "grams",
+   "potency": {
+    "heat": 1.2
+   },
+   "soundCue": "clatter",
+   "icon": "chili"
+  },
+  {
+   "id": "chili-flakes",
+   "name": "Chili flakes",
+   "family": "driedChili",
+   "defaultUnit": "tsp",
+   "potency": {
+    "heat": 5.0
+   },
+   "soundCue": "clatter",
+   "icon": "chili",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "chili-oil",
+   "name": "Chili oil (hong you)",
+   "family": "chiliOil",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "heat": 0.4
+   },
+   "soundCue": "sizzle",
+   "icon": "oil",
+   "gramsPerTeaspoon": 4.5
+  },
+  {
+   "id": "pickled-chili",
+   "name": "Pickled red chilies (pao la jiao)",
+   "family": "paojiao",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "heat": 0.6,
+    "acid": 0.15
+   },
+   "soundCue": "sizzle",
+   "icon": "jar",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "garlic",
+   "name": "Garlic, minced",
+   "family": "garlic",
+   "defaultUnit": "tbsp",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "aromatic",
+   "gramsPerTeaspoon": 4.5
+  },
+  {
+   "id": "ginger",
+   "name": "Ginger, minced",
+   "family": "ginger",
+   "defaultUnit": "tsp",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "aromatic",
+   "gramsPerTeaspoon": 4.0
+  },
+  {
+   "id": "scallion",
+   "name": "Scallion, chopped",
+   "family": "scallion",
+   "defaultUnit": "tbsp",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "aromatic",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "leek",
+   "name": "Leek or green garlic, sliced",
+   "family": "leek",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "light-soy",
+   "name": "Light soy sauce",
+   "family": "soySauce",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.6
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "dark-soy",
+   "name": "Dark soy sauce",
+   "family": "soySauce",
+   "defaultUnit": "tsp",
+   "potency": {
+    "umami": 0.4,
+    "sweet": 0.2
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "black-vinegar",
+   "name": "Chinkiang black vinegar",
+   "family": "blackVinegar",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "acid": 1.2
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "shaoxing",
+   "name": "Shaoxing wine",
+   "family": "shaoxing",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.1
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "sugar",
+   "name": "Sugar",
+   "family": "sugar",
+   "defaultUnit": "tsp",
+   "potency": {
+    "sweet": 1.0
+   },
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 4.0
+  },
+  {
+   "id": "salt",
+   "name": "Salt",
+   "family": "salt",
+   "defaultUnit": "tsp",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "cornstarch",
+   "name": "Cornstarch",
+   "family": "starch",
+   "defaultUnit": "tsp",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 3.0
+  },
+  {
+   "id": "neutral-oil",
+   "name": "Neutral oil",
+   "family": "oil",
+   "defaultUnit": "tbsp",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "oil",
+   "gramsPerTeaspoon": 4.5
+  },
+  {
+   "id": "sesame-oil",
+   "name": "Toasted sesame oil",
+   "family": "sesameOil",
+   "defaultUnit": "tsp",
+   "potency": {},
+   "soundCue": "splash",
+   "icon": "oil",
+   "gramsPerTeaspoon": 4.5
+  },
+  {
+   "id": "sesame-paste",
+   "name": "Chinese sesame paste",
+   "family": "sesamePaste",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.3
+   },
+   "soundCue": "splash",
+   "icon": "jar",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "sesame-seeds",
+   "name": "Toasted sesame seeds",
+   "family": "sesameSeed",
+   "defaultUnit": "tbsp",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 3.0
+  },
+  {
+   "id": "peanuts",
+   "name": "Roasted peanuts",
+   "family": "peanut",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "nut"
+  },
+  {
+   "id": "stock",
+   "name": "Chicken stock",
+   "family": "stock",
+   "defaultUnit": "cup",
+   "potency": {
+    "umami": 0.15
+   },
+   "soundCue": "boil",
+   "icon": "liquid",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "water",
+   "name": "Water",
+   "family": "water",
+   "defaultUnit": "cup",
+   "potency": {},
+   "soundCue": "boil",
+   "icon": "liquid",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "yacai",
+   "name": "Yacai (Yibin preserved mustard)",
+   "family": "yacai",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.6
+   },
+   "soundCue": "sizzle",
+   "icon": "jar",
+   "gramsPerTeaspoon": 4.0
+  },
+  {
+   "id": "sweet-bean-sauce",
+   "name": "Sweet bean sauce (tianmianjiang)",
+   "family": "tianmianjiang",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "sweet": 0.5,
+    "umami": 0.4
+   },
+   "soundCue": "sizzle",
+   "icon": "jar",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "eggplant",
+   "name": "Eggplant",
+   "family": "eggplant",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "green-beans",
+   "name": "Green beans",
+   "family": "greenBeans",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "wheat-noodles",
+   "name": "Fresh wheat noodles",
+   "family": "noodles",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "boil",
+   "icon": "noodle"
+  },
+  {
+   "id": "glass-noodles",
+   "name": "Glass noodles (dry)",
+   "family": "glassNoodles",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "boil",
+   "icon": "noodle"
+  },
+  {
+   "id": "cucumber",
+   "name": "Cucumber",
+   "family": "cucumber",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "vegetable"
+  },
+  {
+   "id": "bean-sprouts",
+   "name": "Bean sprouts",
+   "family": "beanSprout",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "napa-cabbage",
+   "name": "Napa cabbage",
+   "family": "cabbage",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "celery",
+   "name": "Celery",
+   "family": "celery",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "egg-white",
+   "name": "Egg white",
+   "family": "eggWhite",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "splash",
+   "icon": "egg"
+  },
+  {
+   "id": "white-pepper",
+   "name": "White pepper",
+   "family": "whitePepper",
+   "defaultUnit": "tsp",
+   "potency": {
+    "heat": 0.3
+   },
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "cilantro",
+   "name": "Cilantro",
+   "family": "cilantro",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "herb"
+  },
+  {
+   "id": "rice-vinegar",
+   "name": "Rice vinegar",
+   "family": "riceVinegar",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "acid": 1.0
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "tomato",
+   "name": "Tomato",
+   "family": "tomato",
+   "defaultUnit": "grams",
+   "potency": {
+    "umami": 0.1,
+    "acid": 0.1
+   },
+   "soundCue": "sizzle",
+   "icon": "vegetable"
+  },
+  {
+   "id": "cumin",
+   "name": "Cumin",
+   "family": "cumin",
+   "defaultUnit": "tsp",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "black-pepper",
+   "name": "Black pepper",
+   "family": "blackPepper",
+   "defaultUnit": "tsp",
+   "potency": {
+    "heat": 0.3
+   },
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "duojiao",
+   "name": "Hunan chopped salted chilies (duojiao)",
+   "family": "duojiao",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "heat": 0.6,
+    "acid": 0.2,
+    "umami": 0.2
+   },
+   "soundCue": "sizzle",
+   "icon": "jar",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "oyster-sauce",
+   "name": "Oyster sauce",
+   "family": "oysterSauce",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.8,
+    "sweet": 0.3
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "hoisin",
+   "name": "Hoisin sauce",
+   "family": "hoisin",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "sweet": 0.6,
+    "umami": 0.4
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "fish-sauce",
+   "name": "Fish sauce",
+   "family": "fishSauce",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 1.5
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "lime",
+   "name": "Lime juice",
+   "family": "lime",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "acid": 1.5
+   },
+   "soundCue": "splash",
+   "icon": "citrus",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "coconut-milk",
+   "name": "Coconut milk",
+   "family": "coconutMilk",
+   "defaultUnit": "cup",
+   "potency": {
+    "sweet": 0.2
+   },
+   "soundCue": "boil",
+   "icon": "liquid",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "lemongrass",
+   "name": "Lemongrass",
+   "family": "lemongrass",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "herb"
+  },
+  {
+   "id": "basil",
+   "name": "Basil",
+   "family": "basil",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "clatter",
+   "icon": "herb"
+  },
+  {
+   "id": "cream",
+   "name": "Cream",
+   "family": "cream",
+   "defaultUnit": "cup",
+   "potency": {},
+   "soundCue": "boil",
+   "icon": "liquid",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "butter",
+   "name": "Butter",
+   "family": "butter",
+   "defaultUnit": "grams",
+   "potency": {},
+   "soundCue": "sizzle",
+   "icon": "dairy"
+  },
+  {
+   "id": "parmesan",
+   "name": "Parmesan",
+   "family": "cheese",
+   "defaultUnit": "grams",
+   "potency": {
+    "umami": 0.4
+   },
+   "soundCue": "clatter",
+   "icon": "dairy"
+  },
+  {
+   "id": "mirin",
+   "name": "Mirin",
+   "family": "mirin",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "sweet": 0.6
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 5.0
+  },
+  {
+   "id": "miso",
+   "name": "Miso",
+   "family": "miso",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "umami": 0.6
+   },
+   "soundCue": "splash",
+   "icon": "jar",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "gochujang",
+   "name": "Gochujang",
+   "family": "gochujang",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "heat": 0.4,
+    "sweet": 0.5,
+    "umami": 0.3
+   },
+   "soundCue": "sizzle",
+   "icon": "jar",
+   "gramsPerTeaspoon": 6.0
+  },
+  {
+   "id": "curry-powder",
+   "name": "Curry powder",
+   "family": "curryPowder",
+   "defaultUnit": "tsp",
+   "potency": {
+    "heat": 0.2
+   },
+   "soundCue": "clatter",
+   "icon": "spice",
+   "gramsPerTeaspoon": 2.5
+  },
+  {
+   "id": "ketchup",
+   "name": "Ketchup",
+   "family": "ketchup",
+   "defaultUnit": "tbsp",
+   "potency": {
+    "sweet": 0.4,
+    "acid": 0.3,
+    "umami": 0.2
+   },
+   "soundCue": "splash",
+   "icon": "bottle",
+   "gramsPerTeaspoon": 6.0
+  }
+ ]
+}

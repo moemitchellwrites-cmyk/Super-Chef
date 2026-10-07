@@ -1,0 +1,50 @@
+{
+ "schemaVersion": 1,
+ "id": "sichuan",
+ "name": "Sichuan",
+ "signature": {
+  "heat": [
+   2,
+   5
+  ],
+  "numbing": [
+   1,
+   5
+  ],
+  "acid": [
+   0,
+   3
+  ],
+  "umami": [
+   2,
+   5
+  ],
+  "sweet": [
+   0,
+   2
+  ]
+ },
+ "offCuisineFamilies": [
+  "duojiao",
+  "oysterSauce",
+  "hoisin",
+  "fishSauce",
+  "lime",
+  "coconutMilk",
+  "lemongrass",
+  "basil",
+  "cream",
+  "butter",
+  "cheese",
+  "mirin",
+  "miso",
+  "gochujang",
+  "curryPowder",
+  "ketchup"
+ ],
+ "vessels": [
+  "wok",
+  "pot"
+ ],
+ "notes": "Sources: Fuchsia Dunlop, The Food of Sichuan (2019); Chengdu Municipal Bureau of Commerce, 中国川菜 / Sichuan (China) Cuisine (2010); Wang Gang (王刚) cooking videos. Hunan's duojiao and Cantonese oyster/hoisin are the nearest decoys; dairy, basil, lime, fish sauce and coconut mark drift to Italy, Thailand or Vietnam."
+}

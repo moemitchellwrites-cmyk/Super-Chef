@@ -1,0 +1,1687 @@
+{
+ "schemaVersion": 1,
+ "dishes": [
+  {
+   "id": "mapo-tofu",
+   "cuisineId": "sichuan",
+   "name": "Mapo tofu",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "stir-fry",
+    "braise"
+   ],
+   "required": [
+    {
+     "label": "tofu",
+     "anyOf": [
+      "tofu"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "doubanjiang",
+     "anyOf": [
+      "doubanjiang"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    },
+    {
+     "label": "chili heat",
+     "anyOf": [
+      "driedChili",
+      "chiliOil"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "groundPork",
+    "douchi",
+    "soySauce",
+    "stock",
+    "water",
+    "starch",
+    "sugar",
+    "oil",
+    "salt"
+   ],
+   "forbidden": [
+    "sesamePaste",
+    "blackVinegar",
+    "peanut"
+   ],
+   "ratios": [
+    {
+     "label": "doubanjiang to tofu",
+     "numerator": [
+      "doubanjiang"
+     ],
+     "denominator": [
+      "tofu"
+     ],
+     "low": 0.08333333333333333,
+     "high": 0.125,
+     "weight": 2
+    },
+    {
+     "label": "Sichuan peppercorn to tofu",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "tofu"
+     ],
+     "low": 0.01,
+     "high": 0.02,
+     "weight": 2
+    },
+    {
+     "label": "aromatics to tofu",
+     "numerator": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "denominator": [
+      "tofu"
+     ],
+     "low": 0.05,
+     "high": 0.15,
+     "weight": 1
+    },
+    {
+     "label": "liquid to tofu",
+     "numerator": [
+      "stock",
+      "water"
+     ],
+     "denominator": [
+      "tofu"
+     ],
+     "low": 0.25,
+     "high": 0.6,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     3,
+     5
+    ],
+    "numbing": [
+     3,
+     5
+    ],
+    "acid": [
+     0,
+     1
+    ],
+    "umami": [
+     2,
+     5
+    ],
+    "sweet": [
+     0,
+     1.5
+    ]
+   },
+   "palette": [
+    "firm-tofu",
+    "ground-pork",
+    "doubanjiang",
+    "douchi",
+    "sichuan-peppercorn-ground",
+    "chili-flakes",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "stock",
+    "cornstarch",
+    "neutral-oil",
+    "sugar",
+    "sesame-paste",
+    "black-vinegar",
+    "duojiao",
+    "oyster-sauce",
+    "cream",
+    "basil"
+   ],
+   "cardId": "card-mapo-tofu",
+   "notes": "Dunlop 2019 (ma po dou fu); Chengdu 2010. Numbing comes from the peppercorn, not the paste; the paste brings heat and the deep red colour."
+  },
+  {
+   "id": "kung-pao-chicken",
+   "cuisineId": "sichuan",
+   "name": "Kung pao chicken",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "stir-fry"
+   ],
+   "required": [
+    {
+     "label": "chicken",
+     "anyOf": [
+      "chicken"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "dried chilies",
+     "anyOf": [
+      "driedChili"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "peanuts",
+     "anyOf": [
+      "peanut"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    },
+    {
+     "label": "sugar",
+     "anyOf": [
+      "sugar"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "black vinegar",
+     "anyOf": [
+      "blackVinegar"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "soySauce",
+    "shaoxing",
+    "starch",
+    "stock",
+    "water",
+    "oil",
+    "salt"
+   ],
+   "forbidden": [
+    "sesamePaste",
+    "doubanjiang",
+    "chiliOil"
+   ],
+   "ratios": [
+    {
+     "label": "peanuts to chicken",
+     "numerator": [
+      "peanut"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.15,
+     "high": 0.4,
+     "weight": 1
+    },
+    {
+     "label": "dried chilies to chicken",
+     "numerator": [
+      "driedChili"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.03,
+     "high": 0.12,
+     "weight": 1
+    },
+    {
+     "label": "sugar to vinegar (the litchi balance)",
+     "numerator": [
+      "sugar"
+     ],
+     "denominator": [
+      "blackVinegar"
+     ],
+     "low": 0.6,
+     "high": 1.6,
+     "weight": 2
+    },
+    {
+     "label": "Sichuan peppercorn to chicken",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.004,
+     "high": 0.015,
+     "weight": 1
+    },
+    {
+     "label": "aromatics to chicken",
+     "numerator": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.08,
+     "high": 0.25,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     2,
+     4
+    ],
+    "numbing": [
+     1,
+     3
+    ],
+    "acid": [
+     1,
+     3
+    ],
+    "umami": [
+     1,
+     4
+    ],
+    "sweet": [
+     1,
+     3
+    ]
+   },
+   "palette": [
+    "chicken-thigh",
+    "peanuts",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "scallion",
+    "garlic",
+    "ginger",
+    "light-soy",
+    "dark-soy",
+    "black-vinegar",
+    "sugar",
+    "shaoxing",
+    "cornstarch",
+    "water",
+    "neutral-oil",
+    "doubanjiang",
+    "sesame-paste",
+    "hoisin",
+    "ketchup",
+    "lime"
+   ],
+   "cardId": "card-kung-pao-chicken",
+   "notes": "Dunlop 2019 (gong bao ji ding): 'litchi flavour', sweet and sour in balance with scorched chili and a little numbing. No bean paste in the Sichuan original."
+  },
+  {
+   "id": "yuxiang-eggplant",
+   "cuisineId": "sichuan",
+   "name": "Fish-fragrant eggplant",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "stir-fry",
+    "braise"
+   ],
+   "required": [
+    {
+     "label": "eggplant",
+     "anyOf": [
+      "eggplant"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "pickled chili or bean paste",
+     "anyOf": [
+      "paojiao",
+      "doubanjiang"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "garlic, ginger and scallion",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 2,
+     "minPresent": 3
+    },
+    {
+     "label": "sugar",
+     "anyOf": [
+      "sugar"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "black vinegar",
+     "anyOf": [
+      "blackVinegar"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "soySauce",
+    "shaoxing",
+    "starch",
+    "stock",
+    "water",
+    "groundPork",
+    "oil",
+    "salt"
+   ],
+   "forbidden": [
+    "sichuanPeppercorn",
+    "fish",
+    "sesamePaste"
+   ],
+   "ratios": [
+    {
+     "label": "aromatics to eggplant",
+     "numerator": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "denominator": [
+      "eggplant"
+     ],
+     "low": 0.08,
+     "high": 0.25,
+     "weight": 1
+    },
+    {
+     "label": "sugar to vinegar",
+     "numerator": [
+      "sugar"
+     ],
+     "denominator": [
+      "blackVinegar"
+     ],
+     "low": 0.8,
+     "high": 2.0,
+     "weight": 2
+    },
+    {
+     "label": "pickled chili to eggplant",
+     "numerator": [
+      "paojiao",
+      "doubanjiang"
+     ],
+     "denominator": [
+      "eggplant"
+     ],
+     "low": 0.04,
+     "high": 0.12,
+     "weight": 1
+    },
+    {
+     "label": "oil to eggplant",
+     "numerator": [
+      "oil"
+     ],
+     "denominator": [
+      "eggplant"
+     ],
+     "low": 0.08,
+     "high": 0.4,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     1,
+     3
+    ],
+    "numbing": [
+     0,
+     1
+    ],
+    "acid": [
+     1,
+     3.5
+    ],
+    "umami": [
+     1,
+     4
+    ],
+    "sweet": [
+     1.5,
+     3.5
+    ]
+   },
+   "palette": [
+    "eggplant",
+    "pickled-chili",
+    "doubanjiang",
+    "garlic",
+    "ginger",
+    "scallion",
+    "sugar",
+    "black-vinegar",
+    "light-soy",
+    "shaoxing",
+    "cornstarch",
+    "stock",
+    "neutral-oil",
+    "ground-pork",
+    "white-fish",
+    "sichuan-peppercorn-ground",
+    "sesame-paste",
+    "fish-sauce",
+    "basil",
+    "parmesan"
+   ],
+   "cardId": "card-yuxiang-eggplant",
+   "notes": "Dunlop 2019 (yu xiang qie zi). 'Fish-fragrant' names the seasoning once used for fish: pickled chili, garlic, ginger, scallion, sugar, vinegar. There is no fish in it and no peppercorn."
+  },
+  {
+   "id": "dan-dan-noodles",
+   "cuisineId": "sichuan",
+   "name": "Dan dan noodles",
+   "vessels": [
+    "pot",
+    "wok"
+   ],
+   "methods": [
+    "boil",
+    "stir-fry"
+   ],
+   "required": [
+    {
+     "label": "noodles",
+     "anyOf": [
+      "noodles"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "chili oil",
+     "anyOf": [
+      "chiliOil"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "ground pork",
+     "anyOf": [
+      "groundPork"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "preserved vegetable",
+     "anyOf": [
+      "yacai",
+      "tianmianjiang"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "soy sauce",
+     "anyOf": [
+      "soySauce"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "scallion"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "sesamePaste",
+    "blackVinegar",
+    "sugar",
+    "peanut",
+    "stock",
+    "water",
+    "shaoxing",
+    "oil",
+    "salt",
+    "sesameOil"
+   ],
+   "forbidden": [
+    "glassNoodles",
+    "tofu",
+    "eggplant"
+   ],
+   "ratios": [
+    {
+     "label": "chili oil to noodles",
+     "numerator": [
+      "chiliOil"
+     ],
+     "denominator": [
+      "noodles"
+     ],
+     "low": 0.06,
+     "high": 0.2,
+     "weight": 2
+    },
+    {
+     "label": "pork to noodles",
+     "numerator": [
+      "groundPork"
+     ],
+     "denominator": [
+      "noodles"
+     ],
+     "low": 0.2,
+     "high": 0.6,
+     "weight": 1
+    },
+    {
+     "label": "Sichuan peppercorn to noodles",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "noodles"
+     ],
+     "low": 0.003,
+     "high": 0.012,
+     "weight": 1
+    },
+    {
+     "label": "soy sauce to noodles",
+     "numerator": [
+      "soySauce"
+     ],
+     "denominator": [
+      "noodles"
+     ],
+     "low": 0.04,
+     "high": 0.12,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     2,
+     5
+    ],
+    "numbing": [
+     1.5,
+     4
+    ],
+    "acid": [
+     0,
+     2
+    ],
+    "umami": [
+     2,
+     5
+    ],
+    "sweet": [
+     0,
+     1.5
+    ]
+   },
+   "palette": [
+    "wheat-noodles",
+    "ground-pork",
+    "yacai",
+    "chili-oil",
+    "sichuan-peppercorn-ground",
+    "light-soy",
+    "sesame-paste",
+    "black-vinegar",
+    "sugar",
+    "garlic",
+    "scallion",
+    "stock",
+    "shaoxing",
+    "neutral-oil",
+    "peanuts",
+    "glass-noodles",
+    "miso",
+    "mirin",
+    "fish-sauce",
+    "coconut-milk"
+   ],
+   "cardId": "card-dan-dan-noodles",
+   "notes": "Dunlop 2019 (dan dan mian); Chengdu 2010. Chili oil and peppercorn in the bowl, crisp pork and yacai on top. Sesame paste is a common addition, not the base."
+  },
+  {
+   "id": "twice-cooked-pork",
+   "cuisineId": "sichuan",
+   "name": "Twice-cooked pork",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "stir-fry"
+   ],
+   "required": [
+    {
+     "label": "pork belly",
+     "anyOf": [
+      "porkBelly"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "doubanjiang",
+     "anyOf": [
+      "doubanjiang"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "leek or green garlic",
+     "anyOf": [
+      "leek",
+      "cabbage"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "sweet bean sauce",
+     "anyOf": [
+      "tianmianjiang"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "douchi",
+    "soySauce",
+    "sugar",
+    "shaoxing",
+    "oil",
+    "driedChili",
+    "salt"
+   ],
+   "forbidden": [
+    "starch",
+    "stock",
+    "water",
+    "sesamePaste"
+   ],
+   "ratios": [
+    {
+     "label": "doubanjiang to pork",
+     "numerator": [
+      "doubanjiang"
+     ],
+     "denominator": [
+      "porkBelly"
+     ],
+     "low": 0.05,
+     "high": 0.12,
+     "weight": 2
+    },
+    {
+     "label": "leek to pork",
+     "numerator": [
+      "leek",
+      "cabbage"
+     ],
+     "denominator": [
+      "porkBelly"
+     ],
+     "low": 0.3,
+     "high": 0.8,
+     "weight": 1
+    },
+    {
+     "label": "sweet bean sauce to pork",
+     "numerator": [
+      "tianmianjiang"
+     ],
+     "denominator": [
+      "porkBelly"
+     ],
+     "low": 0.02,
+     "high": 0.06,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     1.5,
+     4
+    ],
+    "numbing": [
+     0,
+     1
+    ],
+    "acid": [
+     0,
+     1
+    ],
+    "umami": [
+     2,
+     5
+    ],
+    "sweet": [
+     0.5,
+     2.5
+    ]
+   },
+   "palette": [
+    "pork-belly",
+    "doubanjiang",
+    "sweet-bean-sauce",
+    "douchi",
+    "leek",
+    "ginger",
+    "dark-soy",
+    "sugar",
+    "shaoxing",
+    "neutral-oil",
+    "cornstarch",
+    "stock",
+    "sesame-paste",
+    "hoisin",
+    "oyster-sauce",
+    "gochujang",
+    "duojiao",
+    "black-vinegar",
+    "basil",
+    "butter"
+   ],
+   "cardId": "card-twice-cooked-pork",
+   "notes": "Dunlop 2019 (hui guo rou). Boiled, sliced, fried until the slices curl; no slurry, no liquid. Sweet bean sauce rounds the doubanjiang."
+  },
+  {
+   "id": "dry-fried-green-beans",
+   "cuisineId": "sichuan",
+   "name": "Dry-fried green beans",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "dry-fry",
+    "stir-fry"
+   ],
+   "required": [
+    {
+     "label": "green beans",
+     "anyOf": [
+      "greenBeans"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "dried chilies",
+     "anyOf": [
+      "driedChili"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "yacai",
+     "anyOf": [
+      "yacai"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    }
+   ],
+   "optional": [
+    "groundPork",
+    "soySauce",
+    "sugar",
+    "shaoxing",
+    "oil",
+    "salt"
+   ],
+   "forbidden": [
+    "stock",
+    "water",
+    "starch",
+    "blackVinegar"
+   ],
+   "ratios": [
+    {
+     "label": "oil to beans",
+     "numerator": [
+      "oil"
+     ],
+     "denominator": [
+      "greenBeans"
+     ],
+     "low": 0.08,
+     "high": 0.35,
+     "weight": 1
+    },
+    {
+     "label": "dried chilies to beans",
+     "numerator": [
+      "driedChili"
+     ],
+     "denominator": [
+      "greenBeans"
+     ],
+     "low": 0.015,
+     "high": 0.06,
+     "weight": 1
+    },
+    {
+     "label": "Sichuan peppercorn to beans",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "greenBeans"
+     ],
+     "low": 0.003,
+     "high": 0.012,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     1,
+     3
+    ],
+    "numbing": [
+     1,
+     3
+    ],
+    "acid": [
+     0,
+     0.5
+    ],
+    "umami": [
+     1,
+     4
+    ],
+    "sweet": [
+     0,
+     1
+    ]
+   },
+   "palette": [
+    "green-beans",
+    "ground-pork",
+    "yacai",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "sugar",
+    "shaoxing",
+    "neutral-oil",
+    "salt",
+    "stock",
+    "cornstarch",
+    "black-vinegar",
+    "oyster-sauce",
+    "fish-sauce",
+    "butter",
+    "parmesan"
+   ],
+   "cardId": "card-dry-fried-green-beans",
+   "notes": "Dunlop 2019 (gan bian si ji dou). 'Dry-fried' means the beans blister in oil until wrinkled; nothing wet goes in."
+  },
+  {
+   "id": "shuizhu-fish",
+   "cuisineId": "sichuan",
+   "name": "Fish in chili oil broth",
+   "vessels": [
+    "wok",
+    "pot"
+   ],
+   "methods": [
+    "poach",
+    "stir-fry"
+   ],
+   "required": [
+    {
+     "label": "fish",
+     "anyOf": [
+      "fish"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "doubanjiang",
+     "anyOf": [
+      "doubanjiang"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "dried chilies",
+     "anyOf": [
+      "driedChili"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "vegetable bed",
+     "anyOf": [
+      "beanSprout",
+      "cabbage",
+      "celery"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    },
+    {
+     "label": "liquid",
+     "anyOf": [
+      "stock",
+      "water"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "oil",
+     "anyOf": [
+      "oil"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "eggWhite",
+    "starch",
+    "shaoxing",
+    "salt",
+    "soySauce",
+    "whitePepper"
+   ],
+   "forbidden": [
+    "blackVinegar",
+    "sesamePaste",
+    "tianmianjiang"
+   ],
+   "ratios": [
+    {
+     "label": "doubanjiang to fish",
+     "numerator": [
+      "doubanjiang"
+     ],
+     "denominator": [
+      "fish"
+     ],
+     "low": 0.06,
+     "high": 0.15,
+     "weight": 2
+    },
+    {
+     "label": "dried chilies to fish",
+     "numerator": [
+      "driedChili"
+     ],
+     "denominator": [
+      "fish"
+     ],
+     "low": 0.03,
+     "high": 0.12,
+     "weight": 1
+    },
+    {
+     "label": "Sichuan peppercorn to fish",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "fish"
+     ],
+     "low": 0.01,
+     "high": 0.03,
+     "weight": 1
+    },
+    {
+     "label": "liquid to fish",
+     "numerator": [
+      "stock",
+      "water"
+     ],
+     "denominator": [
+      "fish"
+     ],
+     "low": 0.8,
+     "high": 2.5,
+     "weight": 1
+    },
+    {
+     "label": "oil to fish",
+     "numerator": [
+      "oil"
+     ],
+     "denominator": [
+      "fish"
+     ],
+     "low": 0.1,
+     "high": 0.4,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     2.5,
+     5
+    ],
+    "numbing": [
+     2.5,
+     5
+    ],
+    "acid": [
+     0,
+     1
+    ],
+    "umami": [
+     2,
+     5
+    ],
+    "sweet": [
+     0,
+     1
+    ]
+   },
+   "palette": [
+    "white-fish",
+    "bean-sprouts",
+    "doubanjiang",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "stock",
+    "neutral-oil",
+    "egg-white",
+    "cornstarch",
+    "shaoxing",
+    "salt",
+    "black-vinegar",
+    "sesame-paste",
+    "coconut-milk",
+    "lemongrass",
+    "lime",
+    "cream"
+   ],
+   "cardId": "card-shuizhu-fish",
+   "notes": "Dunlop 2019 (shui zhu yu). Velveted fish slips into a doubanjiang broth over a vegetable bed; sizzling oil over chilies and peppercorn finishes it."
+  },
+  {
+   "id": "kou-shui-chicken",
+   "cuisineId": "sichuan",
+   "name": "Mouth-watering chicken",
+   "vessels": [
+    "pot"
+   ],
+   "methods": [
+    "poach"
+   ],
+   "required": [
+    {
+     "label": "chicken",
+     "anyOf": [
+      "chicken"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "chili oil",
+     "anyOf": [
+      "chiliOil"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "soy sauce",
+     "anyOf": [
+      "soySauce"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "black vinegar",
+     "anyOf": [
+      "blackVinegar"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "sugar",
+     "anyOf": [
+      "sugar"
+     ],
+     "weight": 1
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    }
+   ],
+   "optional": [
+    "sesameOil",
+    "sesamePaste",
+    "peanut",
+    "sesameSeed",
+    "water",
+    "salt",
+    "shaoxing",
+    "cilantro"
+   ],
+   "forbidden": [
+    "doubanjiang",
+    "starch",
+    "stock"
+   ],
+   "ratios": [
+    {
+     "label": "chili oil to chicken",
+     "numerator": [
+      "chiliOil"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.08,
+     "high": 0.25,
+     "weight": 2
+    },
+    {
+     "label": "vinegar to soy",
+     "numerator": [
+      "blackVinegar"
+     ],
+     "denominator": [
+      "soySauce"
+     ],
+     "low": 0.4,
+     "high": 1.2,
+     "weight": 1
+    },
+    {
+     "label": "sugar to chicken",
+     "numerator": [
+      "sugar"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.01,
+     "high": 0.04,
+     "weight": 1
+    },
+    {
+     "label": "Sichuan peppercorn to chicken",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.004,
+     "high": 0.015,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     2,
+     4
+    ],
+    "numbing": [
+     2,
+     4
+    ],
+    "acid": [
+     1,
+     3.5
+    ],
+    "umami": [
+     2,
+     4
+    ],
+    "sweet": [
+     0.5,
+     2
+    ]
+   },
+   "palette": [
+    "chicken-thigh",
+    "chili-oil",
+    "sichuan-peppercorn-ground",
+    "light-soy",
+    "black-vinegar",
+    "sugar",
+    "garlic",
+    "ginger",
+    "scallion",
+    "sesame-oil",
+    "peanuts",
+    "sesame-seeds",
+    "cilantro",
+    "doubanjiang",
+    "cornstarch",
+    "fish-sauce",
+    "lime",
+    "coconut-milk",
+    "mirin",
+    "miso"
+   ],
+   "cardId": "card-kou-shui-chicken",
+   "notes": "Dunlop 2019 (kou shui ji). A cold dish: poached chicken under a chili-oil dressing with numbing, soy, vinegar, sugar. Nothing is fried."
+  },
+  {
+   "id": "laziji",
+   "cuisineId": "sichuan",
+   "name": "Chongqing chili chicken",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "deep-fry",
+    "stir-fry"
+   ],
+   "required": [
+    {
+     "label": "chicken",
+     "anyOf": [
+      "chicken"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "dried chilies",
+     "anyOf": [
+      "driedChili"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "Sichuan peppercorn",
+     "anyOf": [
+      "sichuanPeppercorn"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    },
+    {
+     "label": "oil",
+     "anyOf": [
+      "oil"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "soySauce",
+    "shaoxing",
+    "salt",
+    "sugar",
+    "sesameSeed",
+    "starch"
+   ],
+   "forbidden": [
+    "stock",
+    "water",
+    "blackVinegar",
+    "sesamePaste"
+   ],
+   "ratios": [
+    {
+     "label": "dried chilies to chicken",
+     "numerator": [
+      "driedChili"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.25,
+     "high": 1.0,
+     "weight": 2
+    },
+    {
+     "label": "Sichuan peppercorn to chicken",
+     "numerator": [
+      "sichuanPeppercorn"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.01,
+     "high": 0.05,
+     "weight": 1
+    },
+    {
+     "label": "oil to chicken",
+     "numerator": [
+      "oil"
+     ],
+     "denominator": [
+      "chicken"
+     ],
+     "low": 0.1,
+     "high": 0.5,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     4,
+     5
+    ],
+    "numbing": [
+     2,
+     5
+    ],
+    "acid": [
+     0,
+     0.5
+    ],
+    "umami": [
+     1,
+     4
+    ],
+    "sweet": [
+     0,
+     1
+    ]
+   },
+   "palette": [
+    "chicken-thigh",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "shaoxing",
+    "salt",
+    "sugar",
+    "neutral-oil",
+    "sesame-seeds",
+    "cornstarch",
+    "stock",
+    "black-vinegar",
+    "chili-oil",
+    "gochujang",
+    "curry-powder",
+    "ketchup",
+    "lime"
+   ],
+   "cardId": "card-laziji",
+   "notes": "Dunlop 2019 (la zi ji); Chongqing style. Chicken buried in chilies; you hunt for the meat. The chilies perfume the oil and are mostly not eaten."
+  },
+  {
+   "id": "ants-climbing-a-tree",
+   "cuisineId": "sichuan",
+   "name": "Ants climbing a tree",
+   "vessels": [
+    "wok"
+   ],
+   "methods": [
+    "stir-fry",
+    "braise"
+   ],
+   "required": [
+    {
+     "label": "glass noodles",
+     "anyOf": [
+      "glassNoodles"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "ground pork",
+     "anyOf": [
+      "groundPork"
+     ],
+     "weight": 2
+    },
+    {
+     "label": "doubanjiang",
+     "anyOf": [
+      "doubanjiang"
+     ],
+     "weight": 3
+    },
+    {
+     "label": "aromatics",
+     "anyOf": [
+      "garlic",
+      "ginger",
+      "scallion"
+     ],
+     "weight": 1,
+     "minPresent": 2
+    },
+    {
+     "label": "liquid",
+     "anyOf": [
+      "stock",
+      "water"
+     ],
+     "weight": 1
+    }
+   ],
+   "optional": [
+    "soySauce",
+    "shaoxing",
+    "oil",
+    "driedChili",
+    "sugar",
+    "sichuanPeppercorn",
+    "salt"
+   ],
+   "forbidden": [
+    "noodles",
+    "tofu",
+    "blackVinegar",
+    "sesamePaste"
+   ],
+   "ratios": [
+    {
+     "label": "pork to glass noodles",
+     "numerator": [
+      "groundPork"
+     ],
+     "denominator": [
+      "glassNoodles"
+     ],
+     "low": 0.3,
+     "high": 1.0,
+     "weight": 1
+    },
+    {
+     "label": "doubanjiang to glass noodles",
+     "numerator": [
+      "doubanjiang"
+     ],
+     "denominator": [
+      "glassNoodles"
+     ],
+     "low": 0.1,
+     "high": 0.3,
+     "weight": 2
+    },
+    {
+     "label": "liquid to glass noodles",
+     "numerator": [
+      "stock",
+      "water"
+     ],
+     "denominator": [
+      "glassNoodles"
+     ],
+     "low": 1.5,
+     "high": 4.0,
+     "weight": 1
+    }
+   ],
+   "signature": {
+    "heat": [
+     1.5,
+     4
+    ],
+    "numbing": [
+     0,
+     1.5
+    ],
+    "acid": [
+     0,
+     1
+    ],
+    "umami": [
+     2,
+     5
+    ],
+    "sweet": [
+     0,
+     1
+    ]
+   },
+   "palette": [
+    "glass-noodles",
+    "ground-pork",
+    "doubanjiang",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "dark-soy",
+    "shaoxing",
+    "stock",
+    "neutral-oil",
+    "chili-flakes",
+    "sugar",
+    "wheat-noodles",
+    "firm-tofu",
+    "black-vinegar",
+    "oyster-sauce",
+    "hoisin",
+    "fish-sauce",
+    "cream"
+   ],
+   "cardId": "card-ants-climbing-a-tree",
+   "notes": "Dunlop 2019 (ma yi shang shu). Minced pork clings to glass noodles like ants on twigs; doubanjiang colours the braising liquid, which the noodles drink up."
+  }
+ ]
+}

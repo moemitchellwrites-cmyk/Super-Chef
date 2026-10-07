@@ -202,3 +202,12 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Decision: `web/` holds a one-page stand-in: a JavaScript port of the scorer and the stepper (`web/engine.js`), the same bundled Sichuan content inlined at build time (`scripts/build-web-standin.py`), tap or drag into a canvas wok, the method tap, synthesised cues with visual twins. Published as a private Claude artifact, "Pantry Stand-in".
 - Rationale: It answers two of the review questions today: does a round fit 60 to 120 seconds, and do the scores feel fair. The score sheet shows how long the round took, which the app never will (no timers).
 - Consequences: It is not the product. Drag feel, sound and the wok are approximations, and it must never be mistaken for a web version (the brief is native iOS only). The Swift engine stays the source of truth: `web/test-engine.cjs` runs the port against the same goldens on CI, so the two can't drift silently. Delete `web/` once the app is on TestFlight.
+
+## PD-024: Every dish opens with a one-line brief that describes the plate, not the recipe
+- Date: 2026-10-07
+- Made by: Moe raised the gap playing the stand-in; Claude proposed the rule; Moe accepted it
+- Status: accepted
+- Context: A player who has never eaten mapo tofu has nothing to aim at, so the score reads as arbitrary.
+- Decision: `DishProfile.brief`, one line of at most 120 characters, shown under the dish name before cooking in the app and the stand-in. It describes texture, look and how the dish should taste, and may name what the dish's own name names (or its main body in plain words). It never names a seasoning, an amount, a vessel or a method. Validation requires it and rejects digits; a test rejects seasoning and method words.
+- Rationale: The brief gives the target ("hot, numbing and deeply savoury"); finding what delivers it is still the round.
+- Consequences: Ten briefs written by Claude, for chef review with the profiles (PB-013). The field is optional in the schema and required by validation, so `schemaVersion` stays 1. Closes PB-009. The brief costs the wok a little height on small phones (PB-108).

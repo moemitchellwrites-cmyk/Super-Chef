@@ -5,6 +5,7 @@
    "id": "mapo-tofu",
    "cuisineId": "sichuan",
    "name": "Mapo tofu",
+   "brief": "Soft tofu in a glossy red sauce that is hot, numbing and deeply savoury.",
    "vessels": [
     "wok"
    ],
@@ -173,6 +174,7 @@
    "id": "kung-pao-chicken",
    "cuisineId": "sichuan",
    "name": "Kung pao chicken",
+   "brief": "Diced chicken with crunch in a light sauce that is sweet, sour and gently hot, with a faint tingle.",
    "vessels": [
     "wok"
    ],
@@ -362,6 +364,7 @@
    "id": "yuxiang-eggplant",
    "cuisineId": "sichuan",
    "name": "Fish-fragrant eggplant",
+   "brief": "Silky eggplant in a bright sauce that is hot, sour and sweet at once. There is no fish in it.",
    "vessels": [
     "wok"
    ],
@@ -529,6 +532,7 @@
    "id": "dan-dan-noodles",
    "cuisineId": "sichuan",
    "name": "Dan dan noodles",
+   "brief": "A small bowl of noodles over a nutty, spicy, tingling sauce, tossed together just before eating.",
    "vessels": [
     "pot",
     "wok"
@@ -708,6 +712,7 @@
    "id": "twice-cooked-pork",
    "cuisineId": "sichuan",
    "name": "Twice-cooked pork",
+   "brief": "Thin slices of rich pork, browned at the edges, in a salty-sweet savoury coating with a little heat.",
    "vessels": [
     "wok"
    ],
@@ -859,6 +864,7 @@
    "id": "dry-fried-green-beans",
    "cuisineId": "sichuan",
    "name": "Dry-fried green beans",
+   "brief": "Blistered, wrinkled green beans with salty, savoury bits clinging to them. Dry, not saucy.",
    "vessels": [
     "wok"
    ],
@@ -1009,6 +1015,7 @@
    "id": "shuizhu-fish",
    "cuisineId": "sichuan",
    "name": "Fish in chili oil broth",
+   "brief": "Tender slices of fish in a fiery red broth, with a fragrant, numbing layer floating on top.",
    "vessels": [
     "wok",
     "pot"
@@ -1208,6 +1215,7 @@
    "id": "kou-shui-chicken",
    "cuisineId": "sichuan",
    "name": "Mouth-watering chicken",
+   "brief": "Cold, tender chicken under a pool of fragrant red dressing: nutty, tingling, a little sweet and sour.",
    "vessels": [
     "pot"
    ],
@@ -1384,6 +1392,7 @@
    "id": "laziji",
    "cuisineId": "sichuan",
    "name": "Chongqing chili chicken",
+   "brief": "Small crisp nuggets of chicken buried in a heap of toasted chilies. Dry, fiery and numbing.",
    "vessels": [
     "wok"
    ],
@@ -1534,6 +1543,7 @@
    "id": "ants-climbing-a-tree",
    "cuisineId": "sichuan",
    "name": "Ants climbing a tree",
+   "brief": "Slippery clear noodles with crumbs of meat clinging to them, savoury and hot, with almost no sauce left.",
    "vessels": [
     "wok"
    ],

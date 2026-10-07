@@ -259,6 +259,10 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public var id: String
     public var cuisineId: String
     public var name: String
+    /// One line shown before cooking, for a player who has never eaten the dish (PD-024).
+    /// It describes the plate: texture, look, how it should taste. It never names a
+    /// seasoning, an amount or a cooking method; working those out is the round.
+    public var brief: String?
     public var vessels: [Vessel]
     public var methods: [CookingMethod]
     public var required: [Requirement]
@@ -277,8 +281,10 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
 
     public init(id: String, cuisineId: String, name: String, vessels: [Vessel], methods: [CookingMethod],
                 required: [Requirement], optional: [String] = [], forbidden: [String] = [], ratios: [RatioBand] = [],
-                signature: SignatureEnvelope? = nil, palette: [String] = [], cardId: String, notes: String? = nil) {
+                signature: SignatureEnvelope? = nil, palette: [String] = [], cardId: String, notes: String? = nil,
+                brief: String? = nil) {
         self.id = id
+        self.brief = brief
         self.cuisineId = cuisineId
         self.name = name
         self.vessels = vessels

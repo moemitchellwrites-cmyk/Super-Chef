@@ -50,6 +50,9 @@ public struct ContentLibrary: Sendable {
     /// The longest label a palette chip can show on two lines.
     public static let shortNameLimit = 22
 
+    /// The longest dish brief: two lines under the dish name on a phone.
+    public static let briefLimit = 120
+
     public func dish(id: String) -> DishProfile? {
         dishes.first { $0.id == id }
     }
@@ -160,6 +163,13 @@ public struct ContentLibrary: Sendable {
                     }
                 }
             }
+            let brief = dish.brief ?? ""
+            if brief.isEmpty {
+                problems.append("\(tag): no brief")
+            } else if brief.count > ContentLibrary.briefLimit {
+                problems.append("\(tag): brief is over \(ContentLibrary.briefLimit) characters")
+            }
+            if brief.contains(where: \.isNumber) { problems.append("\(tag): brief gives a number") }
             if dish.cardId.isEmpty { problems.append("\(tag): no cardId") }
             if (dish.notes ?? "").isEmpty { problems.append("\(tag): no source notes") }
         }

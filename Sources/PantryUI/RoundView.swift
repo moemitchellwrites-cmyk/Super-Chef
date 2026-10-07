@@ -30,6 +30,15 @@ struct RoundView: View {
     var body: some View {
         VStack(spacing: 8) {
             header
+            if let brief = round.dish.brief {
+                Text(brief)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("brief")
+            }
             wok
             methodRow
             stepperBar

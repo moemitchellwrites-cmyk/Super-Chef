@@ -38,6 +38,43 @@ final class ContentTests: XCTestCase {
         XCTAssertEqual(problems.count, 3, "\(problems)")
     }
 
+    func testEveryDishHasABriefThatDescribesThePlateAndNotTheRecipe() throws {
+        let library = try ContentLibrary.bundled()
+        // Seasonings and methods are the answers; the brief may not hand them over.
+        let answers = ["doubanjiang", "bean paste", "peppercorn", "soy", "vinegar", "sugar", "sesame", "garlic",
+                       "ginger", "scallion", "peanut", "starch", "wine", "stock", "yacai", "douchi",
+                       "stir-fry", "deep-fry", "dry-fry", "braise", "boil", "poach", "simmer", "steam", "bake", "wok", "pot"]
+        for dish in library.dishes {
+            let brief = try XCTUnwrap(dish.brief, dish.id).lowercased()
+            let name = dish.name.lowercased()
+            for word in answers where !name.contains(word) {
+                XCTAssertFalse(brief.contains(word), "\(dish.id): the brief names \"\(word)\"")
+            }
+            // Whole words only ("salty" is a taste, "salt" is an answer), and the dish's own name is fair game.
+            let words = " " + brief.map { $0.isLetter ? String($0) : " " }.joined() + " "
+            for id in dish.palette {
+                let label = try XCTUnwrap(library.ingredient(id: id)).name.lowercased()
+                guard !name.contains(label) else { continue }
+                XCTAssertFalse(words.contains(" \(label) "), "\(dish.id): the brief names \(label)")
+            }
+        }
+    }
+
+    func testValidationCatchesAMissingLongOrNumericBrief() throws {
+        let library = try ContentLibrary.bundled()
+        var missing = try XCTUnwrap(library.dish(id: "mapo-tofu"))
+        missing.brief = nil
+        var long = try XCTUnwrap(library.dish(id: "laziji"))
+        long.brief = String(repeating: "very ", count: 30)
+        var numeric = try XCTUnwrap(library.dish(id: "kung-pao-chicken"))
+        numeric.brief = "Chicken with 2 kinds of heat."
+        let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients,
+                                      dishes: [missing, long, numeric]).validate()
+        XCTAssertTrue(problems.contains("mapo-tofu: no brief"), "\(problems)")
+        XCTAssertTrue(problems.contains { $0.hasPrefix("laziji: brief is over") }, "\(problems)")
+        XCTAssertTrue(problems.contains("kung-pao-chicken: brief gives a number"), "\(problems)")
+    }
+
     func testValidationCatchesABrokenProfile() throws {
         let library = try ContentLibrary.bundled()
         var broken = try XCTUnwrap(library.dish(id: "mapo-tofu"))

@@ -16,7 +16,6 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 ## MVP (brief, build order)
 - [ ] PB-002: Vessel scene: one wok, drag-and-drop ingredients, amount stepper, a one-tap cooking method (PD-007), placeholder sounds. Ugly is fine. **Built 2026-10-07, in review (PR #1); awaiting Moe's hands on a phone.**
 - [ ] PB-008: Vessel choice: wok or pot, one tap, with the flame click. Mouth-watering chicken is a pot dish and tops out at 94 in the wok (PD-019). Before PB-005.
-- [ ] PB-009: A one-line dish brief on the round screen, before cooking (raised by Moe playing the stand-in, 2026-10-07: players may not know the dish). It describes the plate: texture, look and how it should taste ("Soft tofu in a glossy red sauce that is hot, numbing and deeply savoury"). It may name what the dish's own name names; it never names a seasoning, an amount or a method. New `brief` field per dish, validated for length, shown under the dish name in the app and the stand-in. Proposed ahead of PB-003; needs Moe's yes on the rule.
 - [ ] PB-003: Canned judge line from the score breakdown (`ScoreBreakdown.misses` and `pattern`). No LLM yet.
 - [ ] PB-004: Ten cards, one per dish, shown on submit. Card ids are already in the profiles.
 - [ ] PB-005: Session loop: five rounds, summary screen, local progress (SwiftData).
@@ -46,6 +45,7 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 - Declined for MVP (brief): accounts, social, leaderboards, multiplayer, recipe import, user-generated dishes, Android.
 
 ## Done
+- [x] PB-009: A one-line dish brief before cooking (2026-10-07, PD-024; built and tested, in the app and the stand-in; rides in the PB-002 pull request).
 - [x] PB-105: Short ingredient names that fit a chip and don't name the ingredient's home (2026-10-07, PD-021; found and fixed inside PB-002).
 - [x] PB-007: Split into its own repository with history (2026-10-07): Moe created `moemitchellwrites-cmyk/Super-Chef`; history pushed, own CI green, own CLAUDE.md, pointer left in Studio-Companion.
 - [x] PB-001: Scoring module with golden tests (2026-10-07; CI green; chef review of profiles and potencies stays open under PB-013).

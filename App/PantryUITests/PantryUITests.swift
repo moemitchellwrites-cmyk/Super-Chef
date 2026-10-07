@@ -23,6 +23,7 @@ final class PantryUITests: XCTestCase {
 
     func testTheRoundOpensOnMapoTofuWithNothingToServe() {
         XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
+        XCTAssertTrue(app.staticTexts["brief"].label.hasPrefix("Soft tofu"), app.staticTexts["brief"].label)
         XCTAssertFalse(app.buttons["serve"].isEnabled)
         XCTAssertEqual(app.buttons["serve"].label, "Add something to the wok")
         XCTAssertEqual(app.otherElements["wok"].label, "Wok, empty")

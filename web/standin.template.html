@@ -58,6 +58,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.15; color: var(--chili);
   background: transparent; border: 0; padding: 0; max-width: 100%; text-overflow: ellipsis;
 }
+.brief { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-soft); -webkit-user-select: text; user-select: text; }
 .icon-button {
   width: 40px; height: 40px; border-radius: 50%; background: var(--surface);
   display: grid; place-items: center; font-size: 18px; flex: none;
@@ -158,6 +159,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     <button class="icon-button" id="restart" aria-label="Start over" disabled>↺</button>
     <button class="icon-button" id="mute" aria-label="Turn sound off">🔊</button>
   </header>
+
+  <p class="brief" id="brief"></p>
 
   <div class="scene" id="scene" role="img" aria-label="Wok, empty"><canvas id="canvas"></canvas></div>
 
@@ -291,6 +294,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     }
     select.value = round.dish.id;
     $('eyebrow').textContent = content.cuisine.name + ' · Wok · stand-in';
+    $('brief').textContent = round.dish.brief || '';
+    $('brief').hidden = !round.dish.brief;
     $('restart').disabled = round.entries.length === 0 && !round.method;
   }
 

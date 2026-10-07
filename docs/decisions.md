@@ -192,3 +192,4 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Context: Drag-and-drop is PB-002's headline, and the cloud session can't touch a phone.
 - Decision: `App/PantryUITests` runs on an iPhone 16 simulator in CI: drag a chip into the wok, drop one outside it, tap to add, step the amount, switch between ingredients, pick a method, serve, take an ingredient out.
 - Rationale: It proves the gestures work. It can't say whether they feel good; that stays with Moe.
+- Outcome (2026-10-07): on its first run it caught that no drop ever landed: drags were tracked, but the wok's frame never reached the drag handler. Fixed the same day. The build had been green and the screenshots looked right.

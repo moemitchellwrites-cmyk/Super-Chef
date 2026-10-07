@@ -8,7 +8,7 @@ final class PantryUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-pantryMuted", "-pantryDebug"]
+        app.launchArguments = ["-pantryMuted"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
     }
@@ -31,7 +31,7 @@ final class PantryUITests: XCTestCase {
 
     func testDraggingAChipIntoTheWokAddsIt() {
         chip("firm-tofu").press(forDuration: 0.2, thenDragTo: app.otherElements["wok"])
-        XCTAssertTrue(amount.waitForExistence(timeout: 5), "the drop didn't land: \(app.staticTexts["debug"].label)")
+        XCTAssertTrue(amount.waitForExistence(timeout: 5), "the drop didn't land")
         XCTAssertEqual(amount.label, "100 g")
         XCTAssertEqual(chip("firm-tofu").label, "Firm tofu, 100 g in the wok")
         XCTAssertEqual(app.otherElements["wok"].label, "Wok with 100 g Firm tofu")

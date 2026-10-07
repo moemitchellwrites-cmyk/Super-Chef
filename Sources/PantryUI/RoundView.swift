@@ -13,8 +13,6 @@ struct RoundView: View {
     @State private var model: RoundViewModel
     @State private var drag: Drag?
     @State private var wokFrame: CGRect = .zero
-    @State private var debugTrace = "no drag"
-    @State private var debugChanges = 0
 
     private static let space = "round"
 
@@ -42,14 +40,6 @@ struct RoundView: View {
         .padding(.vertical, 8)
         .coordinateSpace(name: Self.space)
         .overlay(alignment: .topLeading) { ghost }
-        .overlay(alignment: .top) {
-            if ProcessInfo.processInfo.arguments.contains("-pantryDebug") {
-                Text("\(debugTrace) | changes \(debugChanges) | dragging \(drag == nil ? "no" : "yes")")
-                    .font(.system(size: 9).monospaced())
-                    .background(Color.yellow)
-                    .accessibilityIdentifier("debug")
-            }
-        }
         .sheet(isPresented: Binding(get: { model.result != nil }, set: { if !$0 { model.dismissResult() } })) {
             if let result = model.result {
                 ScoreSheet(dish: round.dish, breakdown: result) {
@@ -268,11 +258,9 @@ struct RoundView: View {
                             // Hold the ghost a little above the finger so the thumb doesn't cover it.
                             drag = Drag(ingredientId: ingredient.id,
                                         location: CGPoint(x: value.location.x, y: value.location.y - 36))
-                            debugChanges += 1
                         }
                         .onEnded { value in
                             let drop = CGPoint(x: value.location.x, y: value.location.y - 36)
-                            debugTrace = "ended at \(Int(drop.x)),\(Int(drop.y)) wok \(Int(wokFrame.minX)),\(Int(wokFrame.minY)) \(Int(wokFrame.width))x\(Int(wokFrame.height))"
                             if wokFrame.width > 0, wokFrame.contains(drop) {
                                 model.add(ingredient.id, atFraction: Double((drop.x - wokFrame.minX) / wokFrame.width))
                             }

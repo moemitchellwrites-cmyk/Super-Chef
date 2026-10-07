@@ -40,6 +40,7 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 - [ ] PB-103: Cook It Tonight on-device from the profile, or via the backend.
 - [ ] PB-104: Name for the game.
 - [ ] PB-106: Accessibility pass on the round screen: Dynamic Type (the palette uses fixed sizes to fit twenty chips), Reduce Motion, a VoiceOver walk-through. Labels and actions are in; nobody has listened to it yet.
+- [ ] PB-108: Small phones. On an iPhone SE the layout fits but the wok shrinks to about half the screen's width. Decide whether that is good enough or the round screen needs a compact layout.
 - [ ] PB-107: A sizzle bed that loops under the one-shots once the burner is lit (brief: "a sizzle loop plus one-shot adds"). Belongs with the real sound (PB-011).
 - Declined for MVP (brief): accounts, social, leaderboards, multiplayer, recipe import, user-generated dishes, Android.
 

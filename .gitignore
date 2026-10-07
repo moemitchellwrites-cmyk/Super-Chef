@@ -1,0 +1,9 @@
+# Build output
+/.build/
+*.xcodeproj/xcuserdata/
+DerivedData/
+
+# Secrets and local state
+.env
+*.key
+.DS_Store

@@ -6,7 +6,7 @@ import Foundation
 
 /// Units the amount stepper offers. Everything converts to grams before scoring
 /// (see `Ingredient.grams(amount:unit:)`); the units are a display choice.
-public enum Unit: String, Codable, CaseIterable, Sendable {
+public enum AmountUnit: String, Codable, CaseIterable, Sendable {
     case pinch, tsp, tbsp, cup, grams
 
     /// Teaspoons per unit, or nil for a weight unit.
@@ -27,7 +27,7 @@ public enum Vessel: String, Codable, CaseIterable, Sendable {
     case breadPan = "bread-pan"
 }
 
-public enum Method: String, Codable, CaseIterable, Sendable {
+public enum CookingMethod: String, Codable, CaseIterable, Sendable {
     case stirFry = "stir-fry"
     case deepFry = "deep-fry"
     case dryFry = "dry-fry"
@@ -169,14 +169,14 @@ public struct Ingredient: Codable, Equatable, Identifiable, Sendable {
     /// Profiles refer to families, not ingredients, so substitutes score alike
     /// (firm and silken tofu are both `tofu`).
     public var family: String
-    public var defaultUnit: Unit
+    public var defaultUnit: AmountUnit
     /// Grams in one level teaspoon. Nil for ingredients measured by weight only.
     public var gramsPerTeaspoon: Double?
     public var potency: FlavorVector
     public var soundCue: String
     public var icon: String
 
-    public init(id: String, name: String, family: String, defaultUnit: Unit, gramsPerTeaspoon: Double? = nil,
+    public init(id: String, name: String, family: String, defaultUnit: AmountUnit, gramsPerTeaspoon: Double? = nil,
                 potency: FlavorVector = FlavorVector(), soundCue: String = "clatter", icon: String = "generic") {
         self.id = id
         self.name = name
@@ -190,7 +190,7 @@ public struct Ingredient: Codable, Equatable, Identifiable, Sendable {
 
     /// Converts an amount in any unit to grams. Returns nil when a volume unit is
     /// used on an ingredient that has no teaspoon weight.
-    public func grams(amount: Double, unit: Unit) -> Double? {
+    public func grams(amount: Double, unit: AmountUnit) -> Double? {
         guard let teaspoons = unit.teaspoons else { return amount }
         guard let perTeaspoon = gramsPerTeaspoon else { return nil }
         return amount * teaspoons * perTeaspoon
@@ -255,7 +255,7 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public var cuisineId: String
     public var name: String
     public var vessels: [Vessel]
-    public var methods: [Method]
+    public var methods: [CookingMethod]
     public var required: [Requirement]
     /// Families that are common but not expected. Informational; never scored.
     public var optional: [String]
@@ -270,7 +270,7 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     /// Internal: reference sources and authoring notes. Never shown to players.
     public var notes: String?
 
-    public init(id: String, cuisineId: String, name: String, vessels: [Vessel], methods: [Method],
+    public init(id: String, cuisineId: String, name: String, vessels: [Vessel], methods: [CookingMethod],
                 required: [Requirement], optional: [String] = [], forbidden: [String] = [], ratios: [RatioBand] = [],
                 signature: SignatureEnvelope? = nil, palette: [String] = [], cardId: String, notes: String? = nil) {
         self.id = id
@@ -294,9 +294,9 @@ public struct Attempt: Codable, Equatable, Sendable {
     public struct Line: Codable, Equatable, Sendable {
         public var ingredientId: String
         public var amount: Double
-        public var unit: Unit
+        public var unit: AmountUnit
 
-        public init(ingredientId: String, amount: Double, unit: Unit) {
+        public init(ingredientId: String, amount: Double, unit: AmountUnit) {
             self.ingredientId = ingredientId
             self.amount = amount
             self.unit = unit
@@ -307,10 +307,10 @@ public struct Attempt: Codable, Equatable, Sendable {
     public var lines: [Line]
     public var vessel: Vessel
     /// Optional until the UX offers a method choice (see docs/decisions.md PD-007).
-    public var method: Method?
+    public var method: CookingMethod?
     public var timestamp: Date?
 
-    public init(dishId: String, lines: [Line], vessel: Vessel, method: Method? = nil, timestamp: Date? = nil) {
+    public init(dishId: String, lines: [Line], vessel: Vessel, method: CookingMethod? = nil, timestamp: Date? = nil) {
         self.dishId = dishId
         self.lines = lines
         self.vessel = vessel

@@ -12,7 +12,7 @@ struct GoldenAttempt: Decodable {
     let dishId: String
     let kind: String
     let vessel: Vessel
-    let method: Method?
+    let method: CookingMethod?
     let note: String?
     let lines: [Attempt.Line]
     let expect: Expect

@@ -11,7 +11,7 @@ final class ScorerTests: XCTestCase {
         mapo = try XCTUnwrap(library.dish(id: "mapo-tofu"))
     }
 
-    func line(_ id: String, _ amount: Double, _ unit: Unit = .grams) -> Attempt.Line {
+    func line(_ id: String, _ amount: Double, _ unit: AmountUnit = .grams) -> Attempt.Line {
         Attempt.Line(ingredientId: id, amount: amount, unit: unit)
     }
 
@@ -80,7 +80,7 @@ final class ScorerTests: XCTestCase {
     func testAddingAnOffCuisineIngredientNeverRaisesTheScore() throws {
         let scorer = library.scorer
         let goldens = try GoldenTests.loadGoldens()
-        let spoilers: [(id: String, amount: Double, unit: Unit)] = [("cream", 1, .tbsp), ("basil", 1, .grams), ("lime", 1, .cup)]
+        let spoilers: [(id: String, amount: Double, unit: AmountUnit)] = [("cream", 1, .tbsp), ("basil", 1, .grams), ("lime", 1, .cup)]
         for dish in library.dishes {
             let good = try XCTUnwrap(goldens.first { $0.dishId == dish.id && $0.kind == "good" }).attempt
             let base = scorer.score(good, against: dish)

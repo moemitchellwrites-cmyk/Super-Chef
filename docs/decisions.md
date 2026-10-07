@@ -193,3 +193,12 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Decision: `App/PantryUITests` runs on an iPhone 16 simulator in CI: drag a chip into the wok, drop one outside it, tap to add, step the amount, switch between ingredients, pick a method, serve, take an ingredient out.
 - Rationale: It proves the gestures work. It can't say whether they feel good; that stays with Moe.
 - Outcome (2026-10-07): on its first run it caught that no drop ever landed: drags were tracked, but the wok's frame never reached the drag handler. Fixed the same day. The build had been green and the screenshots looked right.
+
+## PD-023: A browser stand-in so Moe can play a round from his phone
+- Date: 2026-10-07
+- Made by: Moe, on Claude's offer (new scope, accepted knowingly)
+- Status: accepted
+- Context: The iOS app needs Xcode 15 and a Mac that can run it. Moe's Mac wasn't reachable and may be too old; the new laptop is weeks out. Without a way to play, PB-002 can't be reviewed.
+- Decision: `web/` holds a one-page stand-in: a JavaScript port of the scorer and the stepper (`web/engine.js`), the same bundled Sichuan content inlined at build time (`scripts/build-web-standin.py`), tap or drag into a canvas wok, the method tap, synthesised cues with visual twins. Published as a private Claude artifact, "Pantry Stand-in".
+- Rationale: It answers two of the review questions today: does a round fit 60 to 120 seconds, and do the scores feel fair. The score sheet shows how long the round took, which the app never will (no timers).
+- Consequences: It is not the product. Drag feel, sound and the wok are approximations, and it must never be mistaken for a web version (the brief is native iOS only). The Swift engine stays the source of truth: `web/test-engine.cjs` runs the port against the same goldens on CI, so the two can't drift silently. Delete `web/` once the app is on TestFlight.

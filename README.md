@@ -32,6 +32,11 @@ cuisine's grammar. The product brief is `docs/brief.md`; the project docs
 - `Tests/PantryGameTests/`: round rules, the stepper (every good golden is
   rebuilt on the stepper and must still score 85+), cues and the synth.
 - `scripts/ci-screenshots.sh`: plays a scripted round in the simulator on CI.
+- `web/`: a browser stand-in for reviewing rounds from a phone before the app
+  is on TestFlight (PD-023). `engine.js` is a port of the scorer and stepper,
+  held to the same goldens by `node web/test-engine.cjs`;
+  `python3 scripts/build-web-standin.py out.html` builds the page with the
+  bundled content inlined. Not a product, and not a web version.
 
 ## Playing a round
 

@@ -37,6 +37,11 @@ jobs:
           set -o pipefail
           swift test 2>&1 | tee ci-out/swift-test.log
 
+      - name: Browser stand-in engine matches the goldens
+        run: |
+          set -o pipefail
+          node web/test-engine.cjs 2>&1 | tee ci-out/web-engine.log
+
       - name: Build the iOS app for the simulator
         run: |
           if ! xcodebuild -project App/Pantry.xcodeproj -scheme Pantry -configuration Debug \

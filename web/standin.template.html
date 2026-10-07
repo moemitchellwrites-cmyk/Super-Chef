@@ -1,0 +1,725 @@
+<title>Pantry Stand-in</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one thumb, one column. Wok on top, then method, amount, palette, serve; the score rises as a sheet. */
+:root {
+  --bg: #f1f4ee;
+  --surface: #e3e8df;
+  --surface-strong: #d3dacf;
+  --ink: #1c2420;
+  --ink-soft: #5b6860;
+  --chili: #d9481f;
+  --chili-ink: #ffffff;
+  --chili-wash: #f9ddd0;
+  --amount: #b23a14;
+  --scene: #fff1cf;
+  --iron: #24282d;
+  --iron-inside: #4a4f57;
+  --burner: #7b7f86;
+  --good: #2f7d4f;
+  --scrim: rgba(20, 26, 22, 0.45);
+  --display: "Fredoka", "Avenir Next Rounded", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131815; --surface: #202823; --surface-strong: #2c3630; --ink: #e8eee9; --ink-soft: #9aa89f;
+    --chili: #f0633a; --chili-ink: #1a0d07; --chili-wash: #43231a; --amount: #ff9d7a; --scene: #2b2620;
+    --iron: #0c0e10; --iron-inside: #3a3f46; --burner: #5d6168; --good: #5fc08a; --scrim: rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131815; --surface: #202823; --surface-strong: #2c3630; --ink: #e8eee9; --ink-soft: #9aa89f;
+  --chili: #f0633a; --chili-ink: #1a0d07; --chili-wash: #43231a; --amount: #ff9d7a; --scene: #2b2620;
+  --iron: #0c0e10; --iron-inside: #3a3f46; --burner: #5d6168; --good: #5fc08a; --scrim: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body);
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid var(--chili); outline-offset: 2px; }
+
+.app {
+  box-sizing: border-box; max-width: 460px; min-height: 100%; margin: 0 auto;
+  padding-inline: 16px; padding-block: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.top { display: flex; align-items: center; gap: 8px; }
+.top .names { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.dish {
+  font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.15; color: var(--chili);
+  background: transparent; border: 0; padding: 0; max-width: 100%; text-overflow: ellipsis;
+}
+.icon-button {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--surface);
+  display: grid; place-items: center; font-size: 18px; flex: none;
+}
+.icon-button:disabled { opacity: 0.4; }
+
+.scene {
+  /* Stays on screen when a short phone has to scroll the palette, so a chip always has a wok to be dragged to. */
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  flex: 1 1 140px; min-height: 140px; max-height: 300px;
+  background: var(--scene); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 0 0 8px var(--bg);
+}
+.scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.scene.over { box-shadow: 0 0 0 8px var(--bg), inset 0 0 0 3px var(--chili); }
+
+.methods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.method {
+  height: 32px; border-radius: 16px; background: var(--surface);
+  font-family: var(--display); font-weight: 500; font-size: 15px;
+}
+.method[aria-pressed="true"] { background: var(--chili); color: var(--chili-ink); }
+
+.stepper {
+  background: var(--surface); border-radius: 14px; padding: 8px 10px; height: 76px; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center; gap: 4px;
+}
+.stepper .hint { text-align: center; color: var(--ink-soft); font-size: 14px; }
+.stepper .line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.stepper .name { flex: 1; min-width: 0; font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stepper .amount { font-family: var(--display); font-weight: 600; font-size: 18px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.round-button {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--chili); color: var(--chili-ink);
+  font-size: 22px; font-weight: 700; line-height: 1; flex: none; display: grid; place-items: center;
+}
+.round-button:disabled { opacity: 0.35; }
+.remove { width: 32px; height: 32px; border-radius: 8px; flex: none; font-size: 16px; }
+.stepper input[type="range"] { flex: 1; min-width: 0; accent-color: var(--chili); height: 28px; margin: 0; }
+
+.palette { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.chip {
+  height: 50px; border-radius: 10px; background: var(--surface); padding: 2px 6px; box-sizing: border-box;
+  text-align: left; display: flex; flex-direction: column; justify-content: center; min-width: 0;
+  border: 2px solid transparent; touch-action: none;
+}
+.chip .label { font-size: 11px; font-weight: 500; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; flex: none; }
+.chip.in .label { -webkit-line-clamp: 2; }
+.chip .amt { font-size: 11px; font-weight: 700; color: var(--amount); line-height: 1.25; white-space: nowrap; flex: none; }
+.chip.in { background: var(--chili-wash); }
+.chip.selected { border-color: var(--chili); }
+.chip.dragging { opacity: 0.35; }
+
+.serve {
+  height: 50px; border-radius: 14px; background: var(--chili); color: var(--chili-ink);
+  font-family: var(--display); font-weight: 600; font-size: 18px; flex: none;
+}
+.serve:disabled { background: var(--surface-strong); color: var(--ink-soft); }
+.note { margin: 0; text-align: center; font-size: 11px; color: var(--ink-soft); line-height: 1.35; }
+
+.ghost {
+  position: fixed; left: 0; top: 0; font-size: 44px; pointer-events: none; z-index: 30;
+  transform: translate(-50%, -50%); filter: drop-shadow(0 3px 4px var(--scrim));
+}
+
+.scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 40; display: flex; align-items: flex-end; justify-content: center; }
+.sheet {
+  box-sizing: border-box; width: 100%; max-width: 460px; max-height: 88%; overflow-y: auto;
+  background: var(--bg); border-radius: 22px 22px 0 0;
+  padding-inline: 20px; padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sheet h2 { margin: 0; text-align: center; font-family: var(--display); font-weight: 500; font-size: 16px; color: var(--ink-soft); }
+.total { text-align: center; font-family: var(--display); font-weight: 700; font-size: 76px; line-height: 0.95; }
+.total small { display: block; font-size: 13px; font-weight: 500; color: var(--ink-soft); margin-top: 4px; }
+.parts { display: flex; flex-direction: column; gap: 8px; }
+.part { display: grid; grid-template-columns: 92px 1fr 70px; align-items: center; gap: 10px; font-size: 14px; }
+.part .bar { height: 6px; border-radius: 3px; background: var(--surface-strong); overflow: hidden; }
+.part .bar i { display: block; height: 100%; background: var(--chili); border-radius: 3px; }
+.part .num { text-align: right; font-variant-numeric: tabular-nums; }
+.misses { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.misses-title { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.clean { color: var(--good); font-weight: 600; font-size: 14px; }
+.took { font-size: 12px; color: var(--ink-soft); text-align: center; }
+.sheet .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sheet .actions button { height: 48px; border-radius: 14px; font-family: var(--display); font-weight: 600; font-size: 16px; }
+.secondary { background: var(--surface); }
+.primary { background: var(--chili); color: var(--chili-ink); }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<main class="app" id="app">
+  <header class="top">
+    <div class="names">
+      <span class="eyebrow" id="eyebrow">Sichuan · Wok · stand-in</span>
+      <select class="dish" id="dish" aria-label="Dish"></select>
+    </div>
+    <button class="icon-button" id="restart" aria-label="Start over" disabled>↺</button>
+    <button class="icon-button" id="mute" aria-label="Turn sound off">🔊</button>
+  </header>
+
+  <div class="scene" id="scene" role="img" aria-label="Wok, empty"><canvas id="canvas"></canvas></div>
+
+  <div class="methods" id="methods"></div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <div class="palette" id="palette"></div>
+
+  <button class="serve" id="serve" disabled>Add something to the wok</button>
+</main>
+
+<div class="ghost" id="ghost" hidden></div>
+<div class="scrim" id="scrim" hidden>
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-dish">
+    <h2 id="sheet-dish"></h2>
+    <div class="total" id="total"></div>
+    <div class="parts" id="parts"></div>
+    <div id="misses-wrap"></div>
+    <div class="took" id="took"></div>
+    <p class="note">Browser stand-in for the iOS app: same dishes, amounts and scoring. The drag feel, sounds and wok are approximations.</p>
+    <div class="actions">
+      <button class="secondary" id="keep">Keep cooking</button>
+      <button class="primary" id="next">Next dish</button>
+    </div>
+  </section>
+</div>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var RAW = /*__CONTENT__*/null;
+  var E = window.PantryEngine;
+  var content = E.indexContent(RAW.cuisine, RAW.ingredients, RAW.dishes);
+  var methodChoices = E.methodChoices(content);
+  var $ = function (id) { return document.getElementById(id); };
+
+  var METHOD_TITLE = { 'stir-fry': 'Stir-fry', 'deep-fry': 'Deep-fry', 'dry-fry': 'Dry-fry', braise: 'Braise', boil: 'Boil', simmer: 'Simmer', steam: 'Steam', poach: 'Poach', bake: 'Bake' };
+  var FLAME = { 'stir-fry': 1, 'deep-fry': 1, 'dry-fry': 0.8, boil: 0.7, braise: 0.45, steam: 0.45, bake: 0.45, simmer: 0.3, poach: 0.3 };
+  var LOOK = {
+    tofu: ['🧊', '#f5edd6'], meat: ['🥩', '#cc5c5c'], fish: ['🐟', '#8cb8db'], jar: ['🫙', '#a84229'],
+    spice: ['🧂', '#dbc79e'], chili: ['🌶️', '#db2e24'], oil: ['🫗', '#f2c740'], aromatic: ['🧄', '#ede6c7'],
+    vegetable: ['🥬', '#6bb35c'], bottle: ['🍶', '#593829'], nut: ['🥜', '#c79961'], liquid: ['💧', '#80b8eb'],
+    noodle: ['🍜', '#f0d68f'], egg: ['🥚', '#f7f0db'], herb: ['🌿', '#4d9e52'], citrus: ['🍋', '#f5db4d'], dairy: ['🧀', '#fad666']
+  };
+  var WORD = { sizzle: 'Tssss!', boil: 'Blub blub', splash: 'Sploosh!', clatter: 'Clack!', flame: 'Fwoomp!' };
+  function look(ingredient) { return LOOK[ingredient.icon] || ['🥄', '#b8b8b8']; }
+  function chipName(ingredient) { return ingredient.shortName || ingredient.name; }
+
+  // ---------- Round state (mirrors Sources/PantryGame/Round.swift) ----------
+  var round = null;
+  function shuffled(list) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function startRound(dishId) {
+    var dish = content.dishes[dishId];
+    var seen = {};
+    var offered = dish.palette.filter(function (id) { if (seen[id] || !content.ingredients[id]) return false; seen[id] = true; return true; });
+    round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: 'wok', startedAt: null };
+    scene.clear();
+    renderAll();
+  }
+  function entryFor(id) { for (var i = 0; i < round.entries.length; i++) if (round.entries[i].id === id) return round.entries[i]; return null; }
+  function ladder(id) { return E.ladderFor(content.ingredients[id]); }
+  function measure(id) { var e = entryFor(id); return e ? ladder(id).steps[e.step] : null; }
+  function touchClock() { if (round.startedAt === null) round.startedAt = Date.now(); }
+
+  function add(id, fraction) {
+    touchClock();
+    round.selected = id;
+    if (!entryFor(id)) {
+      var ingredient = content.ingredients[id];
+      var l = ladder(id);
+      round.entries.push({ id: id, step: l.startIndex });
+      var x = fraction === undefined ? undefined : scene.dropX(fraction);
+      scene.setPieces(id, E.pieceCount(l, l.startIndex), look(ingredient), x);
+      scene.twin(ingredient.soundCue, x);
+      sound.play(ingredient.soundCue);
+      buzz();
+    }
+    renderAll();
+  }
+  function setStep(id, index) {
+    var e = entryFor(id); if (!e) return;
+    var l = ladder(id);
+    index = Math.min(Math.max(index, 0), l.steps.length - 1);
+    if (index === e.step) return;
+    e.step = index;
+    scene.setPieces(id, E.pieceCount(l, index), look(content.ingredients[id]));
+    renderAll();
+  }
+  function remove(id) {
+    round.entries = round.entries.filter(function (e) { return e.id !== id; });
+    if (round.selected === id) round.selected = round.entries.length ? round.entries[round.entries.length - 1].id : null;
+    scene.setPieces(id, 0, look(content.ingredients[id]));
+    renderAll();
+  }
+  function choose(method) {
+    touchClock();
+    if (round.method === method) return;
+    round.method = method;
+    scene.setFlame(FLAME[method]);
+    sound.play('flame');
+    buzz();
+    renderAll();
+  }
+  function attempt() {
+    return {
+      dishId: round.dish.id, vessel: round.vessel, method: round.method,
+      lines: round.entries.map(function (e) { var m = ladder(e.id).steps[e.step]; return { ingredientId: e.id, amount: m.amount, unit: m.unit }; })
+    };
+  }
+  function buzz() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (err) { /* not available */ } }
+
+  // ---------- Rendering the controls ----------
+  function renderAll() { renderHeader(); renderMethods(); renderStepper(); renderPalette(); renderServe(); renderSceneLabel(); }
+
+  function renderHeader() {
+    var select = $('dish');
+    if (!select.options.length) {
+      content.dishOrder.forEach(function (id) {
+        var option = document.createElement('option');
+        option.value = id; option.textContent = content.dishes[id].name;
+        select.appendChild(option);
+      });
+    }
+    select.value = round.dish.id;
+    $('eyebrow').textContent = content.cuisine.name + ' · Wok · stand-in';
+    $('restart').disabled = round.entries.length === 0 && !round.method;
+  }
+
+  function renderMethods() {
+    var box = $('methods');
+    if (!box.children.length) {
+      methodChoices.forEach(function (method) {
+        var b = document.createElement('button');
+        b.className = 'method'; b.id = 'method-' + method; b.textContent = METHOD_TITLE[method];
+        b.addEventListener('click', function () { choose(method); });
+        box.appendChild(b);
+      });
+    }
+    methodChoices.forEach(function (method) {
+      $('method-' + method).setAttribute('aria-pressed', round.method === method ? 'true' : 'false');
+    });
+  }
+
+  function renderStepper() {
+    var box = $('stepper');
+    var id = round.selected;
+    if (!id || !entryFor(id)) {
+      box.innerHTML = '<div class="hint">Tap an ingredient, or drag it into the wok.</div>';
+      return;
+    }
+    var ingredient = content.ingredients[id], e = entryFor(id), l = ladder(id), m = l.steps[e.step];
+    if (box.dataset.id !== id || !$('amount-slider')) {
+      box.dataset.id = id;
+      box.innerHTML =
+        '<div class="line"><span>' + look(ingredient)[0] + '</span><span class="name" id="stepper-name"></span>' +
+        '<span class="amount" id="amount"></span><button class="remove" id="remove" aria-label="Take it out">🗑️</button></div>' +
+        '<div class="line"><button class="round-button" id="less" aria-label="Less">−</button>' +
+        '<input type="range" id="amount-slider" min="0" step="1" aria-label="Amount">' +
+        '<button class="round-button" id="more" aria-label="More">+</button></div>';
+      $('stepper-name').textContent = ingredient.name;
+      $('remove').addEventListener('click', function () { remove(round.selected); });
+      $('less').addEventListener('click', function () { var en = entryFor(round.selected); if (en) setStep(round.selected, en.step - 1); });
+      $('more').addEventListener('click', function () { var en = entryFor(round.selected); if (en) setStep(round.selected, en.step + 1); });
+      $('amount-slider').addEventListener('input', function (ev) { setStep(round.selected, Number(ev.target.value)); });
+    }
+    var slider = $('amount-slider');
+    slider.max = String(l.steps.length - 1);
+    if (Number(slider.value) !== e.step) slider.value = String(e.step);
+    slider.setAttribute('aria-valuetext', m.label);
+    $('amount').textContent = m.label;
+    $('less').disabled = e.step === 0;
+    $('more').disabled = e.step === l.steps.length - 1;
+  }
+
+  function renderPalette() {
+    var box = $('palette');
+    var key = round.dish.id + '|' + round.palette.join(',');
+    if (box.dataset.key !== key) {
+      box.dataset.key = key;
+      box.innerHTML = '';
+      round.palette.forEach(function (id) {
+        var ingredient = content.ingredients[id];
+        var b = document.createElement('button');
+        b.className = 'chip'; b.id = 'chip-' + id;
+        b.innerHTML = '<span class="label"></span><span class="amt" hidden></span>';
+        b.querySelector('.label').textContent = look(ingredient)[0] + ' ' + chipName(ingredient);
+        attachChipGestures(b, id);
+        box.appendChild(b);
+      });
+    }
+    round.palette.forEach(function (id) {
+      var b = $('chip-' + id), m = measure(id), ingredient = content.ingredients[id];
+      b.classList.toggle('in', !!m);
+      b.classList.toggle('selected', round.selected === id);
+      var amt = b.querySelector('.amt');
+      amt.hidden = !m; amt.textContent = m ? m.label : '';
+      b.setAttribute('aria-label', m ? ingredient.name + ', ' + m.label + ' in the wok' : ingredient.name);
+    });
+  }
+
+  function servePrompt() {
+    if (!round.entries.length) return 'Add something to the wok';
+    if (!round.method) return 'Choose how to cook it';
+    return null;
+  }
+  function renderServe() {
+    var prompt = servePrompt();
+    $('serve').disabled = prompt !== null;
+    $('serve').textContent = prompt || 'Serve it';
+  }
+  function renderSceneLabel() {
+    var label = 'Wok, empty';
+    if (round.entries.length) {
+      label = 'Wok with ' + round.entries.map(function (e) { return ladder(e.id).steps[e.step].label + ' ' + chipName(content.ingredients[e.id]); }).join(', ');
+    }
+    $('scene').setAttribute('aria-label', label);
+  }
+
+  // ---------- Tap or drag a chip ----------
+  var drag = null;
+  function overScene(x, y) {
+    var r = $('scene').getBoundingClientRect();
+    return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom ? (x - r.left) / r.width : null;
+  }
+  function attachChipGestures(button, id) {
+    button.addEventListener('pointerdown', function (ev) {
+      if (ev.button !== undefined && ev.button > 0) return;
+      sound.unlock();
+      drag = { id: id, x0: ev.clientX, y0: ev.clientY, moved: false, pointer: ev.pointerId };
+      try { button.setPointerCapture(ev.pointerId); } catch (err) { /* older browsers */ }
+    });
+    button.addEventListener('pointermove', function (ev) {
+      if (!drag || drag.id !== id || drag.pointer !== ev.pointerId) return;
+      if (!drag.moved && Math.hypot(ev.clientX - drag.x0, ev.clientY - drag.y0) > 10) {
+        drag.moved = true;
+        button.classList.add('dragging');
+        var ghost = $('ghost');
+        ghost.textContent = look(content.ingredients[id])[0];
+        ghost.hidden = false;
+      }
+      if (drag.moved) {
+        // Hold the ghost a little above the finger so the thumb doesn't cover it.
+        var gy = ev.clientY - 36;
+        $('ghost').style.transform = 'translate(' + ev.clientX + 'px,' + gy + 'px) translate(-50%,-50%)';
+        $('scene').classList.toggle('over', overScene(ev.clientX, gy) !== null);
+      }
+    });
+    function finish(ev, cancelled) {
+      if (!drag || drag.id !== id) return;
+      var d = drag; drag = null;
+      button.classList.remove('dragging');
+      $('ghost').hidden = true;
+      $('scene').classList.remove('over');
+      if (cancelled) return;
+      if (!d.moved) { add(id); return; }
+      var fraction = overScene(ev.clientX, ev.clientY - 36);
+      if (fraction !== null) add(id, fraction);
+    }
+    button.addEventListener('pointerup', function (ev) { finish(ev, false); });
+    button.addEventListener('pointercancel', function (ev) { finish(ev, true); });
+    // Keyboard and switch access: Enter or Space adds it.
+    button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); add(id); } });
+  }
+
+  // ---------- Sound: placeholder cues, synthesised (mirrors PlaceholderSynth.swift) ----------
+  var sound = (function () {
+    var ctx = null, buffers = {}, muted = false;
+    var RATE = 44100;
+    function noise() { return Math.random() * 2 - 1; }
+    function build(cue) {
+      var n, out, i, t;
+      if (cue === 'sizzle') {
+        n = Math.floor(0.75 * RATE); out = new Float32Array(n); var prev = 0, crackle = 1;
+        for (i = 0; i < n; i++) { t = i / RATE; var w = noise(); var hp = w - prev; prev = w; if (i % 441 === 0) crackle = 0.55 + 0.45 * Math.random(); out[i] = hp * crackle * Math.min(1, t / 0.01) * Math.exp(-t * 4.5); }
+      } else if (cue === 'boil') {
+        n = Math.floor(0.85 * RATE); out = new Float32Array(n); var len = Math.floor(0.07 * RATE);
+        for (var b = 0; b < 7; b++) { var start = Math.floor(b * 0.105 * RATE + Math.random() * 0.03 * RATE), base = 260 + Math.random() * 220, phase = 0; for (var j = 0; j < len && start + j < n; j++) { var x = j / len; phase += 2 * Math.PI * base * (1 + 0.9 * x) / RATE; out[start + j] += Math.sin(phase) * Math.sin(Math.PI * x); } }
+      } else if (cue === 'splash') {
+        n = Math.floor(0.45 * RATE); out = new Float32Array(n); var low = 0;
+        for (i = 0; i < n; i++) { t = i / RATE; low += 0.18 * (noise() - low); out[i] = low * Math.min(1, t / 0.006) * Math.exp(-t * 11); }
+      } else if (cue === 'clatter') {
+        n = Math.floor(0.42 * RATE); out = new Float32Array(n);
+        [0, 0.07, 0.13, 0.21].forEach(function (offset) { var s = Math.floor(offset * RATE), f = 1700 + Math.random() * 1500, g = 0.6 + Math.random() * 0.4; for (var k = 0; k < Math.floor(0.09 * RATE) && s + k < n; k++) { var tt = k / RATE; out[s + k] += g * Math.sin(2 * Math.PI * f * tt) * Math.exp(-tt * 60); } });
+      } else {
+        n = Math.floor(0.55 * RATE); out = new Float32Array(n); var lw = 0;
+        for (i = 0; i < n; i++) { t = i / RATE; lw += 0.04 * (noise() - lw); out[i] = (t < 0.004 ? Math.sin(2 * Math.PI * 2400 * t) * 0.8 : 0) + lw * Math.sin(Math.PI * Math.min(1, t / 0.5)) * 3; }
+      }
+      var peak = 0; for (i = 0; i < n; i++) peak = Math.max(peak, Math.abs(out[i]));
+      if (peak > 0) for (i = 0; i < n; i++) out[i] *= 0.6 / peak;
+      return out;
+    }
+    function unlock() {
+      if (ctx || muted) { if (ctx && ctx.state === 'suspended') ctx.resume(); return; }
+      try {
+        var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        ctx = new AC();
+        ['sizzle', 'boil', 'splash', 'clatter', 'flame'].forEach(function (cue) {
+          var data = build(cue), buffer = ctx.createBuffer(1, data.length, RATE);
+          buffer.getChannelData(0).set(data); buffers[cue] = buffer;
+        });
+      } catch (err) { ctx = null; }
+    }
+    function play(cue) {
+      if (muted) return;
+      unlock();
+      if (!ctx || !buffers[cue]) return;
+      try { var src = ctx.createBufferSource(); src.buffer = buffers[cue]; src.connect(ctx.destination); src.start(); } catch (err) { /* stay silent */ }
+    }
+    return { play: play, unlock: unlock, isMuted: function () { return muted; }, toggle: function () { muted = !muted; return muted; } };
+  })();
+
+  // ---------- The wok scene: pieces under simple physics, and every cue's visual twin ----------
+  var scene = (function () {
+    var canvas = $('canvas'), g = canvas.getContext('2d');
+    var LW = 390, LH = 260, CX = 195, RIM = 112, RADIUS = 140, DEPTH = 86, WALL = 8, R = 12;
+    var pieces = [], dots = [], words = [], flameLevel = 0, flameKick = 0, shake = 0, last = 0, running = false;
+    var colors = {};
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function readColors() {
+      var s = getComputedStyle(document.documentElement);
+      ['--iron', '--iron-inside', '--burner', '--chili', '--ink'].forEach(function (name) { colors[name] = s.getPropertyValue(name).trim() || '#333'; });
+    }
+    function resize() {
+      var r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.round(r.width * dpr)); canvas.height = Math.max(1, Math.round(r.height * dpr));
+      draw();
+    }
+    function clampX(x) { var reach = RADIUS - WALL - R - 30; return Math.min(Math.max(x, CX - reach), CX + reach); }
+    function dropX(fraction) {
+      // The canvas letterboxes the 390x260 scene; map the view fraction back into scene x.
+      var r = canvas.getBoundingClientRect(), scale = Math.min(r.width / LW, r.height / LH);
+      var offset = (r.width - LW * scale) / 2;
+      return clampX((fraction * r.width - offset) / scale);
+    }
+    function setPieces(id, count, lk, x) {
+      var mine = pieces.filter(function (p) { return p.id === id; });
+      while (mine.length > Math.max(count, 0)) { var gone = mine.pop(); pieces.splice(pieces.indexOf(gone), 1); }
+      var landing = x === undefined ? CX - 70 + Math.random() * 140 : x;
+      while (mine.length < count) {
+        var p = { id: id, x: clampX(landing + (Math.random() * 32 - 16)), y: RIM - 46 - mine.length * 16 - Math.random() * 8, vx: 0, vy: 0, emoji: lk[0], tint: lk[1] };
+        pieces.push(p); mine.push(p);
+      }
+      wake();
+    }
+    function clear() { pieces = []; dots = []; words = []; flameLevel = 0; flameKick = 0; wake(); }
+    function setFlame(level) { flameLevel = 0.45 + 0.55 * level; flameKick = 1; word(WORD.flame, CX + 118, LH - 34, '#d9331a'); wake(); }
+
+    function burst(count, x, y, size, color, spread, rise, life, opts) {
+      opts = opts || {};
+      for (var i = 0; i < count; i++) {
+        dots.push({ x: x + Math.random() * 28 - 14, y: y + Math.random() * 12 - 8, vx: (Math.random() * 2 - 1) * spread / life,
+          vy: -(rise[0] + Math.random() * (rise[1] - rise[0])) / life * (opts.falls ? 2 : 1), g: opts.falls ? 2 * (rise[1]) / (life * life) * 1.6 : 0,
+          r: size[0] + Math.random() * (size[1] - size[0]), grow: opts.grow || 1, color: color, hollow: !!opts.hollow, age: 0, life: life });
+      }
+    }
+    function word(text, x, y, color) { words.push({ text: text, x: Math.min(Math.max(x, 70), LW - 60), y: y, color: color, age: 0, life: 0.9, tilt: Math.random() * 0.28 - 0.14 }); }
+    function twin(cue, x) {
+      var ox = clampX(x === undefined ? CX : x), oy = RIM + 8, color;
+      if (cue === 'sizzle') { color = '#e8780d'; burst(10, ox, oy, [2, 4], '#ffbf26', 60, [30, 80], 0.45, { falls: true }); burst(4, ox, oy, [8, 13], 'rgba(255,255,255,0.75)', 22, [60, 100], 0.9, { grow: 2.2 }); }
+      else if (cue === 'boil') { color = '#2673cc'; burst(8, ox, oy, [4, 9], '#4d99f2', 46, [30, 70], 0.8, { grow: 1.5, hollow: true }); }
+      else if (cue === 'splash') { color = '#0d8c99'; burst(9, ox, oy, [3, 6], '#59b3e6', 80, [40, 85], 0.55, { falls: true }); }
+      else { color = '#805426'; shake = 0.2; burst(6, ox, oy, [2, 4], '#9e7340', 50, [25, 55], 0.4, { falls: true }); cue = 'clatter'; }
+      word(WORD[cue], ox, RIM - 40, color);
+      wake();
+    }
+
+    function step(dt) {
+      var i, j, p, q;
+      for (i = 0; i < pieces.length; i++) { p = pieces[i]; p.vy += 900 * dt; p.vx *= 0.985; p.x += p.vx * dt; p.y += p.vy * dt; }
+      var rx = RADIUS - WALL - R, ry = DEPTH - WALL - R;
+      for (var pass = 0; pass < 4; pass++) {
+        for (i = 0; i < pieces.length; i++) {
+          p = pieces[i];
+          for (j = i + 1; j < pieces.length; j++) {
+            q = pieces[j];
+            var dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy);
+            if (d < 2 * R && d > 0.001) {
+              var push = (2 * R - d) / 2, nx = dx / d, ny = dy / d;
+              p.x -= nx * push; p.y -= ny * push; q.x += nx * push; q.y += ny * push;
+              var rel = (q.vx - p.vx) * nx + (q.vy - p.vy) * ny;
+              if (rel < 0) { p.vx += nx * rel * 0.5; p.vy += ny * rel * 0.5; q.vx -= nx * rel * 0.5; q.vy -= ny * rel * 0.5; }
+            }
+          }
+          if (p.y > RIM) {
+            var ex = (p.x - CX) / rx, ey = (p.y - RIM) / ry, k = ex * ex + ey * ey;
+            if (k > 1) {
+              var s = 1 / Math.sqrt(k);
+              p.x = CX + (p.x - CX) * s; p.y = RIM + (p.y - RIM) * s;
+              var gx = ex / rx, gy = ey / ry, gl = Math.hypot(gx, gy) || 1; gx /= gl; gy /= gl;
+              var vn = p.vx * gx + p.vy * gy;
+              if (vn > 0) { p.vx -= 1.2 * vn * gx; p.vy -= 1.2 * vn * gy; p.vx *= 0.9; p.vy *= 0.9; }
+            }
+          } else {
+            if (p.x < CX - rx) { p.x = CX - rx; p.vx = Math.abs(p.vx) * 0.2; }
+            if (p.x > CX + rx) { p.x = CX + rx; p.vx = -Math.abs(p.vx) * 0.2; }
+          }
+        }
+      }
+      for (i = dots.length - 1; i >= 0; i--) { var dt2 = dots[i]; dt2.age += dt; dt2.vy += dt2.g * dt; dt2.x += dt2.vx * dt; dt2.y += dt2.vy * dt; if (dt2.age >= dt2.life) dots.splice(i, 1); }
+      for (i = words.length - 1; i >= 0; i--) { words[i].age += dt; if (words[i].age >= words[i].life) words.splice(i, 1); }
+      if (shake > 0) shake = Math.max(0, shake - dt);
+      if (flameKick > 0) flameKick = Math.max(0, flameKick - dt * 3);
+    }
+
+    function halfEllipse(inset) {
+      g.beginPath(); g.ellipse(CX, RIM, RADIUS - inset, DEPTH - inset, 0, 0, Math.PI, false); g.closePath();
+    }
+    function draw() {
+      var w = canvas.width, h = canvas.height, scale = Math.min(w / LW, h / LH);
+      g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, w, h);
+      g.setTransform(scale, 0, 0, scale, (w - LW * scale) / 2, (h - LH * scale) / 2);
+      var now = performance.now() / 1000, i;
+
+      g.fillStyle = colors['--burner']; roundRect(CX - 75, LH - 31, 150, 14, 6); g.fill();
+      if (flameLevel > 0) {
+        var size = flameLevel * (1 + 0.5 * flameKick);
+        for (i = 0; i < 5; i++) {
+          var flick = reduced ? 1 : 1 + 0.15 * Math.sin(now * (9 + i * 1.7) + i);
+          var fx = CX + (i - 2) * 24 * size, base = LH - 31;
+          g.fillStyle = '#ff7a1a'; g.beginPath(); g.ellipse(fx, base - 18 * size * flick, 10 * size, 18 * size * flick, 0, 0, Math.PI * 2); g.fill();
+          g.fillStyle = '#ffd940'; g.beginPath(); g.ellipse(fx, base - 12 * size * flick, 5 * size, 10 * size * flick, 0, 0, Math.PI * 2); g.fill();
+        }
+      }
+
+      g.save();
+      if (shake > 0 && !reduced) g.translate(Math.sin(shake * 90) * 6 * (shake / 0.2), 0);
+      g.fillStyle = colors['--iron']; halfEllipse(0); g.fill();
+      roundRect(CX - RADIUS - 29, RIM - 1, 34, 11, 5); g.fill(); roundRect(CX + RADIUS - 5, RIM - 1, 34, 11, 5); g.fill();
+      g.fillStyle = colors['--iron-inside']; halfEllipse(WALL); g.fill();
+      g.restore();
+
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      for (i = 0; i < pieces.length; i++) {
+        var p = pieces[i];
+        g.fillStyle = p.tint; g.beginPath(); g.arc(p.x, p.y, R, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = 'rgba(0,0,0,0.25)'; g.lineWidth = 1; g.stroke();
+        g.font = '15px system-ui, "Apple Color Emoji", "Noto Color Emoji", sans-serif'; g.fillStyle = '#000'; g.fillText(p.emoji, p.x, p.y + 1);
+      }
+      for (i = 0; i < dots.length; i++) {
+        var d = dots[i], life = d.age / d.life, rr = d.r * (1 + (d.grow - 1) * life);
+        g.globalAlpha = life < 0.55 ? 1 : Math.max(0, 1 - (life - 0.55) / 0.45);
+        g.beginPath(); g.arc(d.x, d.y, rr, 0, Math.PI * 2);
+        if (d.hollow) { g.strokeStyle = d.color; g.lineWidth = 1.5; g.stroke(); } else { g.fillStyle = d.color; g.fill(); }
+      }
+      for (i = 0; i < words.length; i++) {
+        var wd = words[i], wl = wd.age / wd.life, pop = Math.min(1, wd.age / 0.12);
+        g.globalAlpha = wl < 0.6 ? 1 : Math.max(0, 1 - (wl - 0.6) / 0.4);
+        g.save(); g.translate(wd.x, wd.y - 34 * wl); g.rotate(wd.tilt); g.scale(0.4 + 0.6 * pop, 0.4 + 0.6 * pop);
+        g.font = '700 24px Fredoka, "Avenir Next", system-ui, sans-serif'; g.fillStyle = wd.color; g.fillText(wd.text, 0, 0); g.restore();
+      }
+      g.globalAlpha = 1;
+    }
+    function roundRect(x, y, w, h, r) {
+      g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+    }
+    function settled() {
+      if (dots.length || words.length || shake > 0 || flameKick > 0) return false;
+      for (var i = 0; i < pieces.length; i++) if (Math.abs(pieces[i].vx) + Math.abs(pieces[i].vy) > 6) return false;
+      return true;
+    }
+    var quiet = 0;
+    function frame(t) {
+      var dt = Math.min(0.033, (t - last) / 1000 || 0.016); last = t;
+      step(dt / 2); step(dt / 2); draw();
+      // Keep animating while anything moves, or while a flame flickers; otherwise rest.
+      quiet = settled() ? quiet + dt : 0;
+      if (quiet < 0.6 || (flameLevel > 0 && !reduced)) requestAnimationFrame(frame); else running = false;
+    }
+    function wake() { quiet = 0; if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); } }
+
+    readColors();
+    if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas); else window.addEventListener('resize', resize);
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onTheme = function () { readColors(); draw(); };
+      if (mq.addEventListener) mq.addEventListener('change', onTheme);
+      new MutationObserver(onTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+    resize();
+    return { setPieces: setPieces, clear: clear, setFlame: setFlame, twin: twin, dropX: dropX, pieceCount: function () { return pieces.length; } };
+  })();
+
+  // ---------- Serving ----------
+  var MISS_TEXT = {
+    missingRequired: function (s) { return 'Missing: ' + s; },
+    partialRequired: function (s) { return 'Thin on ' + s; },
+    wrongAmount: function (s) { return 'There, but far off in amount: ' + s; },
+    offCuisine: function (s) { return 'From another cuisine: ' + ingredientName(s); },
+    forbiddenForDish: function (s) { return 'Wrong for this dish: ' + ingredientName(s); },
+    ratioUndefined: function (s) { return "Can't judge " + s + ' (one side is missing)'; },
+    ratioLow: function (s) { return 'Too little: ' + s; },
+    ratioHigh: function (s) { return 'Too much: ' + s; },
+    signatureLow: function (s) { return 'Not enough ' + axisName(s); },
+    signatureHigh: function (s) { return 'Too much ' + axisName(s); },
+    wrongVessel: function () { return 'This dish wants a different vessel'; },
+    wrongMethod: function (s) { return (METHOD_TITLE[s] || s) + " isn't how this is cooked"; }
+  };
+  function ingredientName(id) { var i = content.ingredients[id]; return i ? chipName(i) : id; }
+  function axisName(axis) { return { heat: 'heat', numbing: 'numbing', acid: 'sourness', umami: 'savoury depth', sweet: 'sweetness' }[axis] || axis; }
+
+  function serve() {
+    var result = E.score(content, attempt());
+    var seconds = round.startedAt === null ? 0 : Math.round((Date.now() - round.startedAt) / 1000);
+    $('sheet-dish').textContent = round.dish.name;
+    $('total').innerHTML = result.total + '<small>out of 100</small>';
+    var parts = [['Ingredients', result.coverage, 40], ['Ratios', result.ratioFit, 35], ['Flavour', result.signature, 15], ['Technique', result.technique, 10]];
+    $('parts').innerHTML = parts.map(function (p) {
+      return '<div class="part"><span>' + p[0] + '</span><span class="bar"><i style="width:' + Math.max(0, Math.min(100, p[1] / p[2] * 100)) + '%"></i></span><span class="num">' + p[1] + ' / ' + p[2] + '</span></div>';
+    }).join('');
+    var seen = {}, lines = [];
+    result.misses.forEach(function (m) {
+      var key = m.kind + ':' + m.subject; if (seen[key]) return; seen[key] = true;
+      var fn = MISS_TEXT[m.kind]; lines.push(fn ? fn(m.subject) : key);
+    });
+    var wrap = $('misses-wrap');
+    wrap.innerHTML = '';
+    if (lines.length) {
+      var title = document.createElement('div'); title.className = 'misses-title'; title.textContent = 'What cost points';
+      var list = document.createElement('ul'); list.className = 'misses';
+      lines.forEach(function (text) { var li = document.createElement('li'); li.textContent = text; list.appendChild(li); });
+      wrap.appendChild(title); wrap.appendChild(list);
+    } else {
+      var clean = document.createElement('div'); clean.className = 'clean'; clean.textContent = 'Nothing cost you points.'; wrap.appendChild(clean);
+    }
+    $('took').textContent = 'This round took ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + '. The target is 1:00 to 2:00. (Shown only in this stand-in.)';
+    $('scrim').hidden = false;
+    $('keep').focus();
+  }
+  function nextDish() {
+    var index = content.dishOrder.indexOf(round.dish.id);
+    $('scrim').hidden = true;
+    startRound(content.dishOrder[(index + 1) % content.dishOrder.length]);
+  }
+
+  // ---------- Wiring ----------
+  $('dish').addEventListener('change', function (ev) { startRound(ev.target.value); });
+  $('restart').addEventListener('click', function () { startRound(round.dish.id); });
+  $('mute').addEventListener('click', function () {
+    var muted = sound.toggle();
+    $('mute').textContent = muted ? '🔇' : '🔊';
+    $('mute').setAttribute('aria-label', muted ? 'Turn sound on' : 'Turn sound off');
+    if (!muted) sound.unlock();
+  });
+  $('methods').addEventListener('pointerdown', function () { sound.unlock(); });
+  $('serve').addEventListener('click', serve);
+  $('keep').addEventListener('click', function () { $('scrim').hidden = true; });
+  $('next').addEventListener('click', nextDish);
+  $('scrim').addEventListener('click', function (ev) { if (ev.target === $('scrim')) $('scrim').hidden = true; });
+
+  // For checks from outside the page.
+  window.__pantry = { round: function () { return round; }, pieces: function () { return scene.pieceCount(); } };
+
+  startRound(content.dishOrder[0]);
+})();
+</script>

@@ -2,7 +2,7 @@
 
 ## Next session: open with this
 1. PB-002 is built and in review (pull request #1): CI is green: it plays a scripted round on an iPhone 16 and an iPhone SE simulator, and UI tests drag, tap, step and serve. It is **not done** until Moe has played a round on a phone: see "PB-002: what's left" below.
-2. Needed from Moe: play it (Xcode 15 or newer, open `App/Pantry.xcodeproj`, run on an iPhone or a simulator), then say what feels wrong. Name the bundle identifier and Apple team (PD-017).
+2. Needed from Moe: play it. From a phone today: the browser stand-in (PD-023, the "Pantry Stand-in" artifact) for round length and scoring feel. For drag, sound and the wok: Xcode 15 or newer, open `App/Pantry.xcodeproj`, run on an iPhone or a simulator. Then say what feels wrong. Name the bundle identifier and Apple team (PD-017).
 3. Then PB-008 (vessel choice) and PB-003 (canned judge line).
 
 ### PB-002: what's left
@@ -30,7 +30,7 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## Engine follow-ups
 - [ ] PB-021: Free-cook scoring (lessons 37 to 40): score an attempt against the cuisine with no dish named. Needs a cuisine-level profile.
-- [ ] PB-023: Should an off-cuisine ingredient cap the score? The CI demo round is a sound mapo tofu with 25 g of basil and no chili, and it scores 88, above the "good" line. Needs Moe's ear and then the chef's (found building PB-002).
+- [ ] PB-023: Should an off-cuisine ingredient cap the score? The CI demo round is a sound mapo tofu with 25 g of basil and no chili, and it scores 88, above the "good" line. Needs Moe's ear and then the chef's (found building PB-002). Second case, from the stand-in: 100 g of tofu with every seasoning at its starting amount is "too much" on all four ratios and still scores 81.
 - [ ] PB-022: A second cuisine's content to prove the schema isn't Sichuan-shaped (Japanese home cooking: 1:1:1 soy, mirin, sake is a clean ratio test).
 
 ## Parking lot

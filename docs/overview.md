@@ -33,5 +33,6 @@ so you get better at real cooking.
 
 ## Where it lives
 
-In the Studio-Companion repository under `pantry/` for now (PD-002). It
-should move to its own repository before the iOS app target lands.
+https://github.com/moemitchellwrites-cmyk/Super-Chef, its own repository
+since 2026-10-07 (PD-002). It started under `pantry/` in Studio-Companion
+and was split out with its history before the iOS app target.

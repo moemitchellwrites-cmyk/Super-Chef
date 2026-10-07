@@ -34,6 +34,7 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Decision: The package lives at `pantry/` with its own docs and its own CI job. It shares nothing with the studio code.
 - Rationale: Keeps today's work verifiable on the existing CI without blocking on a repository decision.
 - Consequences: Recommend splitting into its own repository before step 2 (the iOS app target), while the history is one folder deep and easy to lift.
+- Outcome (2026-10-07): done. Moe created `moemitchellwrites-cmyk/Super-Chef`; the `pantry/` history was pushed there as `main`, and Studio-Companion keeps a pointer.
 
 ## PD-003: Weight under the hood; units are a display choice
 - Date: 2026-10-07

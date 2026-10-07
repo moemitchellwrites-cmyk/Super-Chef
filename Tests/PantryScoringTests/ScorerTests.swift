@@ -194,6 +194,23 @@ final class ScorerTests: XCTestCase {
         let breakdown = library.scorer.score(attempt, against: mapo)
         XCTAssertTrue(breakdown.misses.contains(Miss(.ratioHigh, "doubanjiang to tofu")))
         XCTAssertLessThan(breakdown.ratioFit, ScoreWeights.ratioFit)
+        // 4x the paste is more than 3x past the band: present, but wrong amount (PD-008).
+        XCTAssertTrue(breakdown.misses.contains(Miss(.wrongAmount, "doubanjiang")))
+        XCTAssertEqual(breakdown.coverage, 34, accuracy: 0.01, "doubanjiang carries 3 of 10 coverage weights; half of that is 6 points")
+    }
+
+    func testMildlyOverSaucingKeepsFullCoverage() {
+        var attempt = goodMapo
+        attempt.lines = attempt.lines.map { line in
+            var line = line
+            if line.ingredientId == "doubanjiang" { line.amount *= 1.5 }
+            return line
+        }
+        let breakdown = library.scorer.score(attempt, against: mapo)
+        XCTAssertTrue(breakdown.misses.contains(Miss(.ratioHigh, "doubanjiang to tofu")))
+        XCTAssertFalse(breakdown.misses.contains { $0.kind == .wrongAmount })
+        XCTAssertEqual(breakdown.coverage, ScoreWeights.coverage)
+        XCTAssertGreaterThan(breakdown.ratioFit, 0.5 * ScoreWeights.ratioFit)
     }
 
     // MARK: pattern

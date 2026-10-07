@@ -75,6 +75,19 @@ public struct Scorer: Sendable {
             families.reduce(0) { $0 + (gramsByFamily[$1] ?? 0) }
         }
 
+        // PD-008: a family that is present but whose key ratio (one it is the numerator of)
+        // is off by `ratioZeroAtFactor` or more counts as "present, but wrong amount" and
+        // earns half its coverage credit.
+        var grosslyOffFamilies = Set<String>()
+        for band in dish.ratios {
+            let numerator = familyGrams(band.numerator)
+            let denominator = familyGrams(band.denominator)
+            guard numerator > 0, denominator > 0 else { continue }
+            if Scorer.bandCredit(ratio: numerator / denominator, low: band.low, high: band.high) == 0 {
+                grosslyOffFamilies.formUnion(band.numerator)
+            }
+        }
+
         // Coverage: required families present...
         let requiredWeight = dish.required.reduce(0) { $0 + $1.weight }
         var earned = 0.0
@@ -82,7 +95,12 @@ public struct Scorer: Sendable {
             let need = max(1, requirement.minPresent)
             let present = requirement.anyOf.filter { (gramsByFamily[$0] ?? 0) > 0 }.count
             if present >= need {
-                earned += requirement.weight
+                if grosslyOffFamilies.isDisjoint(with: requirement.anyOf) {
+                    earned += requirement.weight
+                } else {
+                    earned += requirement.weight / 2
+                    misses.append(Miss(.wrongAmount, requirement.label))
+                }
             } else if present == 0 {
                 misses.append(Miss(.missingRequired, requirement.label))
             } else {

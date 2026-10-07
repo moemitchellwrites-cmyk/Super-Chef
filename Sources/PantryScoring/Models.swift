@@ -322,7 +322,7 @@ public struct Attempt: Codable, Equatable, Sendable {
 /// One specific thing that cost points. The judge (canned or LLM) turns these into a sentence.
 public struct Miss: Codable, Equatable, Hashable, Sendable {
     public enum Kind: String, Codable, CaseIterable, Sendable {
-        case missingRequired, partialRequired
+        case missingRequired, partialRequired, wrongAmount
         case offCuisine, forbiddenForDish
         case ratioUndefined, ratioLow, ratioHigh
         case signatureLow, signatureHigh

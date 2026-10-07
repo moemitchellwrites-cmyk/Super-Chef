@@ -1,7 +1,7 @@
 # Pantry: Backlog
 
 ## Next session: open with this
-1. PB-001 is built and pushed; check CI (`pantry (Swift, macOS)`) is green. If not, fix from the log.
+1. PB-001 is built, pushed and green on CI (`pantry (Swift, macOS)`).
 2. Moe to decide: PD-002 (own repository before step 2), PD-007 (method tap in the round), PD-008 (score composition amendment), and approve the definition of done.
 3. Then PB-002, the vessel scene.
 
@@ -10,7 +10,7 @@ Ordered by priority. New requests go to the **Parking lot** unless Moe trades ou
 Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## MVP (brief, build order)
-- [ ] PB-001: Scoring module with golden tests. Built 2026-10-07: `PantryScoring` package, ten Sichuan profiles, 65 ingredients, 31 goldens, invariants, content validation. Open: CI green; Moe's review; chef review of profiles and potencies.
+- [ ] PB-001: Scoring module with golden tests. Built 2026-10-07: `PantryScoring` package, ten Sichuan profiles, 65 ingredients, 31 goldens, invariants, content validation. CI green 2026-10-07 (run 37643161377). Open: Moe's review; chef review of profiles and potencies.
 - [ ] PB-002: Vessel scene: one wok, drag-and-drop ingredients, amount stepper, placeholder sounds. Ugly is fine.
 - [ ] PB-003: Canned judge line from the score breakdown (`ScoreBreakdown.misses` and `pattern`). No LLM yet.
 - [ ] PB-004: Ten cards, one per dish, shown on submit. Card ids are already in the profiles.

@@ -378,3 +378,16 @@ Addendum to PD-035 (Moe, 2026-10-08): the wok stays in Pantry mode. It is a neut
 - Rationale: The MVP stores a few kilobytes with no queries. A Codable file is testable on Linux with the rest of the rules, where SwiftData is not, and this project can only compile Apple-only code on CI. SwiftData earns its place when purchases, card history and saved recipes arrive.
 - Consequences: Moving to SwiftData later means a one-time import of this file. Nothing leaves the phone either way.
 
+## PD-041: Measures follow the phone's region: US reads ounces and cups, everyone else grams and millilitres
+- Date: 2026-10-08
+- Made by: Moe raised it ("grams is hard for people to picture in the US"); Claude designed it (PB-026).
+- Status: accepted, for Moe's review in the stand-in (which follows the browser's region).
+- Decision:
+  - **US:** spoons and cups for volume; ounces and pounds for weight, from ¼ oz to 2 lb. A new weight ingredient starts at 4 oz.
+  - **Everywhere else:** spoons for small amounts, then millilitres (60 ml to 1 L); grams for weight. A new weight ingredient starts at 100 g.
+  - There is no setting. The app reads the phone's region; `-pantryMeasures us|metric` overrides it for tests.
+  - One system at a time across the stepper, the chips, the wok's description and the recipe. A recipe line is shown as the nearest step of that ingredient's stepper in the player's system, so what you read is always something you can dial.
+  - Scoring doesn't change and never sees the system: every step is handed to the scorer as grams or as the same spoon and cup amounts as before.
+- Rationale: A player should picture the amount without converting. Metric keeps spoons because no kitchen scale weighs half a teaspoon of ground pepper, and metric recipes use spoons too.
+- Consequences: An ounce step is not a gram step, so a US round and a metric round of the same dish can differ by a rounding step; tests hold every good golden and every recipe at 85 or better in both systems. Content stays stored once, in grams and cups. The cards have no units (PD-037), so they needed nothing. The UK gets metric, though some UK cooks think in ounces.
+

@@ -29,9 +29,9 @@ final class StepperReachabilityTests: XCTestCase {
     }
 
     /// Plays a golden through a `Round` the way a player would: add, then step to the nearest amount.
-    static func play(_ golden: Golden, in library: ContentLibrary, vessel: Vessel) throws -> Round {
+    static func play(_ golden: Golden, in library: ContentLibrary, vessel: Vessel, system: MeasureSystem = .metric) throws -> Round {
         let dish = try XCTUnwrap(library.dish(id: golden.dishId))
-        var round = Round(dish: dish, library: library, seed: 1)
+        var round = Round(dish: dish, library: library, seed: 1, system: system)
         round.place(vessel)
         for line in golden.lines {
             let ingredient = try XCTUnwrap(library.ingredient(id: line.ingredientId))
@@ -48,13 +48,16 @@ final class StepperReachabilityTests: XCTestCase {
         let library = try ContentLibrary.bundled()
         let goldens = try Self.goodGoldens()
         XCTAssertEqual(Set(goldens.map(\.dishId)), Set(library.dishes.map(\.id)))
-        for golden in goldens {
-            let round = try Self.play(golden, in: library, vessel: golden.vessel)
-            let breakdown = try library.score(XCTUnwrap(round.attempt()))
-            XCTAssertGreaterThanOrEqual(
-                breakdown.total, 85,
-                "\(golden.id) snapped to the stepper scored \(breakdown.total); misses \(breakdown.misses.map(\.code))"
-            )
+        // In both measure systems (PD-041): a US cook's ounces must reach the same dishes as grams do.
+        for system in MeasureSystem.allCases {
+            for golden in goldens {
+                let round = try Self.play(golden, in: library, vessel: golden.vessel, system: system)
+                let breakdown = try library.score(XCTUnwrap(round.attempt()))
+                XCTAssertGreaterThanOrEqual(
+                    breakdown.total, 85,
+                    "\(golden.id) snapped to the \(system.rawValue) stepper scored \(breakdown.total); misses \(breakdown.misses.map(\.code))"
+                )
+            }
         }
     }
 
@@ -74,22 +77,26 @@ final class StepperReachabilityTests: XCTestCase {
     func testLaddersAreStrictlyIncreasingByWeight() throws {
         let library = try ContentLibrary.bundled()
         for ingredient in library.ingredients {
-            let ladder = AmountLadder(for: ingredient)
+          for system in MeasureSystem.allCases {
+            let ladder = AmountLadder(for: ingredient, system: system)
             let grams = try ladder.steps.map { try XCTUnwrap(ingredient.grams(amount: $0.amount, unit: $0.unit), ingredient.id) }
             XCTAssertEqual(grams, grams.sorted(), ingredient.id)
             XCTAssertEqual(Set(grams).count, grams.count, ingredient.id)
             XCTAssertEqual(Set(ladder.steps.map(\.label)).count, ladder.steps.count, ingredient.id)
             XCTAssertTrue(ladder.steps.indices.contains(ladder.startIndex), ingredient.id)
+          }
         }
     }
 
     func testStartingAmountIsOneOfTheDefaultUnit() throws {
         let library = try ContentLibrary.bundled()
         for ingredient in library.ingredients {
-            let ladder = AmountLadder(for: ingredient)
+            let ladder = AmountLadder(for: ingredient, system: .metric)
             let start = ladder.measure(at: ladder.startIndex)
             if ingredient.defaultUnit == .grams {
                 XCTAssertEqual(start, Measure(100, .grams, "100 g"), ingredient.id)
+                let us = AmountLadder(for: ingredient, system: .us)
+                XCTAssertEqual(us.measure(at: us.startIndex).label, "4 oz", ingredient.id)
             } else {
                 XCTAssertEqual(start.unit, ingredient.defaultUnit, ingredient.id)
                 XCTAssertEqual(start.amount, 1, ingredient.id)

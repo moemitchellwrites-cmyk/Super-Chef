@@ -70,7 +70,7 @@ final class RoundTests: XCTestCase {
         XCTAssertEqual(round.measure(for: "sugar")?.label, "pinch")
         XCTAssertFalse(round.step("sugar", by: -1), "already at the bottom")
         XCTAssertTrue(round.step("sugar", by: 100))
-        XCTAssertEqual(round.measure(for: "sugar")?.label, "4 cups")
+        XCTAssertEqual(round.measure(for: "sugar")?.label, "1 L")
         XCTAssertFalse(round.step("sugar", by: 1))
         XCTAssertFalse(round.step("garlic", by: 1), "not in the wok")
     }

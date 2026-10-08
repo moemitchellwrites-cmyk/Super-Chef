@@ -10,6 +10,8 @@ import PantryScoring
 @Observable
 final class PantryRoundViewModel {
     let library: ContentLibrary
+    /// The measures the recipe reads in (PD-041). A Pantry round itself has no amounts.
+    let measures: MeasureSystem
     private(set) var round: PantryRound
     /// The verdict on the picks just served, while its sheet is up.
     private(set) var result: PantryResult?
@@ -27,8 +29,9 @@ final class PantryRoundViewModel {
     /// How many pieces one pick shows in the wok. There are no amounts in this mode.
     private static let piecesPerPick = 2
 
-    init(library: ContentLibrary, dishId: String? = nil, seed: UInt64? = nil, muted: Bool = false) {
+    init(library: ContentLibrary, dishId: String? = nil, seed: UInt64? = nil, muted: Bool = false, measures: MeasureSystem = .metric) {
         self.library = library
+        self.measures = measures
         let dish = dishId.flatMap(library.dish(id:)) ?? library.dishes[0]
         round = PantryRound(dish: dish, library: library, seed: seed ?? UInt64.random(in: .min ... .max))
         fixedSeed = seed

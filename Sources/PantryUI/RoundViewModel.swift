@@ -11,6 +11,8 @@ import PantryScoring
 @Observable
 final class RoundViewModel {
     let library: ContentLibrary
+    /// The measures the stepper and the recipe read in (PD-041).
+    let measures: MeasureSystem
     private(set) var round: Round
     /// The score for the attempt just served, while its sheet is up.
     private(set) var result: ScoreBreakdown?
@@ -29,10 +31,11 @@ final class RoundViewModel {
     /// - Parameters:
     ///   - dishId: the dish to open on; the first in the library when nil or unknown.
     ///   - seed: fixes the palette order (tests, demo). Random per round when nil.
-    init(library: ContentLibrary, dishId: String? = nil, seed: UInt64? = nil, muted: Bool = false) {
+    init(library: ContentLibrary, dishId: String? = nil, seed: UInt64? = nil, muted: Bool = false, measures: MeasureSystem = .metric) {
         self.library = library
+        self.measures = measures
         let dish = dishId.flatMap(library.dish(id:)) ?? library.dishes[0]
-        round = Round(dish: dish, library: library, seed: seed ?? UInt64.random(in: .min ... .max))
+        round = Round(dish: dish, library: library, seed: seed ?? UInt64.random(in: .min ... .max), system: measures)
         fixedSeed = seed
         isMuted = muted
         sound = SoundPlayer(isMuted: muted)
@@ -53,7 +56,7 @@ final class RoundViewModel {
         scene.clear()
         scene.setVessel(nil)
         result = nil
-        round = Round(dish: dish, library: library, seed: fixedSeed ?? UInt64.random(in: .min ... .max))
+        round = Round(dish: dish, library: library, seed: fixedSeed ?? UInt64.random(in: .min ... .max), system: measures)
     }
 
     func startOver() {

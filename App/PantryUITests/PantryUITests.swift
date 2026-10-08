@@ -8,7 +8,7 @@ final class PantryUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu", "-pantryMode", "kitchen"]
+        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu", "-pantryMeasures", "metric", "-pantryMode", "kitchen"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
         // A Kitchen round starts with a bare burner (PD-035). These tests cook in the wok.
@@ -87,6 +87,20 @@ final class PantryUITests: XCTestCase {
         XCTAssertTrue(score.waitForExistence(timeout: 5))
     }
 
+    /// A phone set to a US region reads ounces and cups; the same round, the same scoring (PD-041).
+    func testUSMeasuresReadInOuncesAndCups() {
+        app.terminate()
+        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu", "-pantryMeasures", "us", "-pantryMode", "kitchen"]
+        app.launch()
+        XCTAssertTrue(app.buttons["vessel-wok"].waitForExistence(timeout: 30), "the round screen never appeared")
+        app.buttons["vessel-wok"].tap()
+        chip("firm-tofu").tap()
+        XCTAssertTrue(amount.waitForExistence(timeout: 5))
+        XCTAssertEqual(amount.label, "4 oz")
+        chip("stock").tap()
+        XCTAssertEqual(amount.label, "1 cup")
+    }
+
     func testTakingAnIngredientOutEmptiesTheWok() {
         chip("garlic").tap()
         XCTAssertTrue(amount.waitForExistence(timeout: 5))
@@ -104,7 +118,7 @@ final class PantryModeUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu"]
+        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu", "-pantryMeasures", "metric"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
     }

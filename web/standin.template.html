@@ -444,7 +444,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
   }
   function entryFor(id) { for (var i = 0; i < round.entries.length; i++) if (round.entries[i].id === id) return round.entries[i]; return null; }
-  function ladder(id) { return E.ladderFor(content.ingredients[id]); }
+  // Measures by region (PD-041): the browser's region decides, as the phone's will. A US region reads
+  // ounces and cups; everywhere else reads grams and millilitres.
+  var MEASURES = /-(US|LR|MM)\b/i.test((navigator.languages && navigator.languages[0]) || navigator.language || '') ? 'us' : 'metric';
+  function ladder(id) { return E.ladderFor(content.ingredients[id], MEASURES); }
   function measure(id) { var e = entryFor(id); return e ? ladder(id).steps[e.step] : null; }
   function touchClock() { if (round.startedAt === null) round.startedAt = Date.now(); }
 
@@ -1028,6 +1031,11 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     if (unit === 'pinch') return amount === 1 ? 'a pinch' : recipeNumber(amount) + ' pinches';
     return recipeNumber(amount) + ' ' + (unit === 'cup' && amount > 1 ? 'cups' : unit);
   }
+  // A recipe amount as the player's measures read it: the nearest step on that ingredient's stepper.
+  function recipeLabel(ingredient, line) {
+    var step = ingredient ? E.recipeMeasure(ingredient, line, MEASURES) : null;
+    return step ? step.label : recipeAmount(line.amount, line.unit);
+  }
   function lowerFirst(name) {
     return /^(Sichuan|Shaoxing|Chinkiang|Napa)/.test(name) ? name : name.charAt(0).toLowerCase() + name.slice(1);
   }
@@ -1046,8 +1054,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     recipe.lines.forEach(function (line) {
       var ingredient = content.ingredients[line.ingredientId];
       var li = document.createElement('li'), amount = document.createElement('b');
-      if (core[line.ingredientId]) { li.className = 'core'; li.setAttribute('aria-label', 'Essential: ' + recipeAmount(line.amount, line.unit) + ' ' + (ingredient ? ingredient.name : line.ingredientId)); }
-      amount.textContent = recipeAmount(line.amount, line.unit);
+      if (core[line.ingredientId]) { li.className = 'core'; li.setAttribute('aria-label', 'Essential: ' + recipeLabel(ingredient, line) + ' ' + (ingredient ? ingredient.name : line.ingredientId)); }
+      amount.textContent = recipeLabel(ingredient, line);
       li.appendChild(amount);
       li.appendChild(document.createTextNode(' ' + lowerFirst(ingredient ? ingredient.name : line.ingredientId)));
       lines.appendChild(li);

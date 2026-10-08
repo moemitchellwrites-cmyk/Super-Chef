@@ -25,7 +25,9 @@ final class SessionController {
     ///   - file: where progress is kept. Nil keeps it in memory only (tests, demos).
     ///   - firstDish: the dish each new session opens on (tests, demos).
     ///   - seed: fixes the deal and the palettes (tests, demos).
-    init(library: ContentLibrary, file: ProgressFile?, firstDish: String? = nil, seed: UInt64? = nil, muted: Bool = false) {
+    ///   - measures: the measures the stepper and recipes read in.
+    init(library: ContentLibrary, file: ProgressFile?, firstDish: String? = nil, seed: UInt64? = nil, muted: Bool = false,
+         measures: MeasureSystem = .metric) {
         self.library = library
         self.file = file
         self.firstDish = firstDish
@@ -46,8 +48,8 @@ final class SessionController {
         progress = loaded
         let pantryDish = sessions[.pantry].flatMap { $0.currentDishId ?? $0.dishIds.last }
         let kitchenDish = sessions[.kitchen].flatMap { $0.currentDishId ?? $0.dishIds.last }
-        pantry = PantryRoundViewModel(library: library, dishId: pantryDish, seed: seed, muted: muted)
-        kitchen = RoundViewModel(library: library, dishId: kitchenDish, seed: seed, muted: muted)
+        pantry = PantryRoundViewModel(library: library, dishId: pantryDish, seed: seed, muted: muted, measures: measures)
+        kitchen = RoundViewModel(library: library, dishId: kitchenDish, seed: seed, muted: muted, measures: measures)
         // A session finished but not yet acknowledged (the app closed on the summary) opens on it again.
         summaryMode = GameMode.allCases.first { sessions[$0]?.isComplete == true }
         save()

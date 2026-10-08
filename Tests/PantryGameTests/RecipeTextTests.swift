@@ -18,10 +18,10 @@ final class RecipeTextTests: XCTestCase {
 
     func testLinesNameTheIngredientAfterTheAmount() throws {
         let library = try ContentLibrary.bundled()
-        XCTAssertEqual(RecipeText.line(Attempt.Line(ingredientId: "garlic", amount: 1, unit: .tbsp), in: library), "1 tbsp garlic, minced")
-        XCTAssertEqual(RecipeText.line(Attempt.Line(ingredientId: "sichuan-peppercorn-ground", amount: 2, unit: .tsp), in: library),
+        XCTAssertEqual(RecipeText.line(Attempt.Line(ingredientId: "garlic", amount: 1, unit: .tbsp), in: library, system: .us), "1 tbsp garlic, minced")
+        XCTAssertEqual(RecipeText.line(Attempt.Line(ingredientId: "sichuan-peppercorn-ground", amount: 2, unit: .tsp), in: library, system: .metric),
                        "2 tsp Sichuan peppercorn, ground")
-        XCTAssertEqual(RecipeText.line(Attempt.Line(ingredientId: "mystery", amount: 5, unit: .grams), in: library), "5 g mystery")
+        XCTAssertEqual(RecipeText.line(Attempt.Line(ingredientId: "mystery", amount: 5, unit: .grams), in: library, system: .us), "5 g mystery")
     }
 
     func testEveryRecipeLineInTheContentFormatsWithoutADecimal() throws {
@@ -50,10 +50,52 @@ final class RecipeTextTests: XCTestCase {
         for dish in library.dishes {
             for line in dish.recipe?.lines ?? [] {
                 let ingredient = try XCTUnwrap(library.ingredient(id: line.ingredientId), line.ingredientId)
-                let onLadder = AmountLadder(for: ingredient).steps.contains {
+                let onLadder = AmountLadder(for: ingredient, system: .metric).steps.contains {
                     $0.unit == line.unit && abs($0.amount - line.amount) < 0.0001
                 }
                 XCTAssertTrue(onLadder, "\(dish.id): \(line.amount) \(line.unit.rawValue) of \(line.ingredientId) can't be dialled")
+            }
+        }
+    }
+
+    // MARK: Measures by region (PD-041)
+
+    func testARecipeReadsInThePlayersMeasures() throws {
+        let library = try ContentLibrary.bundled()
+        let tofu = Attempt.Line(ingredientId: "firm-tofu", amount: 400, unit: .grams)
+        XCTAssertEqual(RecipeText.line(tofu, in: library, system: .metric), "400 g firm tofu")
+        XCTAssertEqual(RecipeText.line(tofu, in: library, system: .us), "14 oz firm tofu")
+        let stock = Attempt.Line(ingredientId: "stock", amount: 0.75, unit: .cup)
+        XCTAssertEqual(RecipeText.line(stock, in: library, system: .us), "¾ cup chicken stock")
+        XCTAssertEqual(RecipeText.line(stock, in: library, system: .metric), "180 ml chicken stock")
+    }
+
+    func testEveryRecipeStillCooksWellInEitherSystem() throws {
+        let library = try ContentLibrary.bundled()
+        for system in MeasureSystem.allCases {
+            for dish in library.dishes {
+                let recipe = try XCTUnwrap(dish.recipe, dish.id)
+                let lines = try recipe.lines.map { line -> Attempt.Line in
+                    let ingredient = try XCTUnwrap(library.ingredient(id: line.ingredientId))
+                    let measure = RecipeText.measure(line, of: ingredient, system: system)
+                    return Attempt.Line(ingredientId: line.ingredientId, amount: measure.amount, unit: measure.unit)
+                }
+                let breakdown = try library.score(Attempt(dishId: dish.id, lines: lines, vessel: recipe.vessel, method: recipe.method))
+                XCTAssertGreaterThanOrEqual(breakdown.total, 85, "\(dish.id) read in \(system.rawValue) measures scored \(breakdown.total)")
+                XCTAssertEqual(breakdown.misses.map(\.code), [], "\(dish.id) in \(system.rawValue)")
+            }
+        }
+    }
+
+    func testEachSystemSpeaksOnlyItsOwnUnits() throws {
+        let library = try ContentLibrary.bundled()
+        for ingredient in library.ingredients {
+            for step in AmountLadder(for: ingredient, system: .metric).steps {
+                XCTAssertFalse(step.label.contains("cup") || step.label.contains("oz") || step.label.contains("lb"), "\(ingredient.id): \(step.label)")
+            }
+            for step in AmountLadder(for: ingredient, system: .us).steps {
+                XCTAssertFalse(step.label.hasSuffix(" g") || step.label.hasSuffix("kg") || step.label.contains("ml") || step.label.hasSuffix(" L"),
+                               "\(ingredient.id): \(step.label)")
             }
         }
     }

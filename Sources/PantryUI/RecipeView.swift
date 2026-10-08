@@ -8,6 +8,7 @@ struct RecipeView: View {
     let dish: DishProfile
     let recipe: Recipe
     let library: ContentLibrary
+    let measures: MeasureSystem
     let onDone: () -> Void
 
     private struct Row: Identifiable {
@@ -19,7 +20,7 @@ struct RecipeView: View {
     private var rows: [Row] {
         let essentials = RecipeText.essentialIds(of: dish, in: library)
         return recipe.lines.enumerated().map { index, line in
-            Row(id: index, text: RecipeText.line(line, in: library), essential: essentials.contains(line.ingredientId))
+            Row(id: index, text: RecipeText.line(line, in: library, system: measures), essential: essentials.contains(line.ingredientId))
         }
     }
 

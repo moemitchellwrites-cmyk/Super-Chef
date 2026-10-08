@@ -8,7 +8,7 @@ import PantryScoring
 /// tests from the package.
 ///
 /// Launch arguments: `-pantryMode kitchen` opens in Kitchen mode (Pantry is the default);
-/// `-pantryMuted` starts silent; `-pantryFreshProgress` keeps progress in memory, so every launch is
+/// `-pantryMuted` starts silent; `-pantryMeasures us|metric` overrides the phone's region; `-pantryFreshProgress` keeps progress in memory, so every launch is
 /// a first launch; `-pantryFirstDish <id>` opens each session on that dish; `-pantryDemo` and
 /// `-pantryDemoPantry` play a scripted round, and `-pantryDemoSession` plays five Pantry rounds through
 /// to the summary (each implies muted and fresh progress).
@@ -53,7 +53,9 @@ public struct PantryRootView: View {
                     file: fresh ? nil : Self.progressFile(),
                     firstDish: demo?.dishId ?? pantryDemo?.dishId ?? value(after: "-pantryFirstDish"),
                     seed: scripted ? 1 : nil,
-                    muted: muted
+                    muted: muted,
+                    // The scripted rounds name their amounts in metric; everyone else gets the phone's region.
+                    measures: value(after: "-pantryMeasures").flatMap(MeasureSystem.init(rawValue:)) ?? (scripted ? .metric : Self.deviceMeasures)
                 )
                 var mode = value(after: "-pantryMode").flatMap(GameMode.init(rawValue:)) ?? .pantry
                 if demo != nil { mode = .kitchen }
@@ -68,6 +70,11 @@ public struct PantryRootView: View {
                 problem = String(describing: error)
             }
         }
+    }
+
+    /// US measures where the phone's region uses them, metric everywhere else (PD-041). No setting to find.
+    private static var deviceMeasures: MeasureSystem {
+        Locale.current.measurementSystem == .us ? .us : .metric
     }
 
     /// Progress lives in the app's Application Support folder. Nil if the system won't name one;
@@ -182,7 +189,7 @@ struct DemoScript {
         ("garlic", "1 tbsp", nil),
         ("ginger", "2 tsp", 0.7),
         ("sichuan-peppercorn-ground", "2 tsp", nil),
-        ("stock", "¾ cup", 0.6),
+        ("stock", "180 ml", 0.6),
         ("basil", "25 g", 0.4),
         ("scallion", "3 tbsp", nil),
     ]

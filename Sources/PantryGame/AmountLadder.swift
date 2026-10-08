@@ -5,7 +5,7 @@ import PantryScoring
 public struct Measure: Equatable, Hashable, Sendable {
     public let amount: Double
     public let unit: AmountUnit
-    /// What the stepper shows: "pinch", "1½ tbsp", "400 g".
+    /// What the stepper shows: "pinch", "1½ tbsp", "400 g", "14 oz", "180 ml".
     public let label: String
 
     public init(_ amount: Double, _ unit: AmountUnit, _ label: String) {
@@ -13,6 +13,14 @@ public struct Measure: Equatable, Hashable, Sendable {
         self.unit = unit
         self.label = label
     }
+}
+
+/// Which measures the player reads (PD-041). The scorer never sees this: it works in grams.
+public enum MeasureSystem: String, CaseIterable, Sendable {
+    /// Spoons and cups; ounces and pounds.
+    case us
+    /// Spoons for small amounts, then millilitres; grams.
+    case metric
 }
 
 /// The amounts the stepper offers for one ingredient (PD-013).
@@ -57,16 +65,43 @@ public struct AmountLadder: Equatable, Sendable {
         Measure(Double(grams), .grams, grams == 1000 ? "1 kg" : "\(grams) g")
     }
 
-    public init(for ingredient: Ingredient) {
-        // A volume ladder needs a teaspoon weight; without one, fall back to grams
+    /// The volume ladder as a metric cook reads it: the same amounts, with the cup steps in millilitres
+    /// (a metric cup is 250 ml). Spoons stay: nobody weighs half a teaspoon.
+    public static let volumeMetric: [Measure] = {
+        let millilitres: [Double: String] = [
+            0.25: "60 ml", 1.0 / 3.0: "80 ml", 0.5: "125 ml", 0.75: "180 ml", 1: "250 ml",
+            1.5: "375 ml", 2: "500 ml", 2.5: "625 ml", 3: "750 ml", 4: "1 L",
+        ]
+        return volume.map { step in
+            guard step.unit == .cup, let label = millilitres[step.amount] else { return step }
+            return Measure(step.amount, step.unit, label)
+        }
+    }()
+
+    static let gramsPerOunce = 28.349523125
+
+    /// Weight as a US cook reads it. Each step is still handed to the scorer in grams.
+    public static let weightUS: [Measure] = {
+        let ounces: [(Double, String)] = [
+            (0.25, "¼ oz"), (0.5, "½ oz"), (0.75, "¾ oz"), (1, "1 oz"), (1.5, "1½ oz"), (2, "2 oz"), (2.5, "2½ oz"),
+            (3, "3 oz"), (4, "4 oz"), (5, "5 oz"), (6, "6 oz"), (7, "7 oz"), (8, "8 oz"), (10, "10 oz"), (12, "12 oz"),
+            (14, "14 oz"), (16, "1 lb"), (20, "1¼ lb"), (24, "1½ lb"), (32, "2 lb"),
+        ]
+        return ounces.map { Measure(($0.0 * gramsPerOunce).rounded(), .grams, $0.1) }
+    }()
+
+    public init(for ingredient: Ingredient, system: MeasureSystem) {
+        // A volume ladder needs a teaspoon weight; without one, fall back to weight
         // rather than hand the scorer an amount it can't measure.
         if ingredient.defaultUnit == .grams || ingredient.gramsPerTeaspoon == nil {
-            steps = AmountLadder.weight
-            startIndex = AmountLadder.weight.firstIndex { $0.amount == 100 } ?? 0
+            steps = system == .us ? AmountLadder.weightUS : AmountLadder.weight
+            // A quarter pound, or 100 g.
+            let start: Double = system == .us ? (4 * AmountLadder.gramsPerOunce).rounded() : 100
+            startIndex = steps.firstIndex { $0.amount == start } ?? 0
         } else {
-            steps = AmountLadder.volume
+            steps = system == .us ? AmountLadder.volume : AmountLadder.volumeMetric
             let unit = ingredient.defaultUnit
-            startIndex = AmountLadder.volume.firstIndex { $0.unit == unit && $0.amount == 1 } ?? 0
+            startIndex = steps.firstIndex { $0.unit == unit && $0.amount == 1 } ?? 0
         }
     }
 

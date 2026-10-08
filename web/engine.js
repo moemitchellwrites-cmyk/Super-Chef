@@ -161,14 +161,40 @@
   var WEIGHT = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 100, 125, 150, 200, 250, 300, 350, 400, 500, 600, 750, 1000]
     .map(function (g) { return { amount: g, unit: 'grams', label: g === 1000 ? '1 kg' : g + ' g' }; });
 
-  function ladderFor(ingredient) {
+  // Measures by region (PD-041): 'us' reads spoons, cups, ounces and pounds; 'metric' reads spoons,
+  // millilitres and grams. The amounts handed to the scorer are the same either way.
+  var ML = [[0.25, '60 ml'], [1 / 3, '80 ml'], [0.5, '125 ml'], [0.75, '180 ml'], [1, '250 ml'], [1.5, '375 ml'], [2, '500 ml'],
+    [2.5, '625 ml'], [3, '750 ml'], [4, '1 L']];
+  var VOLUME_METRIC = VOLUME.map(function (step) {
+    if (step.unit !== 'cup') return step;
+    for (var i = 0; i < ML.length; i++) if (Math.abs(ML[i][0] - step.amount) < 1e-9) return { amount: step.amount, unit: step.unit, label: ML[i][1] };
+    return step;
+  });
+  var GRAMS_PER_OUNCE = 28.349523125;
+  var WEIGHT_US = [[0.25, '¼ oz'], [0.5, '½ oz'], [0.75, '¾ oz'], [1, '1 oz'], [1.5, '1½ oz'], [2, '2 oz'], [2.5, '2½ oz'], [3, '3 oz'],
+    [4, '4 oz'], [5, '5 oz'], [6, '6 oz'], [7, '7 oz'], [8, '8 oz'], [10, '10 oz'], [12, '12 oz'], [14, '14 oz'], [16, '1 lb'],
+    [20, '1¼ lb'], [24, '1½ lb'], [32, '2 lb']]
+    .map(function (s) { return { amount: Math.round(s[0] * GRAMS_PER_OUNCE), unit: 'grams', label: s[1] }; });
+
+  function ladderFor(ingredient, system) {
+    var us = system === 'us';
     var byWeight = ingredient.defaultUnit === 'grams' || ingredient.gramsPerTeaspoon === undefined || ingredient.gramsPerTeaspoon === null;
-    var steps = byWeight ? WEIGHT : VOLUME;
+    var steps = byWeight ? (us ? WEIGHT_US : WEIGHT) : (us ? VOLUME : VOLUME_METRIC);
+    var startGrams = us ? Math.round(4 * GRAMS_PER_OUNCE) : 100;
     var start = 0;
     for (var i = 0; i < steps.length; i++) {
-      if (byWeight ? steps[i].amount === 100 : (steps[i].unit === ingredient.defaultUnit && steps[i].amount === 1)) { start = i; break; }
+      if (byWeight ? steps[i].amount === startGrams : (steps[i].unit === ingredient.defaultUnit && steps[i].amount === 1)) { start = i; break; }
     }
     return { steps: steps, startIndex: start };
+  }
+  // The stepper position a recipe line lands on in a measure system (RecipeText.measure in Swift).
+  function recipeMeasure(ingredient, line, system) {
+    var ladder = ladderFor(ingredient, system), i;
+    for (i = 0; i < ladder.steps.length; i++) {
+      if (ladder.steps[i].unit === line.unit && Math.abs(ladder.steps[i].amount - line.amount) < 0.0001) return ladder.steps[i];
+    }
+    var g = grams(ingredient, line.amount, line.unit);
+    return g === null ? null : ladder.steps[nearestIndex(ladder, ingredient, g)];
   }
 
   function nearestIndex(ladder, ingredient, targetGrams) {
@@ -313,7 +339,7 @@
   }
 
   var api = {
-    score: score, grams: grams, ladderFor: ladderFor, nearestIndex: nearestIndex, pieceCount: pieceCount,
+    score: score, grams: grams, ladderFor: ladderFor, recipeMeasure: recipeMeasure, nearestIndex: nearestIndex, pieceCount: pieceCount,
     methodChoices: methodChoices, indexContent: indexContent, VOLUME: VOLUME, WEIGHT: WEIGHT, WEIGHTS: W,
     pantryJudge: pantryJudge, pantryEssentials: pantryEssentials, pantryLimit: pantryLimit,
     judgeKitchen: judgeKitchen, judgePantry: judgePantry, sessionSummary: sessionSummary

@@ -19,23 +19,40 @@ for (const golden of goldens) {
   }
 }
 
-for (const golden of goldens.filter((g) => g.kind === 'good')) {
-  const lines = golden.lines.map((line) => {
-    const ingredient = content.ingredients[line.ingredientId];
-    const ladder = engine.ladderFor(ingredient);
-    const step = ladder.steps[engine.nearestIndex(ladder, ingredient, engine.grams(ingredient, line.amount, line.unit))];
-    return { ingredientId: line.ingredientId, amount: step.amount, unit: step.unit };
-  });
-  const result = engine.score(content, { ...golden, lines });
-  if (result.total < 85) fail(`${golden.id} on the stepper scored ${result.total}`);
+// In both measure systems (PD-041).
+for (const system of ['metric', 'us']) {
+  for (const golden of goldens.filter((g) => g.kind === 'good')) {
+    const lines = golden.lines.map((line) => {
+      const ingredient = content.ingredients[line.ingredientId];
+      const ladder = engine.ladderFor(ingredient, system);
+      const step = ladder.steps[engine.nearestIndex(ladder, ingredient, engine.grams(ingredient, line.amount, line.unit))];
+      return { ingredientId: line.ingredientId, amount: step.amount, unit: step.unit };
+    });
+    const result = engine.score(content, { ...golden, lines });
+    if (result.total < 85) fail(`${golden.id} on the ${system} stepper scored ${result.total}`);
+  }
+  for (const dishId of content.dishOrder) {
+    const recipe = content.dishes[dishId].recipe;
+    const lines = recipe.lines.map((line) => {
+      const step = engine.recipeMeasure(content.ingredients[line.ingredientId], line, system);
+      return { ingredientId: line.ingredientId, amount: step.amount, unit: step.unit };
+    });
+    const result = engine.score(content, { dishId, vessel: recipe.vessel, method: recipe.method, lines });
+    if (result.total < 85 || result.misses.length) fail(`${dishId}'s recipe read in ${system} measures scored ${result.total}`);
+  }
 }
+const tofuLine = { ingredientId: 'firm-tofu', amount: 400, unit: 'grams' }, stockLine = { ingredientId: 'stock', amount: 0.75, unit: 'cup' };
+const labels = ['metric', 'us'].map((system) => [tofuLine, stockLine].map((line) => engine.recipeMeasure(content.ingredients[line.ingredientId], line, system).label).join(', '));
+if (labels[0] !== '400 g, 180 ml' || labels[1] !== '14 oz, ¾ cup') fail('recipe measures drifted: ' + labels.join(' | '));
 
 for (const id of Object.keys(content.ingredients)) {
   const ingredient = content.ingredients[id];
-  const ladder = engine.ladderFor(ingredient);
+  const ladder = engine.ladderFor(ingredient, 'us');
   const start = ladder.steps[ladder.startIndex];
-  const expected = ingredient.defaultUnit === 'grams' ? '100 g' : '1 ' + ingredient.defaultUnit;
-  if (start.label !== expected) fail(`${id} starts at ${start.label}, wanted ${expected}`);
+  const expected = ingredient.defaultUnit === 'grams' ? '4 oz' : '1 ' + ingredient.defaultUnit;
+  if (start.label !== expected) fail(`${id} starts at ${start.label} in US measures, wanted ${expected}`);
+  const metric = engine.ladderFor(ingredient, 'metric');
+  if (ingredient.defaultUnit === 'grams' && metric.steps[metric.startIndex].label !== '100 g') fail(`${id} doesn't start at 100 g in metric`);
 }
 
 // Exact parity with the Swift engine: Tests/PantryGameTests/ParityTests.swift asserts the

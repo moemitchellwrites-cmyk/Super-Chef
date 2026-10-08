@@ -9,6 +9,7 @@ struct PantryScoreSheet: View {
     let dish: DishProfile
     let result: PantryResult
     let library: ContentLibrary
+    let measures: MeasureSystem
     /// What the forward button says: "Next dish", or "Finish" on the last round of a session.
     let nextTitle: String
     /// Set on a second go at the same dish: which result the session keeps.
@@ -98,7 +99,7 @@ struct PantryScoreSheet: View {
         .presentationDetents([.medium, .large])
         .sheet(isPresented: $showingRecipe) {
             if let recipe = dish.recipe {
-                RecipeView(dish: dish, recipe: recipe, library: library) { showingRecipe = false }
+                RecipeView(dish: dish, recipe: recipe, library: library, measures: measures) { showingRecipe = false }
             }
         }
     }

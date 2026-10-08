@@ -77,7 +77,7 @@ struct PantryRoundView: View {
         .overlay(alignment: .topLeading) { ghost }
         .sheet(isPresented: Binding(get: { model.result != nil }, set: { if !$0 { model.dismissResult() } })) {
             if let result = model.result {
-                PantryScoreSheet(dish: round.dish, result: result, library: model.library, nextTitle: nextTitle, countedNote: countedNote) {
+                PantryScoreSheet(dish: round.dish, result: result, library: model.library, measures: model.measures, nextTitle: nextTitle, countedNote: countedNote) {
                     model.dismissResult()
                 } onNext: {
                     noteId = nil

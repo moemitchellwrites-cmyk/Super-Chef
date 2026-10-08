@@ -40,7 +40,7 @@ public struct Round: Equatable, Sendable {
 
     private let ladders: [String: AmountLadder]
 
-    public init(dish: DishProfile, library: ContentLibrary, seed: UInt64) {
+    public init(dish: DishProfile, library: ContentLibrary, seed: UInt64, system: MeasureSystem = .metric) {
         self.dish = dish
         var generator = SeededGenerator(seed: seed)
         var seen = Set<String>()
@@ -51,7 +51,7 @@ public struct Round: Equatable, Sendable {
         palette = offered.shuffled(using: &generator)
         var ladders: [String: AmountLadder] = [:]
         for ingredient in offered {
-            ladders[ingredient.id] = AmountLadder(for: ingredient)
+            ladders[ingredient.id] = AmountLadder(for: ingredient, system: system)
         }
         self.ladders = ladders
         let used = Set(library.dishes.flatMap(\.methods))

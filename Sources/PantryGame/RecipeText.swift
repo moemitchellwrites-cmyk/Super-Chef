@@ -29,9 +29,25 @@ public enum RecipeText {
         return String(format: "%.1f", value)
     }
 
-    public static func line(_ line: Attempt.Line, in library: ContentLibrary) -> String {
-        let name = library.ingredient(id: line.ingredientId)?.name ?? line.ingredientId
-        return "\(amount(line.amount, line.unit)) \(lowercasedFirst(name))"
+    /// One recipe line as the player's measures read it (PD-041): the amount is shown as the step of
+    /// that ingredient's stepper nearest to it, so the recipe and the stepper always speak the same way.
+    public static func line(_ line: Attempt.Line, in library: ContentLibrary, system: MeasureSystem) -> String {
+        guard let ingredient = library.ingredient(id: line.ingredientId) else {
+            return "\(amount(line.amount, line.unit)) \(lowercasedFirst(line.ingredientId))"
+        }
+        return "\(measure(line, of: ingredient, system: system).label) \(lowercasedFirst(ingredient.name))"
+    }
+
+    /// The stepper position a recipe line lands on in a measure system.
+    public static func measure(_ line: Attempt.Line, of ingredient: Ingredient, system: MeasureSystem) -> Measure {
+        let ladder = AmountLadder(for: ingredient, system: system)
+        if let exact = ladder.steps.first(where: { $0.unit == line.unit && abs($0.amount - line.amount) < 0.0001 }) {
+            return exact
+        }
+        guard let grams = ingredient.grams(amount: line.amount, unit: line.unit) else {
+            return Measure(line.amount, line.unit, amount(line.amount, line.unit))
+        }
+        return ladder.measure(at: ladder.nearestIndex(toGrams: grams, of: ingredient))
     }
 
     /// The recipe lines that are the dish's essentials, the ones a Pantry round asks for. Marked on the recipe

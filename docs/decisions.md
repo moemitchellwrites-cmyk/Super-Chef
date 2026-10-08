@@ -270,3 +270,11 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
   1. **This is most of "Cook It Tonight", which the brief makes the first paid feature** ($3.99 a month): "turn any attempt into a real recipe with quantities, steps, and a shopping list". A reference recipe free on every score sheet leaves the paid feature with the shopping list, scaling and export. That may be the right trade (the free recipe is the proof people cook what the game taught), but it is a pricing decision and Moe's to make.
   2. **It works against "one judge line, one card, per round"** and the under-60-word card in the brief. A recipe is 150 to 200 words. In the stand-in it sits at the end of a scrolling sheet with the buttons pinned, so it costs nothing to skip; whether it replaces the card (PB-004) or sits beside it is open.
 - Consequences: Recipes go to the chef with everything else (PB-013); they are the most checkable thing in the content. `RecipeText` formats amounts ("2½ tbsp") and is tested. Not yet on the app's score sheet.
+
+## PD-030: The recipe is free to see; keeping and using it is Cook It Tonight
+- Date: 2026-10-07
+- Made by: Moe, on Claude's proposal
+- Status: accepted. Settles the first open question in PD-029. Moe wants to revisit whether seeing the recipe stays free; it stays free for now.
+- Decision: Free: the recipe appears on the score sheet after a round. Paid (Cook It Tonight): save it to a recipe list, shopping list, scale the servings, export.
+- Rationale: The free recipe proves the game teaches real cooking. The paid step is keeping and using what was learned.
+- Consequences: A screenshot gets a free player the recipe, so the saved list has to be worth more than a screenshot: the shopping list and scaling carry that. Saving is PB-019. Still open from PD-029: whether the recipe replaces the 60-word card or sits beside it.

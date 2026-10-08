@@ -31,7 +31,18 @@ struct RoundView: View {
 
     private var round: Round { model.round }
 
+    /// Below this height (points, inside the safe area) the screen takes the small-phone layout.
+    private static let compactBelow: CGFloat = 700
+
     var body: some View {
+        GeometryReader { proxy in
+            screen(compact: proxy.size.height < Self.compactBelow)
+        }
+    }
+
+    /// Layout B (PD-031): the dish, its brief, the wok and the amount stepper share one panel;
+    /// the six methods are one row under it.
+    private func screen(compact: Bool) -> some View {
         VStack(spacing: 8) {
             RoundHeader(
                 mode: $mode,
@@ -40,23 +51,12 @@ struct RoundView: View {
                 onStartOver: { model.startOver() },
                 onToggleMute: onToggleMute
             )
-            header
-            if let brief = round.dish.brief {
-                Text(brief)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(3)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .accessibilityIdentifier("brief")
-            }
-            wok
+            panel(compact: compact)
             methodRow
-            stepperBar
-            palette
+            palette(compact: compact)
             serveButton
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .coordinateSpace(name: Self.space)
         .overlay(alignment: .topLeading) { ghost }
@@ -76,56 +76,69 @@ struct RoundView: View {
         .onAppear { model.warmUp() }
     }
 
-    // MARK: Header
+    // MARK: Panel
 
-    private var header: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("\(model.library.cuisine.name) · Wok".uppercased())
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                // Until the session loop (PB-005) deals the dishes, pick one here.
-                Menu {
-                    ForEach(model.library.dishes) { dish in
-                        Button(dish.name) { model.start(dish) }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Text(round.dish.name)
-                            .font(.title3.weight(.bold))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
-                        Image(systemName: "chevron.down")
-                            .font(.caption.weight(.bold))
-                    }
-                    .foregroundStyle(.primary)
-                }
-                .accessibilityIdentifier("dish-menu")
+    private func panel(compact: Bool) -> some View {
+        VStack(alignment: .leading, spacing: compact ? 3 : 5) {
+            titleRow
+            if let brief = round.dish.brief {
+                Text(brief)
+                    .font(.footnote)
+                    .foregroundStyle(PanelInk.soft)
+                    .lineLimit(compact ? 1 : 3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("brief")
             }
+            SpriteView(scene: model.scene)
+                .aspectRatio(WokScene.logicalSize.width / WokScene.logicalSize.height, contentMode: .fit)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .accessibilityElement()
+                .accessibilityLabel(wokSummary)
+                .accessibilityIdentifier("wok")
+            stepperBar(compact: compact)
+        }
+        .padding(EdgeInsets(top: compact ? 10 : 12, leading: 14, bottom: compact ? 8 : 10, trailing: 14))
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(PanelInk.panel))
+        .background {
+            // Where the panel sits in the round's coordinate space, so a drag knows when it is over it.
+            GeometryReader { proxy in
+                let frame = proxy.frame(in: .named(Self.space))
+                Color.clear
+                    .onAppear { wokFrame = frame }
+                    .onChange(of: frame) { _, moved in wokFrame = moved }
+            }
+        }
+    }
+
+    private var titleRow: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            // Until the session loop (PB-005) deals the dishes, pick one here.
+            Menu {
+                ForEach(model.library.dishes) { dish in
+                    Button(dish.name) { model.start(dish) }
+                }
+            } label: {
+                HStack(spacing: 4) {
+                    Text(round.dish.name)
+                        .font(.system(.title3, design: .rounded).weight(.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                    Image(systemName: "chevron.down")
+                        .font(.caption.weight(.bold))
+                }
+                .foregroundStyle(PanelInk.chili)
+            }
+            .accessibilityIdentifier("dish-menu")
+            Text("\(model.library.cuisine.name) · Wok".uppercased())
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(PanelInk.soft)
+                .lineLimit(1)
             Spacer(minLength: 0)
         }
     }
 
     // MARK: Wok
-
-    private var wok: some View {
-        SpriteView(scene: model.scene)
-            .aspectRatio(WokScene.logicalSize.width / WokScene.logicalSize.height, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-            .background {
-                // Where the wok sits in the round's coordinate space, so a drag knows when it is over it.
-                GeometryReader { proxy in
-                    let frame = proxy.frame(in: .named(Self.space))
-                    Color.clear
-                        .onAppear { wokFrame = frame }
-                        .onChange(of: frame) { _, moved in wokFrame = moved }
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .accessibilityElement()
-            .accessibilityLabel(wokSummary)
-            .accessibilityIdentifier("wok")
-    }
 
     private var wokSummary: String {
         if round.entries.isEmpty { return "Wok, empty" }
@@ -157,17 +170,19 @@ struct RoundView: View {
     // MARK: Method
 
     private var methodRow: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 3), spacing: 6) {
+        HStack(spacing: 4) {
             ForEach(round.methodChoices, id: \.self) { method in
                 let chosen = round.method == method
                 Button {
                     model.choose(method)
                 } label: {
                     Text(method.title)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.system(size: 12, weight: chosen ? .bold : .semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 32)
-                        .background(Capsule().fill(chosen ? Color.orange : Color.gray.opacity(0.16)))
+                        .frame(height: 44)
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(chosen ? Color.orange : Color.gray.opacity(0.16)))
                         .foregroundStyle(chosen ? Color.white : Color.primary)
                 }
                 .buttonStyle(.plain)
@@ -179,79 +194,134 @@ struct RoundView: View {
 
     // MARK: Stepper
 
-    private var stepperBar: some View {
+    /// The amount of the selected ingredient, inside the wok's panel. Two rows on a regular phone,
+    /// one on a small one, where take-out is a cross (the one place it has no words, for width).
+    private func stepperBar(compact: Bool) -> some View {
         Group {
             if let id = round.selectedId, let ingredient = round.ingredient(id), let ladder = round.ladder(for: id),
                let entry = round.entry(for: id) {
                 let measure = ladder.measure(at: entry.stepIndex)
-                VStack(spacing: 2) {
-                    HStack(spacing: 8) {
-                        Text(IngredientLook(for: ingredient).emoji)
-                        Text(ingredient.name)
-                            .font(.subheadline.weight(.semibold))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.6)
-                        Spacer(minLength: 4)
-                        Text(measure.label)
-                            .font(.headline.monospacedDigit())
-                            .accessibilityIdentifier("amount")
-                        Button(role: .destructive) {
-                            model.removeSelected()
-                        } label: {
-                            Image(systemName: "trash")
-                                .frame(width: 32, height: 32)
+                if compact {
+                    VStack(alignment: .leading, spacing: 0) {
+                        stepperName(ingredient, size: 11)
+                        HStack(spacing: 6) {
+                            stepperControls(ingredient: ingredient, ladder: ladder, entry: entry, measure: measure)
+                            amountText(measure, size: 16)
+                                .frame(width: 62, alignment: .trailing)
+                            Button {
+                                model.removeSelected()
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .frame(width: 36, height: 36)
+                                    .background(Circle().fill(Color.white.opacity(0.7)))
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(PanelInk.chili)
+                            .accessibilityLabel("Take \(ingredient.chipName) out")
                         }
-                        .accessibilityLabel("Take \(ingredient.chipName) out")
                     }
-                    HStack(spacing: 10) {
-                        Button {
-                            model.stepSelected(by: -1)
-                        } label: {
-                            Image(systemName: "minus.circle.fill").font(.title)
+                } else {
+                    VStack(spacing: 4) {
+                        HStack(spacing: 8) {
+                            stepperName(ingredient, size: 13)
+                            Spacer(minLength: 4)
+                            amountText(measure, size: 18)
+                            Button {
+                                model.removeSelected()
+                            } label: {
+                                Text("Take out")
+                                    .font(.system(size: 12, weight: .bold))
+                                    .padding(.horizontal, 10)
+                                    .frame(height: 32)
+                                    .background(Capsule().fill(Color.white.opacity(0.7)))
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(PanelInk.chili)
+                            .accessibilityLabel("Take \(ingredient.chipName) out")
                         }
-                        .disabled(entry.stepIndex == 0)
-                        .accessibilityLabel("Less")
-                        Slider(
-                            value: Binding(
-                                get: { Double(entry.stepIndex) },
-                                set: { model.setSelectedStep(Int($0.rounded())) }
-                            ),
-                            in: 0...Double(ladder.steps.count - 1),
-                            step: 1
-                        )
-                        .accessibilityLabel("Amount of \(ingredient.chipName)")
-                        .accessibilityValue(measure.label)
-                        Button {
-                            model.stepSelected(by: 1)
-                        } label: {
-                            Image(systemName: "plus.circle.fill").font(.title)
+                        HStack(spacing: 10) {
+                            stepperControls(ingredient: ingredient, ladder: ladder, entry: entry, measure: measure)
                         }
-                        .disabled(entry.stepIndex == ladder.steps.count - 1)
-                        .accessibilityLabel("More")
                     }
                 }
             } else {
                 Text("Tap an ingredient, or drag it into the wok.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+                    .foregroundStyle(PanelInk.soft)
                     .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
             }
         }
+        .padding(.horizontal, compact ? 6 : 10)
         .frame(maxWidth: .infinity)
-        .frame(height: 76)
-        .padding(.horizontal, 10)
-        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Color.gray.opacity(0.10)))
+        .frame(height: compact ? 58 : 84)
+        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Color.white.opacity(0.55)))
+    }
+
+    private func stepperName(_ ingredient: Ingredient, size: CGFloat) -> some View {
+        Text("\(IngredientLook(for: ingredient).emoji) \(ingredient.name)")
+            .font(.system(size: size, weight: .semibold))
+            .foregroundStyle(PanelInk.ink)
+            .lineLimit(1)
+            .minimumScaleFactor(0.6)
+    }
+
+    private func amountText(_ measure: Measure, size: CGFloat) -> some View {
+        Text(measure.label)
+            .font(.system(size: size, weight: .semibold, design: .rounded).monospacedDigit())
+            .foregroundStyle(PanelInk.ink)
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .accessibilityIdentifier("amount")
+    }
+
+    /// Less, the slider, more. The caller lays them out in a row.
+    @ViewBuilder
+    private func stepperControls(ingredient: Ingredient, ladder: AmountLadder, entry: Round.Entry, measure: Measure) -> some View {
+        Button {
+            model.stepSelected(by: -1)
+        } label: {
+            Image(systemName: "minus.circle.fill").font(.system(size: 34))
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(PanelInk.chili)
+        .opacity(entry.stepIndex == 0 ? 0.35 : 1)
+        .disabled(entry.stepIndex == 0)
+        .accessibilityLabel("Less")
+        Slider(
+            value: Binding(
+                get: { Double(entry.stepIndex) },
+                set: { model.setSelectedStep(Int($0.rounded())) }
+            ),
+            in: 0...Double(ladder.steps.count - 1),
+            step: 1
+        )
+        .tint(PanelInk.chili)
+        .accessibilityLabel("Amount of \(ingredient.chipName)")
+        .accessibilityValue(measure.label)
+        Button {
+            model.stepSelected(by: 1)
+        } label: {
+            Image(systemName: "plus.circle.fill").font(.system(size: 34))
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(PanelInk.chili)
+        .opacity(entry.stepIndex == ladder.steps.count - 1 ? 0.35 : 1)
+        .disabled(entry.stepIndex == ladder.steps.count - 1)
+        .accessibilityLabel("More")
     }
 
     // MARK: Palette
 
-    private var palette: some View {
+    private func palette(compact: Bool) -> some View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 6) {
             ForEach(round.palette) { ingredient in
                 PaletteChip(
                     ingredient: ingredient,
                     amount: round.measure(for: ingredient.id)?.label,
-                    isSelected: round.selectedId == ingredient.id
+                    isSelected: round.selectedId == ingredient.id,
+                    height: compact ? 46 : 50
                 )
                 .opacity(drag?.ingredientId == ingredient.id ? 0.35 : 1)
                 .onTapGesture {
@@ -299,6 +369,7 @@ private struct PaletteChip: View {
     let ingredient: Ingredient
     let amount: String?
     let isSelected: Bool
+    let height: CGFloat
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -318,7 +389,7 @@ private struct PaletteChip: View {
         }
         .padding(.horizontal, 6)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 44)
+        .frame(height: height)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(amount == nil ? Color.gray.opacity(0.14) : Color.orange.opacity(0.16))

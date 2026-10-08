@@ -353,8 +353,7 @@ private struct PantryChip: View {
             .allowsTightening(true)
             .minimumScaleFactor(0.85)
             .multilineTextAlignment(.leading)
-            .padding(.leading, 6)
-            .padding(.trailing, isPicked ? 20 : 6)
+            .padding(.horizontal, 6)
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: height)
             .background(

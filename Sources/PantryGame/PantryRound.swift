@@ -67,7 +67,7 @@ public enum PantryJudge {
 }
 
 /// The two ways to play a dish (PD-025): Pantry asks what goes in, Kitchen asks how much and how.
-public enum GameMode: String, CaseIterable, Sendable {
+public enum GameMode: String, CaseIterable, Codable, Sendable {
     case pantry, kitchen
 
     public var title: String {

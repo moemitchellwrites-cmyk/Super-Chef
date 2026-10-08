@@ -279,6 +279,25 @@
     return result.found.length + ' of ' + result.essentials + '. Start with ' + result.missed[0] + '.';
   }
 
+  // What the summary says about a finished session: Sources/PantryGame/Session.swift, SessionSummary.
+  function sessionSummary(mode, records) {
+    var points = 0, outOf = 0, sum = 0, best = -1, revisit = -1, i;
+    function fraction(r) { return r.outOf > 0 ? r.points / r.outOf : 0; }
+    for (i = 0; i < records.length; i++) {
+      points += records[i].points; outOf += records[i].outOf; sum += fraction(records[i]);
+      if (best < 0 || fraction(records[i]) > fraction(records[best])) best = i;
+      if (revisit < 0 || fraction(records[i]) < fraction(records[revisit])) revisit = i;
+    }
+    var average = records.length ? sum / records.length : 0;
+    if (records.length < 2 || revisit === best || fraction(records[revisit]) >= 1) revisit = -1;
+    return {
+      headlineNumber: mode === 'kitchen' ? String(records.length ? Math.round(points / records.length) : 0) : points + ' of ' + outOf,
+      headlineCaption: (mode === 'kitchen' ? 'average across ' : 'essentials found across ') + records.length + ' dishes',
+      line: average >= 0.85 ? 'A strong service.' : average >= 0.65 ? 'Solid cooking, with a dish or two to tighten.' : 'A learning service. The cards are the shortcut.',
+      best: best, revisit: revisit
+    };
+  }
+
   var METHOD_ORDER = ['stir-fry', 'deep-fry', 'dry-fry', 'braise', 'boil', 'simmer', 'steam', 'poach', 'bake'];
   function methodChoices(content) {
     var used = {};
@@ -297,7 +316,7 @@
     score: score, grams: grams, ladderFor: ladderFor, nearestIndex: nearestIndex, pieceCount: pieceCount,
     methodChoices: methodChoices, indexContent: indexContent, VOLUME: VOLUME, WEIGHT: WEIGHT, WEIGHTS: W,
     pantryJudge: pantryJudge, pantryEssentials: pantryEssentials, pantryLimit: pantryLimit,
-    judgeKitchen: judgeKitchen, judgePantry: judgePantry
+    judgeKitchen: judgeKitchen, judgePantry: judgePantry, sessionSummary: sessionSummary
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.PantryEngine = api;

@@ -23,6 +23,8 @@ final class RoundViewModel {
     @ObservationIgnored let scene = WokScene.make()
     @ObservationIgnored private let sound: SoundPlayer
     @ObservationIgnored private var fixedSeed: UInt64?
+    /// Called after every serve that produced a verdict. The session uses it to note the first one.
+    @ObservationIgnored var onServed: (() -> Void)?
 
     /// - Parameters:
     ///   - dishId: the dish to open on; the first in the library when nil or unknown.
@@ -113,6 +115,7 @@ final class RoundViewModel {
     func serve() {
         guard let attempt = round.attempt(timestamp: Date()) else { return }
         result = try? library.score(attempt)
+        if result != nil { onServed?() }
     }
 
     func dismissResult() {

@@ -104,6 +104,12 @@ run_on() {
   shot "$udid" "$label-7-kitchen-bare"
   must_be_alive "$pid" "$name" "kitchen, bare burner" || FAILED=1
 
+  # A whole Pantry session, through to the summary.
+  pid="$(launch "$udid" -pantryDemoSession)"
+  sleep 16
+  shot "$udid" "$label-8-summary"
+  must_be_alive "$pid" "$name" "session summary" || FAILED=1
+
   xcrun simctl shutdown "$udid" || true
 }
 

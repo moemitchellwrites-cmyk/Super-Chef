@@ -342,3 +342,39 @@ Addendum to PD-035 (Moe, 2026-10-08): the wok stays in Pantry mode. It is a neut
 - Rationale: A rule without units survives the US and metric split (PB-026) and is what a cook remembers at the stove. One card per dish is the MVP in the brief; a card chosen by what the player fumbled is the richer version and needs more cards than ten.
 - Consequences: The same card shows every time a dish is played, win or lose. That will wear thin within a session of repeats; the session loop (PB-005) deals five different dishes, which hides it for now. Card history and "earned" cards are not built. The cards are the most quotable content in the game and the first thing the chef should red-pen.
 
+## PD-038: Tracks are the purchase; no monthly plan at launch
+- Date: 2026-10-08
+- Made by: Claude, on Moe's instruction to make the calls and report them ("make the choices for what's best moving forward"). Supersedes the pricing table in the brief until Moe says otherwise.
+- Status: accepted. Nothing built depends on it yet (the MVP has no purchases), so it is cheap to reverse.
+- Decision:
+  - **Free:** random dishes, the score, the judge's line, the card, and seeing the recipe (unchanged, PD-030).
+  - **A cuisine track, $9.99 once:** its lessons, and the "Cook It Tonight" tools for that cuisine's recipes (save, shopping list, scaling, export). The tools are not sold separately and there is no $3.99 monthly plan.
+  - **A recurring plan** is revisited only when there is a recurring reason to pay: three or more cuisines and new dishes arriving on a schedule, sold as a pass to all of them.
+  - **Grocery hand-off** (PB-024) is a convenience budgeted at zero revenue, built only after Instacart confirms its developer programme is open.
+  - **No paid acquisition** until measured net revenue per install passes $1.
+  - **The judge stays canned for free players** through the MVP (closes PB-032).
+- Rationale: the market and money review (`reports/Pantry market and money review.md`). The monthly plan sold what recipe managers sell once for $4.99 to $24.99, and low-priced monthly plans keep about one subscriber in ten for a year; a base-case subscriber nets about $10 in year one against $8.49 for one track sale. Folding the tools into the track makes the track worth more and leaves one thing to buy. Paid installs cost $2.91 to $4.63 against about $0.27 earned.
+- Consequences: Revenue is capped per player at $9.99 times the cuisines owned, so growth depends on shipping cuisines and on reach. PB-019 (save a recipe) becomes part of the track. The number that matters most, how many players buy a track, has no benchmark and has to be measured in the first few thousand installs.
+
+## PD-039: A session is five dealt dishes in one mode; the first serve of a round counts
+- Date: 2026-10-08
+- Made by: Claude (PB-005)
+- Status: accepted, for Moe's review in the stand-in.
+- Decision:
+  - A session is five different dishes in one mode, dealt up front. Each mode has its own session. The next session brings the other five dishes.
+  - The dish is dealt, not chosen: the dish menu is gone. The panel shows "Sichuan · 2 of 5".
+  - The score sheet's forward button is "Next dish", and "Finish" on the fifth round, which opens the summary: one number (Kitchen: the average; Pantry: essentials found of all there were), one plain line, the five dishes with the best one and one "worth another go" marked, that dish's card, and "New session".
+  - **The first serve of a round is the one the session keeps.** After it the player has seen the verdict, so serving the same dish again is practice. The sheet says so when the second result differs.
+  - No timer, nothing lost by stopping: a session waits where it was left, including on the summary.
+- Rationale: The brief's session ("3 to 5 rounds, then a summary") and its MVP question. Dealing the dishes is what makes it a session and not a menu. Counting the first serve keeps the summary honest without forbidding a second go, which is where the learning is.
+- Alternatives: count the last serve (a Pantry player would read the answer off the sheet and serve it back); forbid a second serve (shames curiosity).
+- Consequences: A player can no longer pick a dish to practise; that returns with tracks or a practice mode if it is missed. The summary line has three wide bands on purpose. Brigade titles (PB-016) can now be built on session records.
+
+## PD-040: Progress is one JSON file, not SwiftData, for the MVP
+- Date: 2026-10-08
+- Made by: Claude (PB-005). A departure from the brief's stack table.
+- Status: accepted for the MVP.
+- Decision: `GameProgress` (sessions in play, finished sessions) is a Codable value written to `Application Support/Pantry/progress.json` by `ProgressFile`. A missing or unreadable file is an empty start.
+- Rationale: The MVP stores a few kilobytes with no queries. A Codable file is testable on Linux with the rest of the rules, where SwiftData is not, and this project can only compile Apple-only code on CI. SwiftData earns its place when purchases, card history and saved recipes arrive.
+- Consequences: Moving to SwiftData later means a one-time import of this file. Nothing leaves the phone either way.
+

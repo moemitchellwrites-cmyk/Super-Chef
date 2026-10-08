@@ -99,5 +99,16 @@ const drowned = engine.score(content, {
 });
 if (drowned.total > 75) fail(`every ratio too high scored ${drowned.total}`);
 
+// The session summary, with the same numbers as SessionTests.swift.
+const kitchenSession = engine.sessionSummary('kitchen', [90, 60, 100, 75, 40].map((points) => ({ points, outOf: 100 })));
+if (kitchenSession.headlineNumber !== '73' || kitchenSession.line !== 'Solid cooking, with a dish or two to tighten.' ||
+    kitchenSession.best !== 2 || kitchenSession.revisit !== 4) fail('kitchen session summary drifted: ' + JSON.stringify(kitchenSession));
+const cleanPantry = engine.sessionSummary('pantry', [[6, 6], [7, 7], [5, 5], [8, 8], [5, 5]].map(([points, outOf]) => ({ points, outOf })));
+if (cleanPantry.headlineNumber !== '31 of 31' || cleanPantry.line !== 'A strong service.' || cleanPantry.best !== 0 || cleanPantry.revisit !== -1) {
+  fail('clean pantry session summary drifted: ' + JSON.stringify(cleanPantry));
+}
+const roughPantry = engine.sessionSummary('pantry', [[2, 6], [3, 7], [1, 5], [4, 8], [2, 5]].map(([points, outOf]) => ({ points, outOf })));
+if (roughPantry.line !== 'A learning service. The cards are the shortcut.' || roughPantry.revisit !== 2) fail('rough pantry session summary drifted');
+
 if (failures > 0) process.exit(1);
 console.log(`ok: ${goldens.length} goldens in range, good goldens reachable on the stepper, parity file matches, basil mapo ${demo.total}, every-ratio-high ${drowned.total}`);

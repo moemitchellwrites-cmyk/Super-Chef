@@ -11,6 +11,10 @@ struct PantryRoundView: View {
     @State private var model: PantryRoundViewModel
     @Binding private var mode: GameMode
     private let isMuted: Bool
+    private let progressLabel: String
+    private let nextTitle: String
+    private let countedNote: String?
+    private let onNext: () -> Void
     private let onToggleMute: () -> Void
 
     @State private var drag: Drag?
@@ -27,10 +31,19 @@ struct PantryRoundView: View {
         var location: CGPoint
     }
 
-    init(model: PantryRoundViewModel, mode: Binding<GameMode>, isMuted: Bool, onToggleMute: @escaping () -> Void) {
+    /// - Parameters:
+    ///   - progressLabel: where the round sits in its session, "2 of 5".
+    ///   - nextTitle: what the verdict sheet's forward button says.
+    ///   - onNext: settles the served round and moves the session on.
+    init(model: PantryRoundViewModel, mode: Binding<GameMode>, isMuted: Bool, progressLabel: String, nextTitle: String,
+         countedNote: String?, onNext: @escaping () -> Void, onToggleMute: @escaping () -> Void) {
         _model = State(initialValue: model)
         _mode = mode
         self.isMuted = isMuted
+        self.progressLabel = progressLabel
+        self.nextTitle = nextTitle
+        self.countedNote = countedNote
+        self.onNext = onNext
         self.onToggleMute = onToggleMute
     }
 
@@ -64,10 +77,11 @@ struct PantryRoundView: View {
         .overlay(alignment: .topLeading) { ghost }
         .sheet(isPresented: Binding(get: { model.result != nil }, set: { if !$0 { model.dismissResult() } })) {
             if let result = model.result {
-                PantryScoreSheet(dish: round.dish, result: result, library: model.library) {
+                PantryScoreSheet(dish: round.dish, result: result, library: model.library, nextTitle: nextTitle, countedNote: countedNote) {
                     model.dismissResult()
-                } onStartOver: {
-                    model.startOver()
+                } onNext: {
+                    noteId = nil
+                    onNext()
                 }
             }
         }
@@ -132,30 +146,19 @@ struct PantryRoundView: View {
 
     private var titleRow: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            // Until the session loop (PB-005) deals the dishes, pick one here.
-            Menu {
-                ForEach(model.library.dishes) { dish in
-                    Button(dish.name) {
-                        noteId = nil
-                        model.start(dish)
-                    }
-                }
-            } label: {
-                HStack(spacing: 4) {
-                    Text(round.dish.name)
-                        .font(.system(.title3, design: .rounded).weight(.semibold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                    Image(systemName: "chevron.down")
-                        .font(.caption.weight(.bold))
-                }
+            Text(round.dish.name)
+                .font(.system(.title3, design: .rounded).weight(.semibold))
                 .foregroundStyle(PanelInk.chili)
-            }
-            .accessibilityIdentifier("dish-menu")
-            Text(model.library.cuisine.name.uppercased())
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("dish-name")
+            Text("\(model.library.cuisine.name) · \(progressLabel)".uppercased())
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(PanelInk.soft)
                 .lineLimit(1)
+                .accessibilityLabel("\(model.library.cuisine.name), round \(progressLabel)")
+                .accessibilityIdentifier("round-progress")
             Spacer(minLength: 0)
         }
     }

@@ -12,6 +12,10 @@ import PantryScoring
 struct RoundView: View {
     @State private var model: RoundViewModel
     @Binding private var mode: GameMode
+    private let progressLabel: String
+    private let nextTitle: String
+    private let countedNote: String?
+    private let onNext: () -> Void
     private let onToggleMute: () -> Void
     @State private var drag: Drag?
     @State private var wokFrame: CGRect = .zero
@@ -23,9 +27,18 @@ struct RoundView: View {
         var location: CGPoint
     }
 
-    init(model: RoundViewModel, mode: Binding<GameMode>, onToggleMute: @escaping () -> Void) {
+    /// - Parameters:
+    ///   - progressLabel: where the round sits in its session, "2 of 5".
+    ///   - nextTitle: what the score sheet's forward button says.
+    ///   - onNext: settles the served round and moves the session on.
+    init(model: RoundViewModel, mode: Binding<GameMode>, progressLabel: String, nextTitle: String,
+         countedNote: String?, onNext: @escaping () -> Void, onToggleMute: @escaping () -> Void) {
         _model = State(initialValue: model)
         _mode = mode
+        self.progressLabel = progressLabel
+        self.nextTitle = nextTitle
+        self.countedNote = countedNote
+        self.onNext = onNext
         self.onToggleMute = onToggleMute
     }
 
@@ -62,10 +75,10 @@ struct RoundView: View {
         .overlay(alignment: .topLeading) { ghost }
         .sheet(isPresented: Binding(get: { model.result != nil }, set: { if !$0 { model.dismissResult() } })) {
             if let result = model.result {
-                ScoreSheet(dish: round.dish, breakdown: result, library: model.library) {
+                ScoreSheet(dish: round.dish, breakdown: result, library: model.library, nextTitle: nextTitle, countedNote: countedNote) {
                     model.dismissResult()
-                } onStartOver: {
-                    model.startOver()
+                } onNext: {
+                    onNext()
                 }
             }
         }
@@ -121,27 +134,19 @@ struct RoundView: View {
 
     private var titleRow: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            // Until the session loop (PB-005) deals the dishes, pick one here.
-            Menu {
-                ForEach(model.library.dishes) { dish in
-                    Button(dish.name) { model.start(dish) }
-                }
-            } label: {
-                HStack(spacing: 4) {
-                    Text(round.dish.name)
-                        .font(.system(.title3, design: .rounded).weight(.semibold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                    Image(systemName: "chevron.down")
-                        .font(.caption.weight(.bold))
-                }
+            Text(round.dish.name)
+                .font(.system(.title3, design: .rounded).weight(.semibold))
                 .foregroundStyle(PanelInk.chili)
-            }
-            .accessibilityIdentifier("dish-menu")
-            Text(model.library.cuisine.name.uppercased())
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("dish-name")
+            Text("\(model.library.cuisine.name) · \(progressLabel)".uppercased())
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(PanelInk.soft)
                 .lineLimit(1)
+                .accessibilityLabel("\(model.library.cuisine.name), round \(progressLabel)")
+                .accessibilityIdentifier("round-progress")
             Spacer(minLength: 0)
             if let vessel = round.vessel {
                 vesselSwitch(vessel)

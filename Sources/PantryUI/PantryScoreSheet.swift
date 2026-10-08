@@ -9,8 +9,12 @@ struct PantryScoreSheet: View {
     let dish: DishProfile
     let result: PantryResult
     let library: ContentLibrary
+    /// What the forward button says: "Next dish", or "Finish" on the last round of a session.
+    let nextTitle: String
+    /// Set on a second go at the same dish: which result the session keeps.
+    let countedNote: String?
     let onKeepCooking: () -> Void
-    let onStartOver: () -> Void
+    let onNext: () -> Void
 
     @State private var showingRecipe = false
 
@@ -71,12 +75,21 @@ struct PantryScoreSheet: View {
                         .controlSize(.large)
                         .accessibilityIdentifier("see-recipe")
                 }
+                if let countedNote {
+                    Text(countedNote)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("counted-note")
+                }
                 HStack(spacing: 10) {
                     Button("Keep cooking", action: onKeepCooking)
                         .buttonStyle(.bordered)
-                    Button("Start over", action: onStartOver)
+                    Button(nextTitle, action: onNext)
                         .buttonStyle(.borderedProminent)
                         .tint(.orange)
+                        .accessibilityIdentifier("next")
                 }
                 .controlSize(.large)
             }

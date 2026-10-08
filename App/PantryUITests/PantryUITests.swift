@@ -8,7 +8,7 @@ final class PantryUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-pantryMuted", "-pantryMode", "kitchen"]
+        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu", "-pantryMode", "kitchen"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
         // A Kitchen round starts with a bare burner (PD-035). These tests cook in the wok.
@@ -25,7 +25,7 @@ final class PantryUITests: XCTestCase {
     }
 
     func testTheRoundOpensOnMapoTofuWithNothingToServe() {
-        XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
+        XCTAssertTrue(app.staticTexts["dish-name"].label.contains("Mapo tofu"), app.staticTexts["dish-name"].label)
         XCTAssertTrue(app.staticTexts["brief"].label.hasPrefix("Soft tofu"), app.staticTexts["brief"].label)
         XCTAssertFalse(app.buttons["serve"].isEnabled)
         XCTAssertEqual(app.buttons["serve"].label, "Add something to the wok")
@@ -104,7 +104,7 @@ final class PantryModeUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-pantryMuted"]
+        app.launchArguments = ["-pantryMuted", "-pantryFreshProgress", "-pantryFirstDish", "mapo-tofu"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
     }
@@ -119,7 +119,7 @@ final class PantryModeUITests: XCTestCase {
 
     func testTheAppOpensInPantryModeSayingHowManyEssentialsToFind() {
         XCTAssertTrue(app.buttons["mode-pantry"].isSelected)
-        XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
+        XCTAssertTrue(app.staticTexts["dish-name"].label.contains("Mapo tofu"), app.staticTexts["dish-name"].label)
         XCTAssertEqual(app.staticTexts["ask"].label, "Pick the 6 essentials")
         XCTAssertEqual(picks.label, "0 of 6 picked")
         XCTAssertFalse(app.buttons["serve"].isEnabled)
@@ -163,7 +163,7 @@ final class PantryModeUITests: XCTestCase {
     func testSwitchingToKitchenKeepsTheDish() {
         app.buttons["mode-kitchen"].tap()
         XCTAssertTrue(app.buttons["method-braise"].waitForExistence(timeout: 5), "Kitchen mode didn't appear")
-        XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
+        XCTAssertTrue(app.staticTexts["dish-name"].label.contains("Mapo tofu"), app.staticTexts["dish-name"].label)
 
         // The burner is bare: nothing goes in until there is something to put it in.
         XCTAssertEqual(app.buttons["serve"].label, "Choose a wok or a pot")
@@ -180,5 +180,38 @@ final class PantryModeUITests: XCTestCase {
         // Swapping the vessel keeps what is in it.
         app.buttons["vessel-switch"].tap()
         XCTAssertEqual(app.otherElements["wok"].label, "Wok with 100 g Firm tofu")
+    }
+
+    // MARK: The session (PB-005)
+
+    private func waitForLabel(_ element: XCUIElement, _ label: String, timeout: TimeInterval = 15) {
+        let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@", label), object: element)
+        XCTAssertEqual(XCTWaiter().wait(for: [expectation], timeout: timeout), .completed, "never read \"\(label)\"; it reads \"\(element.label)\"")
+    }
+
+    func testFiveRoundsEndInASummaryAndThenANewSession() {
+        let progress = app.staticTexts["round-progress"]
+        XCTAssertEqual(progress.label, "Sichuan, round 1 of 5")
+        var dishes: [String] = []
+        for round in 1...5 {
+            dishes.append(app.staticTexts["dish-name"].label)
+            app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "chip-")).firstMatch.tap()
+            app.buttons["serve"].tap()
+            let next = app.buttons["next"]
+            XCTAssertTrue(next.waitForExistence(timeout: 10), "round \(round) showed no verdict")
+            XCTAssertEqual(next.label, round == 5 ? "Finish" : "Next dish")
+            next.tap()
+            if round < 5 {
+                waitForLabel(progress, "Sichuan, round \(round + 1) of 5")
+            }
+        }
+        XCTAssertEqual(dishes.first, "Mapo tofu")
+        XCTAssertEqual(Set(dishes).count, 5, "a session deals five different dishes: \(dishes)")
+
+        XCTAssertTrue(app.staticTexts["session-total"].waitForExistence(timeout: 15), "the fifth round led to no summary")
+        XCTAssertTrue(app.staticTexts["session-total"].label.contains(" of "), app.staticTexts["session-total"].label)
+        app.buttons["new-session"].tap()
+        waitForLabel(progress, "Sichuan, round 1 of 5")
+        XCTAssertFalse(app.staticTexts["session-total"].exists)
     }
 }

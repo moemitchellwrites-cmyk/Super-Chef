@@ -21,6 +21,8 @@ final class PantryRoundViewModel {
     @ObservationIgnored let scene = WokScene.make(vessel: .wok)
     @ObservationIgnored private let sound: SoundPlayer
     @ObservationIgnored private var fixedSeed: UInt64?
+    /// Called after every serve that produced a verdict. The session uses it to note the first one.
+    @ObservationIgnored var onServed: (() -> Void)?
 
     /// How many pieces one pick shows in the wok. There are no amounts in this mode.
     private static let piecesPerPick = 2
@@ -84,6 +86,7 @@ final class PantryRoundViewModel {
 
     func serve() {
         result = round.result(in: library)
+        if result != nil { onServed?() }
     }
 
     func dismissResult() {

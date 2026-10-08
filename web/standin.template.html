@@ -54,7 +54,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .top { display: flex; align-items: center; gap: 8px; }
 .top .spacer { flex: 1; }
 .names { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
-.names .dish { flex: 0 1 auto; min-width: 0; }
+.names .dish { flex: 0 1 auto; min-width: 0; margin: 0; white-space: nowrap; overflow: hidden; }
 .eyebrow { flex: none; white-space: nowrap; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
 .dish {
   font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.2; color: var(--chili);
@@ -229,6 +229,16 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .card .card-rule { font-weight: 700; }
 .card .card-try { font-size: 13px; color: var(--ink-soft); }
 .misses-fold summary { cursor: pointer; padding: 6px 0; }
+.verdict { display: flex; flex-direction: column; gap: 12px; }
+.summary-total { font-size: 60px; }
+.summary-caption { margin: 0; text-align: center; font-size: 14px; color: var(--ink-soft); }
+.summary-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.summary-rows li { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+.summary-rows span { display: flex; flex-direction: column; font-weight: 500; }
+.summary-rows small { font-size: 12px; font-weight: 600; color: var(--chili); }
+.summary-rows b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.summary-for { margin: 0 0 6px; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.sheet .actions.single { grid-template-columns: 1fr; }
 .judge { margin: 0; text-align: center; font-family: var(--display); font-weight: 500; font-size: 18px; line-height: 1.3; }
 .capped { font-size: 13px; line-height: 1.35; background: var(--chili-wash); border-radius: 10px; padding: 8px 10px; }
 .groups { display: flex; flex-direction: column; gap: 10px; }
@@ -277,7 +287,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
           <path d="M5 12a7 7 0 1 0 2.2-5.1"></path><path d="M4 4.5v4h4"></path>
         </svg>
       </button>
-      <span class="tip" id="restart-tip" role="tooltip">Start over: empties the wok and reshuffles the ingredients</span>
+      <span class="tip" id="restart-tip" role="tooltip">Start over: clears the round</span>
     </span>
     <button class="icon-button sound" id="mute" aria-label="Turn sound off" aria-pressed="false">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -292,7 +302,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   <!-- Layout B, "stage" (PB-025): the dish, its brief and the round's progress live in the wok's panel. -->
   <section class="scene" id="scene">
     <div class="names">
-      <select class="dish" id="dish" aria-label="Dish"></select>
+      <h1 class="dish" id="dish-name"></h1>
       <span class="eyebrow" id="eyebrow">Sichuan · stand-in</span>
       <span class="spacer"></span>
       <button class="vessel-switch" id="vessel-switch" hidden></button>
@@ -322,6 +332,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 <div class="ghost" id="ghost" hidden></div>
 <div class="scrim" id="scrim" hidden>
   <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-dish">
+   <div class="verdict" id="verdict">
     <h2 id="sheet-dish"></h2>
     <div class="total" id="total"></div>
     <p class="judge" id="judge-line"></p>
@@ -345,10 +356,32 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     </section>
     <div class="took" id="took"></div>
     <p class="note">Browser stand-in for the iOS app: same dishes, amounts and scoring. The drag feel, sounds and wok are approximations.</p>
+    <p class="note" id="counted" hidden></p>
     <div class="actions">
       <button class="secondary" id="keep">Keep cooking</button>
       <button class="primary" id="next">Next dish</button>
     </div>
+   </div>
+   <div class="verdict" id="summary" hidden>
+    <h2 id="summary-title"></h2>
+    <div class="total summary-total" id="summary-total"></div>
+    <p class="summary-caption" id="summary-caption"></p>
+    <p class="judge" id="summary-line"></p>
+    <ul class="summary-rows" id="summary-rows"></ul>
+    <div id="summary-card" hidden>
+      <p class="summary-for" id="summary-card-for"></p>
+      <section class="card">
+        <div class="card-eyebrow">Card</div>
+        <h3 id="summary-card-title"></h3>
+        <p id="summary-card-body"></p>
+        <p class="card-rule" id="summary-card-rule"></p>
+        <p class="card-try"><b>Try this tonight:</b> <span id="summary-card-try"></span></p>
+      </section>
+    </div>
+    <div class="actions single">
+      <button class="primary" id="new-session">New session</button>
+    </div>
+   </div>
   </section>
 </div>
 
@@ -522,16 +555,9 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   }
 
   function renderHeader() {
-    var select = $('dish');
-    if (!select.options.length) {
-      content.dishOrder.forEach(function (id) {
-        var option = document.createElement('option');
-        option.value = id; option.textContent = content.dishes[id].name;
-        select.appendChild(option);
-      });
-    }
-    select.value = round.dish.id;
-    $('eyebrow').textContent = content.cuisine.name;
+    $('dish-name').textContent = round.dish.name;
+    var session = sessions[mode];
+    $('eyebrow').textContent = content.cuisine.name + ' \u00b7 ' + Math.min(session.records.length + 1, session.dishIds.length) + ' of ' + session.dishIds.length;
     var kitchen = mode === 'kitchen';
     $('vessel-choice').hidden = !(kitchen && !round.vessel);
     $('vessel-switch').hidden = !(kitchen && round.vessel);
@@ -1042,7 +1068,9 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     $('card-try').textContent = card.tryTonight;
   }
   function serve() {
-    if (mode === 'pantry') servePantry(); else serveKitchen();
+    $('verdict').hidden = false; $('summary').hidden = true;
+    var served = mode === 'pantry' ? servePantry() : serveKitchen();
+    noteServe(served[0], served[1]);
     showCard();
     showRecipe();
     document.querySelector('.sheet').scrollTop = 0;
@@ -1071,6 +1099,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       wrap.lastChild.appendChild(why);
     }
     $('keep').textContent = 'Try again';
+    return [result.found.length, result.essentials];
   }
 
   function serveKitchen() {
@@ -1106,15 +1135,94 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       var clean = document.createElement('div'); clean.className = 'clean'; clean.textContent = 'Nothing cost you points.'; wrap.appendChild(clean);
     }
     $('keep').textContent = 'Keep cooking';
+    return [result.total, 100];
+  }
+  // ---------- The session: five different dishes per mode, then a summary (Session.swift) ----------
+  var SESSION_LENGTH = 5, STORE_KEY = 'pantry-progress-v1';
+  var sessions = { pantry: null, kitchen: null }, finished = { pantry: 0, kitchen: 0 };
+  function deal(avoiding) {
+    var order = shuffled(content.dishOrder);
+    var fresh = order.filter(function (id) { return avoiding.indexOf(id) < 0; });
+    var again = order.filter(function (id) { return avoiding.indexOf(id) >= 0; });
+    return { dishIds: fresh.concat(again).slice(0, SESSION_LENGTH), records: [], served: null };
+  }
+  // Progress is a convenience: where the browser won't keep it, the session lives for this visit only.
+  function saveProgress() {
+    try { window.localStorage.setItem(STORE_KEY, JSON.stringify({ sessions: sessions, finished: finished })); } catch (err) { /* not available */ }
+  }
+  function loadProgress() {
+    var saved = null;
+    try { saved = JSON.parse(window.localStorage.getItem(STORE_KEY)); } catch (err) { saved = null; }
+    ['pantry', 'kitchen'].forEach(function (m) {
+      var s = saved && saved.sessions && saved.sessions[m];
+      var sound_ = s && Array.isArray(s.dishIds) && Array.isArray(s.records) && s.dishIds.every(function (id) { return content.dishes[id]; });
+      sessions[m] = sound_ ? s : deal([]);
+      finished[m] = saved && saved.finished && saved.finished[m] > 0 ? saved.finished[m] : 0;
+    });
+  }
+  function sessionDone(session) { return session.records.length >= session.dishIds.length; }
+  function playCurrent() {
+    var session = sessions[mode];
+    if (sessionDone(session)) { startRound(session.dishIds[session.dishIds.length - 1]); showSummary(); return; }
+    startRound(session.dishIds[session.records.length]);
+  }
+  // The first serve of a round is the one the session keeps: after it the verdict has been seen.
+  function noteServe(points, outOf) {
+    var session = sessions[mode], first = !session.served;
+    if (first) { session.served = { dishId: round.dish.id, points: points, outOf: outOf }; saveProgress(); }
+    var served = session.served, differs = served.points !== points;
+    $('counted').hidden = !differs;
+    if (differs) $('counted').textContent = 'Your first serve, ' + served.points + (mode === 'pantry' ? ' of ' + served.outOf : '') + ', is the one this session keeps.';
+    $('next').textContent = session.records.length === session.dishIds.length - 1 ? 'Finish' : 'Next dish';
   }
   function nextDish() {
-    var index = content.dishOrder.indexOf(round.dish.id);
+    var session = sessions[mode];
+    if (!session.served) return;
+    session.records.push(session.served); session.served = null;
+    saveProgress();
+    if (sessionDone(session)) { showSummary(); return; }
     $('scrim').hidden = true;
-    startRound(content.dishOrder[(index + 1) % content.dishOrder.length]);
+    playCurrent();
+  }
+  function showSummary() {
+    var session = sessions[mode], summary = E.sessionSummary(mode, session.records);
+    $('verdict').hidden = true; $('summary').hidden = false;
+    $('summary-title').textContent = (mode === 'pantry' ? 'Pantry' : 'Kitchen') + ' session ' + (finished[mode] + 1);
+    $('summary-total').textContent = summary.headlineNumber;
+    $('summary-caption').textContent = summary.headlineCaption;
+    $('summary-line').textContent = summary.line;
+    var rows = $('summary-rows'); rows.textContent = '';
+    session.records.forEach(function (record, index) {
+      var li = document.createElement('li'), name = document.createElement('span'), score = document.createElement('b');
+      name.textContent = content.dishes[record.dishId].name;
+      if (index === summary.best || index === summary.revisit) {
+        var tag = document.createElement('small'); tag.textContent = index === summary.best ? 'Best' : 'Worth another go'; name.appendChild(tag);
+      }
+      score.textContent = mode === 'kitchen' ? record.points : record.points + ' of ' + record.outOf;
+      li.appendChild(name); li.appendChild(score); rows.appendChild(li);
+    });
+    var revisit = summary.revisit >= 0 ? content.dishes[session.records[summary.revisit].dishId] : null, card = null;
+    if (revisit) (RAW.cards || []).forEach(function (c) { if (c.id === revisit.cardId) card = c; });
+    $('summary-card').hidden = !card;
+    if (card) {
+      $('summary-card-for').textContent = 'For ' + revisit.name.charAt(0).toLowerCase() + revisit.name.slice(1) + ' next time';
+      $('summary-card-title').textContent = card.title; $('summary-card-body').textContent = card.body;
+      $('summary-card-rule').textContent = 'Rule: ' + card.rule; $('summary-card-try').textContent = card.tryTonight;
+    }
+    document.querySelector('.sheet').scrollTop = 0;
+    $('scrim').hidden = false;
+  }
+  function newSession() {
+    var done = sessions[mode];
+    finished[mode] += 1;
+    sessions[mode] = deal(done.dishIds);
+    saveProgress();
+    $('scrim').hidden = true;
+    playCurrent();
   }
 
   // ---------- Wiring ----------
-  $('dish').addEventListener('change', function (ev) { startRound(ev.target.value); });
+  $('new-session').addEventListener('click', newSession);
   // Start over. A press-and-hold shows what it does without doing it, like holding a chip.
   (function () {
     var button = $('restart'), wrap = button.parentNode, held = false, timer = null, hide = null;
@@ -1157,7 +1265,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   function setMode(next) {
     if (mode === next) return;
     mode = next;
-    startRound(round.dish.id);
+    playCurrent();
   }
   $('vessel-wok').addEventListener('click', function () { place('wok'); });
   $('vessel-pot').addEventListener('click', function () { place('pot'); });
@@ -1165,11 +1273,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   $('mode-pantry').addEventListener('click', function () { setMode('pantry'); });
   $('mode-kitchen').addEventListener('click', function () { setMode('kitchen'); });
   $('next').addEventListener('click', nextDish);
-  $('scrim').addEventListener('click', function (ev) { if (ev.target === $('scrim')) $('scrim').hidden = true; });
+  $('scrim').addEventListener('click', function (ev) { if (ev.target === $('scrim') && $('summary').hidden) $('scrim').hidden = true; });
 
   // For checks from outside the page.
-  window.__pantry = { round: function () { return round; }, mode: function () { return mode; }, pieces: function () { return scene.pieceCount(); } };
+  window.__pantry = { sessions: function () { return sessions; }, round: function () { return round; }, mode: function () { return mode; }, pieces: function () { return scene.pieceCount(); } };
 
-  startRound(content.dishOrder[0]);
+  loadProgress();
+  playCurrent();
 })();
 </script>

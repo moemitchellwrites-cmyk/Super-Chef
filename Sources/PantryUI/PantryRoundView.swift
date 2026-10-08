@@ -236,7 +236,8 @@ struct PantryRoundView: View {
         guard !compact else { return }
         let token = noteToken
         Task { @MainActor in
-            try? await Task.sleep(for: .seconds(4))
+            // Long enough to read twenty words at a glance pace.
+            try? await Task.sleep(for: .seconds(6))
             if noteToken == token {
                 noteId = nil
             }

@@ -128,11 +128,13 @@ final class PantryModeUITests: XCTestCase {
 
     func testPickReadTakeOutServeAndOpenTheRecipe() {
         chip("firm-tofu").tap()
+        // The note leaves by itself after a few seconds, so look for it before anything else:
+        // on a slow simulator the other checks can outlast it.
+        let note = app.staticTexts["note"]
+        XCTAssertTrue(note.waitForExistence(timeout: 3), "touching an ingredient showed no note")
+        XCTAssertTrue(note.label.hasPrefix("Firm tofu."), note.label)
         XCTAssertEqual(picks.label, "1 of 6 picked")
         XCTAssertEqual(chip("firm-tofu").label, "Firm tofu, picked")
-        let note = app.staticTexts["note"]
-        XCTAssertTrue(note.waitForExistence(timeout: 2), "touching an ingredient showed no note")
-        XCTAssertTrue(note.label.hasPrefix("Firm tofu."), note.label)
 
         // Tapping a picked ingredient takes it back out.
         chip("firm-tofu").tap()

@@ -72,6 +72,13 @@ final class PantryUITests: XCTestCase {
         let score = app.staticTexts["score-total"]
         XCTAssertTrue(score.waitForExistence(timeout: 5), "serving showed no score")
         XCTAssertTrue(score.label.hasSuffix("out of 100"), score.label)
+
+        // The recipe is one tap from the score sheet, never on it (PD-032).
+        XCTAssertFalse(app.staticTexts["recipe-title"].exists)
+        app.buttons["see-recipe"].tap()
+        XCTAssertTrue(app.staticTexts["recipe-title"].waitForExistence(timeout: 5), "the recipe didn't open")
+        app.buttons["recipe-done"].tap()
+        XCTAssertTrue(score.waitForExistence(timeout: 5))
     }
 
     func testTakingAnIngredientOutEmptiesTheWok() {

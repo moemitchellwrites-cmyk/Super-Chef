@@ -33,4 +33,13 @@ final class RecipeTextTests: XCTestCase {
             }
         }
     }
+
+    func testEveryRecipeMarksExactlyTheDishEssentials() throws {
+        let library = try ContentLibrary.bundled()
+        for dish in library.dishes {
+            let marked = RecipeText.essentialIds(of: dish, in: library)
+            XCTAssertEqual(marked.count, PantryJudge.essentials(in: dish), dish.id)
+            XCTAssertTrue(marked.isSubset(of: Set(dish.recipe?.lines.map(\.ingredientId) ?? [])), dish.id)
+        }
+    }
 }

@@ -34,6 +34,13 @@ public enum RecipeText {
         return "\(amount(line.amount, line.unit)) \(lowercasedFirst(name))"
     }
 
+    /// The recipe lines that are the dish's essentials, the ones a Pantry round asks for. Marked on the recipe
+    /// so "not essential" never reads as "wrong" (PD-025).
+    public static func essentialIds(of dish: DishProfile, in library: ContentLibrary) -> Set<String> {
+        guard let recipe = dish.recipe else { return [] }
+        return Set(PantryJudge.judge(picks: recipe.lines.map(\.ingredientId), for: dish, in: library).found)
+    }
+
     /// "Garlic, minced" reads as "garlic, minced" after an amount; "Sichuan peppercorns" keeps its capital.
     static func lowercasedFirst(_ name: String) -> String {
         let properNouns = ["Sichuan", "Shaoxing", "Chinkiang", "Napa"]

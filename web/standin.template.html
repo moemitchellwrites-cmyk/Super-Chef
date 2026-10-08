@@ -235,6 +235,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .recipe-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.45; }
 @media (max-width: 340px) { .recipe-lines { grid-template-columns: 1fr; } }
 /* The buttons stay in reach however long the sheet gets. */
+.see-recipe { width: 100%; height: 48px; border-radius: 14px; border: 2px solid var(--chili); color: var(--chili); font-family: var(--display); font-weight: 600; font-size: 16px; }
 .sheet .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: sticky; bottom: calc(-18px - env(safe-area-inset-bottom, 0px)); background: var(--bg); padding-block: 10px calc(18px + env(safe-area-inset-bottom, 0px)); margin-bottom: calc(-18px - env(safe-area-inset-bottom, 0px)); }
 .sheet .actions button { height: 48px; border-radius: 14px; font-family: var(--display); font-weight: 600; font-size: 16px; }
 .secondary { background: var(--surface); }
@@ -299,6 +300,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     <div class="capped" id="capped" hidden></div>
     <div class="parts" id="parts"></div>
     <div id="misses-wrap"></div>
+    <button class="see-recipe" id="see-recipe" aria-expanded="false" aria-controls="recipe" hidden>See the recipe</button>
     <section class="recipe" id="recipe" hidden aria-labelledby="recipe-title">
       <h3 id="recipe-title">One way to cook it</h3>
       <p class="recipe-meta" id="recipe-meta"></p>
@@ -919,8 +921,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   }
   // The real thing, after the verdict (PD-029). Never shown before the round is served.
   function showRecipe() {
+    // One tap away, so the sheet stays one screen (PD-032).
     var recipe = round.dish.recipe, box = $('recipe');
-    box.hidden = !recipe;
+    box.hidden = true;
+    $('see-recipe').hidden = !recipe; $('see-recipe').setAttribute('aria-expanded', 'false');
     if (!recipe) return;
     $('recipe-meta').textContent = 'Serves ' + recipe.serves + ' \u00b7 ' + (recipe.vessel === 'wok' ? 'Wok' : 'Pot') + ' \u00b7 ' + METHOD_TITLE[recipe.method];
     var core = {};
@@ -1040,6 +1044,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   });
   $('methods').addEventListener('pointerdown', function () { sound.unlock(); });
   $('serve').addEventListener('click', serve);
+  $('see-recipe').addEventListener('click', function () {
+    this.hidden = true; this.setAttribute('aria-expanded', 'true');
+    $('recipe').hidden = false; $('recipe').scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
   var onSize = function () { hideAbout(); renderAll(); };
   if (small.addEventListener) small.addEventListener('change', onSize); else small.addListener(onSize);
   $('keep').addEventListener('click', function () {

@@ -7,6 +7,7 @@ import PantryScoring
 struct ScoreSheet: View {
     let dish: DishProfile
     let breakdown: ScoreBreakdown
+    let library: ContentLibrary
     let onKeepCooking: () -> Void
     let onStartOver: () -> Void
 
@@ -25,6 +26,8 @@ struct ScoreSheet: View {
             Part(name: "Technique", earned: breakdown.technique, possible: ScoreWeights.technique),
         ]
     }
+
+    @State private var showingRecipe = false
 
     private var missCodes: [String] {
         Array(Set(breakdown.misses.map(\.code))).sorted()
@@ -75,6 +78,14 @@ struct ScoreSheet: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                // The recipe is one tap away, so the sheet stays one screen (PD-032).
+                if dish.recipe != nil {
+                    Button("See the recipe") { showingRecipe = true }
+                        .buttonStyle(.bordered)
+                        .tint(.orange)
+                        .controlSize(.large)
+                        .accessibilityIdentifier("see-recipe")
+                }
                 HStack(spacing: 10) {
                     Button("Keep cooking", action: onKeepCooking)
                         .buttonStyle(.bordered)
@@ -87,6 +98,11 @@ struct ScoreSheet: View {
             .padding(20)
         }
         .presentationDetents([.medium, .large])
+        .sheet(isPresented: $showingRecipe) {
+            if let recipe = dish.recipe {
+                RecipeView(dish: dish, recipe: recipe, library: library) { showingRecipe = false }
+            }
+        }
     }
 }
 #endif

@@ -290,3 +290,11 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
   - **Kitchen, every size (B):** the amount stepper sits in the bottom of the panel and the six methods are one row of 44-point buttons. On small phones the brief is one line and the stepper is one row with a × for take-out.
 - Rationale: A (today's stack) is 133 points too tall on a small phone and spends four rows before the wok. B puts what the round is about next to the wok. On a small phone the panel is short, so B's floating note covers the wok just as the player is looking at it; C's strip doesn't.
 - Consequences: Two placements for the note and the count, switched on screen height (the stand-in uses 700 points). The small-phone stepper's × has no words, which goes against "say Take out in words" from PB-015: it keeps the accessibility label and is the one exception, for width. Placeholder art only; art direction stays with PB-011.
+
+## PD-032: The recipe is one tap from the score sheet; the card keeps its place
+- Date: 2026-10-07
+- Made by: Moe, from three options Claude drew on the design canvas. Claude recommended this one.
+- Status: accepted. Settles the last open question in PD-029 and unblocks PB-017.
+- Decision: The score sheet is the score, the judge line, the card, then a "See the recipe" button above the two action buttons. The recipe opens on its own page. It does not replace the card and is not printed on the sheet.
+- Rationale: Keeps "one judge line, one card, per round" and a sheet that fits one screen; the lesson is seen first. The recipe stays free (PD-030) but is a deliberate tap, which leaves a clean line to draw if free viewing is revisited. Printing it under the card buries the card; folding the lesson into the recipe gives away what the paid tracks are built on.
+- Consequences: The stand-in and the app's Kitchen score sheet follow it now. The card's slot stays empty until PB-004. In Pantry mode the recipe is where "not essential" gets explained, so the button must stay prominent there.

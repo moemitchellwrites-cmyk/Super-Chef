@@ -51,7 +51,7 @@ struct RoundView: View {
         .overlay(alignment: .topLeading) { ghost }
         .sheet(isPresented: Binding(get: { model.result != nil }, set: { if !$0 { model.dismissResult() } })) {
             if let result = model.result {
-                ScoreSheet(dish: round.dish, breakdown: result) {
+                ScoreSheet(dish: round.dish, breakdown: result, library: model.library) {
                     model.dismissResult()
                 } onStartOver: {
                     model.startOver()

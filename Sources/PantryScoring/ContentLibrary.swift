@@ -50,6 +50,9 @@ public struct ContentLibrary: Sendable {
     /// The longest label a palette chip can show on two lines.
     public static let shortNameLimit = 22
 
+    /// The longest ingredient note: three short lines on a phone.
+    public static let aboutLimit = 110
+
     /// The longest dish brief: two lines under the dish name on a phone.
     public static let briefLimit = 120
 
@@ -94,6 +97,12 @@ public struct ContentLibrary: Sendable {
             }
             if ingredient.shortName == nil && ingredient.name.count > ContentLibrary.shortNameLimit {
                 problems.append("\(ingredient.id): name is over \(ContentLibrary.shortNameLimit) characters and has no shortName")
+            }
+            let about = ingredient.about ?? ""
+            if about.isEmpty {
+                problems.append("\(ingredient.id): no about line")
+            } else if about.count > ContentLibrary.aboutLimit {
+                problems.append("\(ingredient.id): about line is over \(ContentLibrary.aboutLimit) characters")
             }
             for axis in FlavorAxis.allCases where ingredient.potency[axis] < 0 {
                 problems.append("\(ingredient.id): negative potency on \(axis.rawValue)")

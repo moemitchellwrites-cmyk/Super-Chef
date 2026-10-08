@@ -10,7 +10,7 @@
     coverage: 30, ratioFit: 45, signature: 15, technique: 10, vessel: 6, method: 4,
     forbiddenFloor: 5, forbiddenScaled: 7, forbiddenFullAt: 0.10,
     ratioZeroAtFactor: 2.5, signatureZeroAtLevels: 2, maxLevel: 5,
-    wrongIngredientCeiling: 79, wrongIngredientLowCeiling: 50, wrongIngredientLowAt: 0.20
+    wrongIngredientCeiling: 79, wrongIngredientLowCeiling: 50, wrongIngredientLowAt: 0.10
   };
 
   function grams(ingredient, amount, unit) {
@@ -188,7 +188,7 @@
   }
 
   // Pantry mode (Sources/PantryGame/PantryRound.swift).
-  var PANTRY_SLACK = 2;
+  var PANTRY_SLACK = 3;
   function need(requirement) { return Math.max(1, requirement.minPresent === undefined ? 1 : requirement.minPresent); }
   function pantryEssentials(dish) {
     return dish.required.reduce(function (sum, r) { return sum + need(r); }, 0);

@@ -62,14 +62,14 @@ given. The breakdown carries a list of misses and a `pattern` string for
 caching judge feedback.
 
 Anything that doesn't belong (off-cuisine, or forbidden for the dish) also
-sets a ceiling on the total: 79 for a trace, falling to 50 when it is a fifth
+sets a ceiling on the total: 79 for a trace, falling to 50 when it is a tenth
 of the dish (PD-027).
 
 ## Pantry mode
 
 `PantryRound` and `PantryJudge` (in `Sources/PantryGame/`) are the
 ingredients-only round (PD-025): pick what the dish can't be without, limited
-to the essentials plus two. The verdict is a count of essentials found, with
+to the essentials plus three. The verdict is a count of essentials found, with
 names for what was missed, what doesn't belong, and what belongs but isn't
 essential. Playable in the stand-in; the app screen comes next.
 

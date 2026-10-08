@@ -24,12 +24,39 @@ final class ContentTests: XCTestCase {
         }
     }
 
+    func testEveryIngredientSaysWhatItIsWithoutSayingWhereItBelongs() throws {
+        let library = try ContentLibrary.bundled()
+        // Taste and use, never a home: a cuisine, a country or a dish would be the answer.
+        var answers = ["sichuan", "hunan", "canton", "chinese", "china", "thai", "vietnam", "japan", "korea", "ital",
+                       "india", "mexic", "french", "asia", "western"]
+        answers += library.dishes.map { $0.name.lowercased() }
+        for ingredient in library.ingredients {
+            let about = try XCTUnwrap(ingredient.about, ingredient.id).lowercased()
+            XCTAssertTrue(about.hasSuffix("."), ingredient.id)
+            for word in answers where !ingredient.name.lowercased().contains(word) {
+                XCTAssertFalse(about.contains(word), "\(ingredient.id): the about line names \"\(word)\"")
+            }
+        }
+    }
+
+    func testValidationCatchesAMissingOrLongAboutLine() throws {
+        let library = try ContentLibrary.bundled()
+        let silent = Ingredient(id: "silent", name: "Silent", family: "sugar", defaultUnit: .grams)
+        let chatty = Ingredient(id: "chatty", name: "Chatty", family: "sugar", defaultUnit: .grams,
+                                about: String(repeating: "and so on ", count: 20))
+        let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients + [silent, chatty],
+                                      dishes: library.dishes).validate()
+        XCTAssertEqual(problems, ["silent: no about line", "chatty: about line is over 110 characters"])
+    }
+
     func testValidationCatchesLabelsTooLongForAChip() throws {
         let library = try ContentLibrary.bundled()
-        let wordy = Ingredient(id: "wordy", name: "An ingredient with a very long name", family: "sugar", defaultUnit: .grams)
+        let wordy = Ingredient(id: "wordy", name: "An ingredient with a very long name", family: "sugar", defaultUnit: .grams,
+                               about: "A test ingredient.")
         let padded = Ingredient(id: "padded", name: "Sugar", family: "sugar", defaultUnit: .grams,
-                                shortName: "A short name that is not short")
-        let blank = Ingredient(id: "blank", name: "Sugar", family: "sugar", defaultUnit: .grams, shortName: "")
+                                shortName: "A short name that is not short", about: "A test ingredient.")
+        let blank = Ingredient(id: "blank", name: "Sugar", family: "sugar", defaultUnit: .grams, shortName: "",
+                               about: "A test ingredient.")
         let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients + [wordy, padded, blank],
                                       dishes: library.dishes).validate()
         XCTAssertTrue(problems.contains { $0.hasPrefix("wordy:") && $0.contains("no shortName") }, "\(problems)")

@@ -111,6 +111,15 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .remove { width: 32px; height: 32px; border-radius: 8px; flex: none; font-size: 16px; }
 .stepper input[type="range"] { flex: 1; min-width: 0; accent-color: var(--chili); height: 28px; margin: 0; }
 
+.about {
+  box-sizing: border-box; height: 58px; padding: 6px 10px; border-radius: 12px; border: 1.5px dashed var(--surface-strong);
+  font-size: 12px; line-height: 1.33; color: var(--ink-soft); overflow: hidden;
+  display: flex; align-items: center;
+}
+.about.on { border-style: solid; border-color: var(--chili); color: var(--ink); }
+.about b { font-weight: 700; }
+.about span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.chip.peek { border-color: var(--chili); }
 .palette { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .chip {
   height: 50px; border-radius: 10px; background: var(--surface); padding: 2px 6px; box-sizing: border-box;
@@ -194,6 +203,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 
   <div class="stepper" id="stepper"></div>
 
+  <div class="about" id="about" aria-live="polite"><span id="about-text">Touch an ingredient to read what it is. Hold it to read without adding it.</span></div>
+
   <div class="palette" id="palette"></div>
 
   <button class="serve" id="serve" disabled>Add something to the wok</button>
@@ -255,6 +266,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: 'wok', startedAt: null,
       limit: E.pantryLimit(dish), essentials: E.pantryEssentials(dish) };
     scene.clear();
+    $('about').classList.remove('on');
+    $('about-text').textContent = 'Touch an ingredient to read what it is. Hold it to read without adding it.';
     renderAll();
   }
   function entryFor(id) { for (var i = 0; i < round.entries.length; i++) if (round.entries[i].id === id) return round.entries[i]; return null; }
@@ -262,6 +275,15 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   function measure(id) { var e = entryFor(id); return e ? ladder(id).steps[e.step] : null; }
   function touchClock() { if (round.startedAt === null) round.startedAt = Date.now(); }
 
+  // What an ingredient tastes like and does in the pan (PD-028). Shown the moment a chip is touched.
+  function showAbout(id) {
+    var ingredient = content.ingredients[id], box = $('about-text');
+    box.textContent = '';
+    var name = document.createElement('b'); name.textContent = chipName(ingredient) + '. ';
+    box.appendChild(name);
+    box.appendChild(document.createTextNode(ingredient.about || ''));
+    $('about').classList.add('on');
+  }
   function nudgePicks() {
     var box = $('picks');
     box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
@@ -458,7 +480,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     button.addEventListener('pointerdown', function (ev) {
       if (ev.button !== undefined && ev.button > 0) return;
       sound.unlock();
-      drag = { id: id, x0: ev.clientX, y0: ev.clientY, moved: false, pointer: ev.pointerId };
+      showAbout(id);
+      drag = { id: id, x0: ev.clientX, y0: ev.clientY, moved: false, pointer: ev.pointerId, peeked: false };
+      // Held still for a moment: the player is reading, not adding.
+      drag.timer = setTimeout(function () { if (drag && drag.id === id && !drag.moved) { drag.peeked = true; button.classList.add('peek'); } }, 450);
       try { button.setPointerCapture(ev.pointerId); } catch (err) { /* older browsers */ }
     });
     button.addEventListener('pointermove', function (ev) {
@@ -480,18 +505,21 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     function finish(ev, cancelled) {
       if (!drag || drag.id !== id) return;
       var d = drag; drag = null;
-      button.classList.remove('dragging');
+      clearTimeout(d.timer);
+      button.classList.remove('dragging'); button.classList.remove('peek');
       $('ghost').hidden = true;
       $('scene').classList.remove('over');
       if (cancelled) return;
-      if (!d.moved) { add(id); return; }
+      if (!d.moved) { if (!d.peeked) add(id); return; }
       var fraction = overScene(ev.clientX, ev.clientY - 36);
       if (fraction !== null) add(id, fraction);
     }
     button.addEventListener('pointerup', function (ev) { finish(ev, false); });
     button.addEventListener('pointercancel', function (ev) { finish(ev, true); });
     // Keyboard and switch access: Enter or Space adds it.
-    button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); add(id); } });
+    button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showAbout(id); add(id); } });
+    button.addEventListener('focus', function () { showAbout(id); });
+    button.addEventListener('contextmenu', function (ev) { ev.preventDefault(); });
   }
 
   // ---------- Sound: placeholder cues, synthesised (mirrors PlaceholderSynth.swift) ----------

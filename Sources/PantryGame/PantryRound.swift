@@ -75,9 +75,10 @@ public struct PantryRound: Equatable, Sendable {
         case notOffered
     }
 
-    /// Picks allowed beyond the number of essentials. Enough slack to hedge once or twice,
+    /// Picks allowed beyond the number of essentials. Enough slack to hedge a few times,
     /// too little to pour in the whole palette (the brief rules out lives, so the limit does this job).
-    public static let slack = 2
+    /// Three is Moe's call after playing with two (PD-025).
+    public static let slack = 3
 
     public let dish: DishProfile
     public let palette: [Ingredient]

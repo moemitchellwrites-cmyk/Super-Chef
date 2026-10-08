@@ -29,10 +29,10 @@ public enum ScoreWeights {
     /// it at `wrongIngredientCeiling`, under the 85 where "good" starts; the ceiling then
     /// falls in a straight line to `wrongIngredientLowCeiling`, reached when the things
     /// that don't belong are `wrongIngredientLowAt` of the dish by weight.
-    /// A pinch of basil caps a perfect mapo tofu at 79; a cup of cream caps it at 50.
+    /// A little basil caps a perfect mapo tofu in the high 70s; a cup of cream caps it at 50.
     public static let wrongIngredientCeiling = 79.0
     public static let wrongIngredientLowCeiling = 50.0
-    public static let wrongIngredientLowAt = 0.20
+    public static let wrongIngredientLowAt = 0.10
 
     /// A flavour axis outside its band loses credit linearly and reaches zero this
     /// many levels (on the 0 to 5 scale) past the band edge.

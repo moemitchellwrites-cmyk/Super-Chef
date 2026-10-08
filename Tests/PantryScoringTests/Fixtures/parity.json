@@ -2452,12 +2452,12 @@
     }
    ],
    "expect": {
-    "total": 78,
+    "total": 77,
     "coverage": 24.6,
     "ratioFit": 45,
     "signature": 15,
     "technique": 10,
-    "cappedAt": 78,
+    "cappedAt": 77,
     "misses": [
      "offCuisine:basil"
     ]
@@ -2642,12 +2642,12 @@
     }
    ],
    "expect": {
-    "total": 76,
+    "total": 73,
     "coverage": 23.7,
     "ratioFit": 45,
     "signature": 15,
     "technique": 10,
-    "cappedAt": 76,
+    "cappedAt": 73,
     "misses": [
      "forbiddenForDish:sesame-paste"
     ]
@@ -2666,9 +2666,10 @@
     "sichuan-peppercorn-ground",
     "chili-flakes",
     "garlic",
-    "ginger"
+    "ginger",
+    "scallion"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "firm-tofu",
@@ -2681,7 +2682,8 @@
     "missed": [],
     "alsoBelongs": [
      "ground-pork",
-     "douchi"
+     "douchi",
+     "scallion"
     ],
     "wrong": [],
     "essentials": 6
@@ -2698,9 +2700,10 @@
     "black-vinegar",
     "sesame-paste",
     "sugar",
-    "neutral-oil"
+    "neutral-oil",
+    "cornstarch"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [],
     "missed": [
@@ -2712,7 +2715,8 @@
     ],
     "alsoBelongs": [
      "sugar",
-     "neutral-oil"
+     "neutral-oil",
+     "cornstarch"
     ],
     "wrong": [
      "basil",
@@ -2750,7 +2754,7 @@
     "cream",
     "basil"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "firm-tofu",
@@ -2794,7 +2798,7 @@
     "black-vinegar",
     "cream"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "firm-tofu",
@@ -2831,9 +2835,10 @@
     "ginger",
     "light-soy",
     "dark-soy",
-    "black-vinegar"
+    "black-vinegar",
+    "sugar"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -2842,11 +2847,10 @@
      "sichuan-peppercorn-whole",
      "scallion",
      "garlic",
-     "black-vinegar"
-    ],
-    "missed": [
+     "black-vinegar",
      "sugar"
     ],
+    "missed": [],
     "alsoBelongs": [
      "ginger",
      "light-soy",
@@ -2869,20 +2873,21 @@
     "water",
     "cornstarch",
     "shaoxing",
-    "sugar"
+    "sugar",
+    "black-vinegar"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
-     "sugar"
+     "sugar",
+     "black-vinegar"
     ],
     "missed": [
      "chicken",
      "dried chilies",
      "Sichuan peppercorn",
      "peanuts",
-     "aromatics",
-     "black vinegar"
+     "aromatics"
     ],
     "alsoBelongs": [
      "neutral-oil",
@@ -2925,7 +2930,7 @@
     "ketchup",
     "lime"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -2969,7 +2974,7 @@
     "doubanjiang",
     "ketchup"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -3005,9 +3010,10 @@
     "scallion",
     "sugar",
     "black-vinegar",
-    "light-soy"
+    "light-soy",
+    "shaoxing"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [
      "eggplant",
@@ -3021,7 +3027,8 @@
     "missed": [],
     "alsoBelongs": [
      "doubanjiang",
-     "light-soy"
+     "light-soy",
+     "shaoxing"
     ],
     "wrong": [],
     "essentials": 7
@@ -3039,9 +3046,10 @@
     "white-fish",
     "ground-pork",
     "neutral-oil",
-    "stock"
+    "stock",
+    "cornstarch"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [],
     "missed": [
@@ -3054,7 +3062,8 @@
     "alsoBelongs": [
      "ground-pork",
      "neutral-oil",
-     "stock"
+     "stock",
+     "cornstarch"
     ],
     "wrong": [
      "parmesan",
@@ -3092,7 +3101,7 @@
     "basil",
     "parmesan"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [
      "eggplant",
@@ -3136,7 +3145,7 @@
     "sichuan-peppercorn-ground",
     "basil"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [
      "eggplant",
@@ -3171,9 +3180,10 @@
     "light-soy",
     "sesame-paste",
     "black-vinegar",
-    "sugar"
+    "sugar",
+    "garlic"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [
      "wheat-noodles",
@@ -3181,11 +3191,10 @@
      "yacai",
      "chili-oil",
      "sichuan-peppercorn-ground",
-     "light-soy"
+     "light-soy",
+     "garlic"
     ],
-    "missed": [
-     "aromatics"
-    ],
+    "missed": [],
     "alsoBelongs": [
      "sesame-paste",
      "black-vinegar",
@@ -3207,19 +3216,21 @@
     "peanuts",
     "neutral-oil",
     "shaoxing",
-    "stock"
+    "stock",
+    "scallion"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
-    "found": [],
+    "found": [
+     "scallion"
+    ],
     "missed": [
      "noodles",
      "chili oil",
      "Sichuan peppercorn",
      "ground pork",
      "preserved vegetable",
-     "soy sauce",
-     "aromatics"
+     "soy sauce"
     ],
     "alsoBelongs": [
      "peanuts",
@@ -3262,7 +3273,7 @@
     "fish-sauce",
     "coconut-milk"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [
      "wheat-noodles",
@@ -3306,7 +3317,7 @@
     "glass-noodles",
     "fish-sauce"
    ],
-   "limit": 9,
+   "limit": 10,
    "expect": {
     "found": [
      "wheat-noodles",
@@ -3340,9 +3351,10 @@
     "douchi",
     "leek",
     "ginger",
-    "dark-soy"
+    "dark-soy",
+    "sugar"
    ],
-   "limit": 7,
+   "limit": 8,
    "expect": {
     "found": [
      "pork-belly",
@@ -3354,7 +3366,8 @@
     "missed": [],
     "alsoBelongs": [
      "douchi",
-     "dark-soy"
+     "dark-soy",
+     "sugar"
     ],
     "wrong": [],
     "essentials": 5
@@ -3370,9 +3383,10 @@
     "duojiao",
     "gochujang",
     "oyster-sauce",
-    "hoisin"
+    "hoisin",
+    "sesame-paste"
    ],
-   "limit": 7,
+   "limit": 8,
    "expect": {
     "found": [],
     "missed": [
@@ -3391,7 +3405,8 @@
      "duojiao",
      "gochujang",
      "oyster-sauce",
-     "hoisin"
+     "hoisin",
+     "sesame-paste"
     ],
     "essentials": 5
    }
@@ -3421,7 +3436,7 @@
     "basil",
     "butter"
    ],
-   "limit": 7,
+   "limit": 8,
    "expect": {
     "found": [
      "pork-belly",
@@ -3465,7 +3480,7 @@
     "gochujang",
     "basil"
    ],
-   "limit": 7,
+   "limit": 8,
    "expect": {
     "found": [
      "pork-belly"
@@ -3500,9 +3515,10 @@
     "sichuan-peppercorn-whole",
     "garlic",
     "ginger",
-    "scallion"
+    "scallion",
+    "light-soy"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "green-beans",
@@ -3515,7 +3531,8 @@
     "missed": [],
     "alsoBelongs": [
      "ground-pork",
-     "scallion"
+     "scallion",
+     "light-soy"
     ],
     "wrong": [],
     "essentials": 6
@@ -3532,9 +3549,10 @@
     "black-vinegar",
     "cornstarch",
     "stock",
-    "salt"
+    "salt",
+    "neutral-oil"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [],
     "missed": [
@@ -3545,7 +3563,8 @@
      "aromatics"
     ],
     "alsoBelongs": [
-     "salt"
+     "salt",
+     "neutral-oil"
     ],
     "wrong": [
      "parmesan",
@@ -3584,7 +3603,7 @@
     "butter",
     "parmesan"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "green-beans",
@@ -3628,7 +3647,7 @@
     "black-vinegar",
     "butter"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "green-beans",
@@ -3665,9 +3684,10 @@
     "scallion",
     "stock",
     "neutral-oil",
-    "egg-white"
+    "egg-white",
+    "cornstarch"
    ],
-   "limit": 11,
+   "limit": 12,
    "expect": {
     "found": [
      "white-fish",
@@ -3683,7 +3703,8 @@
     "missed": [],
     "alsoBelongs": [
      "scallion",
-     "egg-white"
+     "egg-white",
+     "cornstarch"
     ],
     "wrong": [],
     "essentials": 9
@@ -3703,12 +3724,14 @@
     "shaoxing",
     "cornstarch",
     "egg-white",
-    "neutral-oil"
+    "neutral-oil",
+    "stock"
    ],
-   "limit": 11,
+   "limit": 12,
    "expect": {
     "found": [
-     "neutral-oil"
+     "neutral-oil",
+     "stock"
     ],
     "missed": [
      "fish",
@@ -3716,8 +3739,7 @@
      "dried chilies",
      "Sichuan peppercorn",
      "vegetable bed",
-     "aromatics",
-     "liquid"
+     "aromatics"
     ],
     "alsoBelongs": [
      "salt",
@@ -3761,7 +3783,7 @@
     "lime",
     "cream"
    ],
-   "limit": 11,
+   "limit": 12,
    "expect": {
     "found": [
      "white-fish",
@@ -3805,7 +3827,7 @@
     "sesame-paste",
     "lime"
    ],
-   "limit": 11,
+   "limit": 12,
    "expect": {
     "found": [
      "white-fish",
@@ -3843,9 +3865,10 @@
     "garlic",
     "ginger",
     "scallion",
-    "sesame-oil"
+    "sesame-oil",
+    "peanuts"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -3860,7 +3883,8 @@
     "missed": [],
     "alsoBelongs": [
      "scallion",
-     "sesame-oil"
+     "sesame-oil",
+     "peanuts"
     ],
     "wrong": [],
     "essentials": 8
@@ -3879,9 +3903,10 @@
     "doubanjiang",
     "cilantro",
     "sesame-seeds",
-    "peanuts"
+    "peanuts",
+    "sesame-oil"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [],
     "missed": [
@@ -3896,7 +3921,8 @@
     "alsoBelongs": [
      "cilantro",
      "sesame-seeds",
-     "peanuts"
+     "peanuts",
+     "sesame-oil"
     ],
     "wrong": [
      "miso",
@@ -3935,7 +3961,7 @@
     "mirin",
     "miso"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -3979,7 +4005,7 @@
     "fish-sauce",
     "mirin"
    ],
-   "limit": 10,
+   "limit": 11,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -4015,9 +4041,10 @@
     "ginger",
     "scallion",
     "light-soy",
-    "shaoxing"
+    "shaoxing",
+    "salt"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -4032,7 +4059,8 @@
     "alsoBelongs": [
      "scallion",
      "light-soy",
-     "shaoxing"
+     "shaoxing",
+     "salt"
     ],
     "wrong": [],
     "essentials": 6
@@ -4049,9 +4077,10 @@
     "chili-oil",
     "black-vinegar",
     "stock",
-    "cornstarch"
+    "cornstarch",
+    "sesame-seeds"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [],
     "missed": [
@@ -4063,7 +4092,8 @@
     ],
     "alsoBelongs": [
      "chili-oil",
-     "cornstarch"
+     "cornstarch",
+     "sesame-seeds"
     ],
     "wrong": [
      "lime",
@@ -4101,7 +4131,7 @@
     "ketchup",
     "lime"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -4145,7 +4175,7 @@
     "chili-oil",
     "ketchup"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "chicken-thigh",
@@ -4180,9 +4210,10 @@
     "ginger",
     "scallion",
     "light-soy",
-    "dark-soy"
+    "dark-soy",
+    "shaoxing"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "glass-noodles",
@@ -4197,7 +4228,8 @@
     "alsoBelongs": [
      "scallion",
      "light-soy",
-     "dark-soy"
+     "dark-soy",
+     "shaoxing"
     ],
     "wrong": [],
     "essentials": 6
@@ -4214,9 +4246,10 @@
     "black-vinegar",
     "firm-tofu",
     "wheat-noodles",
-    "sugar"
+    "sugar",
+    "chili-flakes"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [],
     "missed": [
@@ -4227,7 +4260,8 @@
      "liquid"
     ],
     "alsoBelongs": [
-     "sugar"
+     "sugar",
+     "chili-flakes"
     ],
     "wrong": [
      "cream",
@@ -4266,7 +4300,7 @@
     "fish-sauce",
     "cream"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "glass-noodles",
@@ -4310,7 +4344,7 @@
     "black-vinegar",
     "fish-sauce"
    ],
-   "limit": 8,
+   "limit": 9,
    "expect": {
     "found": [
      "glass-noodles",

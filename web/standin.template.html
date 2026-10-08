@@ -55,7 +55,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .top .names { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
 .dish {
-  font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.15; color: var(--chili);
+  font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.2; color: var(--chili);
   background: transparent; border: 0; padding: 0; max-width: 100%; text-overflow: ellipsis;
 }
 .brief { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-soft); -webkit-user-select: text; user-select: text; }
@@ -64,6 +64,11 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   display: grid; place-items: center; font-size: 18px; flex: none;
 }
 .icon-button:disabled { opacity: 0.4; }
+.text-button {
+  height: 40px; padding: 0 12px; border-radius: 20px; background: var(--surface); flex: none;
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+}
+.text-button:disabled { opacity: 0.4; }
 
 .scene {
   /* Stays on screen when a short phone has to scroll the palette, so a chip always has a wok to be dragged to. */
@@ -191,7 +196,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       <span class="eyebrow" id="eyebrow">Sichuan · Wok · stand-in</span>
       <select class="dish" id="dish" aria-label="Dish"></select>
     </div>
-    <button class="icon-button" id="restart" aria-label="Start over" disabled>↺</button>
+    <button class="text-button" id="restart" disabled>↺ Start over</button>
     <button class="icon-button" id="mute" aria-label="Turn sound off">🔊</button>
   </header>
 

@@ -64,6 +64,17 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   display: grid; place-items: center; font-size: 18px; flex: none;
 }
 .icon-button:disabled { opacity: 0.4; }
+/* Sound: a plain speaker. Its waves are chili-coloured and kick outward whenever a cue plays. */
+.sound { color: var(--ink); }
+.sound .wave { stroke: var(--chili); transform-origin: 12px 12px; }
+.sound .slash { stroke: var(--ink-soft); display: none; }
+.sound[aria-pressed="true"] { color: var(--ink-soft); }
+.sound[aria-pressed="true"] .wave { display: none; }
+.sound[aria-pressed="true"] .slash { display: inline; }
+@keyframes wave-kick { 0% { transform: scale(1); opacity: 1; } 40% { transform: scale(1.28); opacity: 0.55; } 100% { transform: scale(1); opacity: 1; } }
+.sound.playing .w1 { animation: wave-kick 0.32s ease-out; }
+.sound.playing .w2 { animation: wave-kick 0.32s ease-out 0.07s; }
+@media (prefers-reduced-motion: reduce) { .sound.playing .wave { animation: none; } }
 .text-button {
   height: 40px; padding: 0 12px; border-radius: 20px; background: var(--surface); flex: none;
   font-size: 13px; font-weight: 600; white-space: nowrap;
@@ -197,7 +208,14 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       <select class="dish" id="dish" aria-label="Dish"></select>
     </div>
     <button class="text-button" id="restart" disabled>↺ Start over</button>
-    <button class="icon-button" id="mute" aria-label="Turn sound off">🔊</button>
+    <button class="icon-button sound" id="mute" aria-label="Turn sound off" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path class="cone" d="M4 9.5h3l4.5-4v13l-4.5-4H4z" fill="currentColor" stroke="currentColor" stroke-width="1.5"></path>
+        <path class="wave w1" d="M15 9.2a4 4 0 0 1 0 5.6" stroke-width="2"></path>
+        <path class="wave w2" d="M17.8 6.5a8 8 0 0 1 0 11" stroke-width="2"></path>
+        <path class="slash" d="M15.5 9.5l5 5m0-5l-5 5" stroke-width="2"></path>
+      </svg>
+    </button>
   </header>
 
   <div class="modes" role="group" aria-label="Mode">
@@ -578,6 +596,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       unlock();
       if (!ctx || !buffers[cue]) return;
       try { var src = ctx.createBufferSource(); src.buffer = buffers[cue]; src.connect(ctx.destination); src.start(); } catch (err) { /* stay silent */ }
+      var icon = document.getElementById('mute');
+      icon.classList.remove('playing'); void icon.offsetWidth; icon.classList.add('playing');
     }
     return { play: play, unlock: unlock, isMuted: function () { return muted; }, toggle: function () { muted = !muted; return muted; } };
   })();
@@ -854,7 +874,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   $('restart').addEventListener('click', function () { startRound(round.dish.id); });
   $('mute').addEventListener('click', function () {
     var muted = sound.toggle();
-    $('mute').textContent = muted ? '🔇' : '🔊';
+    $('mute').setAttribute('aria-pressed', muted ? 'true' : 'false');
     $('mute').setAttribute('aria-label', muted ? 'Turn sound on' : 'Turn sound off');
     if (!muted) sound.unlock();
   });

@@ -167,6 +167,8 @@ final class RoundTests: XCTestCase {
         // and "Shaoxing wine" are the things' names; a decoy labelled with its home is an answer key.
         let giveaways = ["hunan", "cantonese", "thai", "vietnam", "japan", "korea", "ital", "india"]
         for ingredient in library.ingredients {
+            // Chip names are shown in lists; a comma inside one reads as two ingredients ("Sichuan pepper, whole").
+            XCTAssertFalse(ingredient.chipName.contains(","), "\(ingredient.id): \"\(ingredient.chipName)\" has a comma")
             XCTAssertLessThanOrEqual(ingredient.chipName.count, ContentLibrary.shortNameLimit, ingredient.id)
             for label in [ingredient.name, ingredient.chipName] {
                 for word in giveaways {

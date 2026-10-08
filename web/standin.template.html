@@ -199,6 +199,9 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .groups { display: flex; flex-direction: column; gap: 10px; }
 .group .misses-title { margin-bottom: 2px; }
 .group p { margin: 0; font-size: 14px; line-height: 1.4; }
+.tags { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 5px; }
+.tags li { font-size: 13px; line-height: 1.25; padding: 4px 9px; border-radius: 11px; background: var(--surface); }
+.group.bad .tags li { background: var(--chili-wash); }
 .group.bad .misses-title { color: var(--amount); }
 .group.good .misses-title { color: var(--good); }
 .group.fine .misses-title { color: var(--ink); }
@@ -845,13 +848,15 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     var target = mode === 'pantry' ? 'about 0:30' : '1:00 to 2:00';
     return 'This round took ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + '. The target is ' + target + '. (Shown only in this stand-in.)';
   }
-  function group(wrap, kind, title, text) {
+  // Each item is its own tag: a comma-joined line can't tell "garlic, ginger and scallion" (one thing) from three.
+  function group(wrap, kind, title, items) {
     var box = document.createElement('div'); box.className = 'group ' + kind;
     var head = document.createElement('div'); head.className = 'misses-title'; head.textContent = title;
-    var body = document.createElement('p'); body.textContent = text;
-    box.appendChild(head); box.appendChild(body); wrap.appendChild(box);
+    var list = document.createElement('ul'); list.className = 'tags';
+    items.forEach(function (text) { var li = document.createElement('li'); li.textContent = text; list.appendChild(li); });
+    box.appendChild(head); box.appendChild(list); wrap.appendChild(box);
   }
-  function names(ids) { return ids.map(ingredientName).join(', '); }
+  function names(ids) { return ids.map(ingredientName); }
 
   // A recipe's amounts, as Sources/PantryGame/RecipeText.swift writes them.
   var FRACTIONS = [[0.125, '\u215b'], [0.25, '\u00bc'], [1 / 3, '\u2153'], [0.5, '\u00bd'], [2 / 3, '\u2154'], [0.75, '\u00be']];
@@ -915,7 +920,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       clean.textContent = 'Clean: every essential, and nothing that doesn\u2019t belong.'; wrap.appendChild(clean);
     }
     if (result.wrong.length) group(wrap, 'bad', 'Doesn\u2019t belong', names(result.wrong));
-    if (result.missed.length) group(wrap, 'bad', 'Missed', result.missed.join(', '));
+    if (result.missed.length) group(wrap, 'bad', 'Missed', result.missed.map(function (label) { return label.charAt(0).toUpperCase() + label.slice(1); }));
     if (result.found.length) group(wrap, 'good', 'Found', names(result.found));
     if (result.alsoBelongs.length) {
       group(wrap, 'fine', 'Not wrong, just not essential', names(result.alsoBelongs));

@@ -94,7 +94,7 @@
   {
    "id": "sichuan-peppercorn-whole",
    "name": "Sichuan peppercorns, whole",
-   "shortName": "Sichuan pepper, whole",
+   "shortName": "Whole Sichuan pepper",
    "about": "Dried husks of a small citrus-family berry. Lemony, and they make the lips tingle and go numb.",
    "family": "sichuanPeppercorn",
    "defaultUnit": "tsp",
@@ -108,7 +108,7 @@
   {
    "id": "sichuan-peppercorn-ground",
    "name": "Sichuan peppercorn, ground",
-   "shortName": "Sichuan pepper, ground",
+   "shortName": "Ground Sichuan pepper",
    "about": "The numbing, lemony husks, toasted and ground. Sprinkled on at the end so the tingle stays fresh.",
    "family": "sichuanPeppercorn",
    "defaultUnit": "tsp",

@@ -298,3 +298,12 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Decision: The score sheet is the score, the judge line, the card, then a "See the recipe" button above the two action buttons. The recipe opens on its own page. It does not replace the card and is not printed on the sheet.
 - Rationale: Keeps "one judge line, one card, per round" and a sheet that fits one screen; the lesson is seen first. The recipe stays free (PD-030) but is a deliberate tap, which leaves a clean line to draw if free viewing is revisited. Printing it under the card buries the card; folding the lesson into the recipe gives away what the paid tracks are built on.
 - Consequences: The stand-in and the app's Kitchen score sheet follow it now. The card's slot stays empty until PB-004. In Pantry mode the recipe is where "not essential" gets explained, so the button must stay prominent there.
+
+## PD-033: A recipe reads in the measures the Kitchen stepper offers
+- Date: 2026-10-07
+- Made by: Moe (he saw the recipe and the stepper disagree); Claude chose the fix.
+- Status: accepted. Regional units are separate work (PB-026).
+- Decision: Every recipe amount is exactly a step on that ingredient's stepper ladder, in the same unit. Thirty-six lines were rewritten (garlic, ginger, scallion, stock and oil had been in grams while the stepper offers spoons and cups; a few weights sat between steps). A test fails the build if a recipe amount can't be dialled.
+- Rationale: The recipe is the answer to the round. If it says "10 g garlic" and the stepper only offers "2 tsp", the player can't act on what they just learned.
+- Consequences: Amounts moved by a rounding step at most; every recipe still scores as a good attempt (PD-029 check). The goldens keep their sourced gram figures. What the measures should be in each country is PB-026.
+

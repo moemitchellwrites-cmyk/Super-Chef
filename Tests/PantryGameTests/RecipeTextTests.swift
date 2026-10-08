@@ -42,4 +42,19 @@ final class RecipeTextTests: XCTestCase {
             XCTAssertTrue(marked.isSubset(of: Set(dish.recipe?.lines.map(\.ingredientId) ?? [])), dish.id)
         }
     }
+
+    /// The recipe must read in the same measures the Kitchen stepper offers (PD-033): a player who
+    /// reads "¾ cup" can dial exactly "¾ cup".
+    func testEveryRecipeAmountIsAStepOnThatIngredientsLadder() throws {
+        let library = try ContentLibrary.bundled()
+        for dish in library.dishes {
+            for line in dish.recipe?.lines ?? [] {
+                let ingredient = try XCTUnwrap(library.ingredient(id: line.ingredientId), line.ingredientId)
+                let onLadder = AmountLadder(for: ingredient).steps.contains {
+                    $0.unit == line.unit && abs($0.amount - line.amount) < 0.0001
+                }
+                XCTAssertTrue(onLadder, "\(dish.id): \(line.amount) \(line.unit.rawValue) of \(line.ingredientId) can't be dialled")
+            }
+        }
+    }
 }

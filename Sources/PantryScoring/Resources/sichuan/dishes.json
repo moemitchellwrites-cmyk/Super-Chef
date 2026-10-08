@@ -224,8 +224,8 @@
      },
      {
       "ingredientId": "stock",
-      "amount": 150,
-      "unit": "grams"
+      "amount": 0.75,
+      "unit": "cup"
      },
      {
       "ingredientId": "cornstarch",
@@ -454,7 +454,7 @@
      },
      {
       "ingredientId": "peanuts",
-      "amount": 70,
+      "amount": 75,
       "unit": "grams"
      },
      {
@@ -469,18 +469,18 @@
      },
      {
       "ingredientId": "scallion",
-      "amount": 40,
-      "unit": "grams"
+      "amount": 0.3333333333333333,
+      "unit": "cup"
      },
      {
       "ingredientId": "garlic",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 8,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tsp"
      },
      {
       "ingredientId": "light-soy",
@@ -627,7 +627,7 @@
       "blackVinegar"
      ],
      "low": 0.8,
-     "high": 2.0,
+     "high": 2,
      "weight": 2
     },
     {
@@ -717,18 +717,18 @@
      },
      {
       "ingredientId": "garlic",
-      "amount": 15,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "scallion",
-      "amount": 30,
-      "unit": "grams"
+      "amount": 0.25,
+      "unit": "cup"
      },
      {
       "ingredientId": "sugar",
@@ -757,13 +757,13 @@
      },
      {
       "ingredientId": "stock",
-      "amount": 80,
-      "unit": "grams"
+      "amount": 0.3333333333333333,
+      "unit": "cup"
      },
      {
       "ingredientId": "neutral-oil",
-      "amount": 60,
-      "unit": "grams"
+      "amount": 0.25,
+      "unit": "cup"
      }
     ],
     "steps": [
@@ -966,7 +966,7 @@
      },
      {
       "ingredientId": "ground-pork",
-      "amount": 120,
+      "amount": 125,
       "unit": "grams"
      },
      {
@@ -1016,8 +1016,8 @@
      },
      {
       "ingredientId": "stock",
-      "amount": 100,
-      "unit": "grams"
+      "amount": 0.5,
+      "unit": "cup"
      },
      {
       "ingredientId": "shaoxing",
@@ -1226,8 +1226,8 @@
      },
      {
       "ingredientId": "ginger",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "dark-soy",
@@ -1421,7 +1421,7 @@
      },
      {
       "ingredientId": "ground-pork",
-      "amount": 80,
+      "amount": 75,
       "unit": "grams"
      },
      {
@@ -1441,18 +1441,18 @@
      },
      {
       "ingredientId": "garlic",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 8,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tsp"
      },
      {
       "ingredientId": "scallion",
-      "amount": 15,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "light-soy",
@@ -1471,8 +1471,8 @@
      },
      {
       "ingredientId": "neutral-oil",
-      "amount": 60,
-      "unit": "grams"
+      "amount": 0.25,
+      "unit": "cup"
      }
     ],
     "steps": [
@@ -1715,28 +1715,28 @@
      },
      {
       "ingredientId": "garlic",
-      "amount": 15,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "scallion",
-      "amount": 20,
-      "unit": "grams"
+      "amount": 2.5,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "stock",
-      "amount": 600,
-      "unit": "grams"
+      "amount": 2.5,
+      "unit": "cup"
      },
      {
       "ingredientId": "neutral-oil",
-      "amount": 100,
-      "unit": "grams"
+      "amount": 0.5,
+      "unit": "cup"
      },
      {
       "ingredientId": "egg-white",
@@ -1956,8 +1956,8 @@
      },
      {
       "ingredientId": "chili-oil",
-      "amount": 4,
-      "unit": "tbsp"
+      "amount": 0.25,
+      "unit": "cup"
      },
      {
       "ingredientId": "sichuan-peppercorn-ground",
@@ -1981,18 +1981,18 @@
      },
      {
       "ingredientId": "garlic",
-      "amount": 12,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "scallion",
-      "amount": 20,
-      "unit": "grams"
+      "amount": 2.5,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "sesame-oil",
@@ -2091,7 +2091,7 @@
       "chicken"
      ],
      "low": 0.25,
-     "high": 1.0,
+     "high": 1,
      "weight": 2
     },
     {
@@ -2185,18 +2185,18 @@
      },
      {
       "ingredientId": "garlic",
-      "amount": 15,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 1,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "scallion",
-      "amount": 20,
-      "unit": "grams"
+      "amount": 2.5,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "light-soy",
@@ -2220,8 +2220,8 @@
      },
      {
       "ingredientId": "neutral-oil",
-      "amount": 100,
-      "unit": "grams"
+      "amount": 0.5,
+      "unit": "cup"
      },
      {
       "ingredientId": "sesame-seeds",
@@ -2318,7 +2318,7 @@
       "glassNoodles"
      ],
      "low": 0.3,
-     "high": 1.0,
+     "high": 1,
      "weight": 1
     },
     {
@@ -2343,7 +2343,7 @@
       "glassNoodles"
      ],
      "low": 1.5,
-     "high": 4.0,
+     "high": 4,
      "weight": 1
     }
    ],
@@ -2398,7 +2398,7 @@
     "lines": [
      {
       "ingredientId": "glass-noodles",
-      "amount": 120,
+      "amount": 125,
       "unit": "grams"
      },
      {
@@ -2413,18 +2413,18 @@
      },
      {
       "ingredientId": "garlic",
-      "amount": 10,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tsp"
      },
      {
       "ingredientId": "ginger",
-      "amount": 8,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tsp"
      },
      {
       "ingredientId": "scallion",
-      "amount": 15,
-      "unit": "grams"
+      "amount": 2,
+      "unit": "tbsp"
      },
      {
       "ingredientId": "light-soy",
@@ -2443,8 +2443,8 @@
      },
      {
       "ingredientId": "stock",
-      "amount": 300,
-      "unit": "grams"
+      "amount": 1.5,
+      "unit": "cup"
      },
      {
       "ingredientId": "neutral-oil",

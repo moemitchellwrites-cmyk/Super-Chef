@@ -55,7 +55,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .top .names { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
 .dish {
-  font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.2; color: var(--chili);
+  font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.2; color: var(--chili);
   background: transparent; border: 0; padding: 0; max-width: 100%; text-overflow: ellipsis;
 }
 .brief { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-soft); -webkit-user-select: text; user-select: text; }
@@ -75,11 +75,18 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .sound.playing .w1 { animation: wave-kick 0.32s ease-out; }
 .sound.playing .w2 { animation: wave-kick 0.32s ease-out 0.07s; }
 @media (prefers-reduced-motion: reduce) { .sound.playing .wave { animation: none; } }
-.text-button {
-  height: 40px; padding: 0 12px; border-radius: 20px; background: var(--surface); flex: none;
-  font-size: 13px; font-weight: 600; white-space: nowrap;
+/* A tip that names an icon button: on hover and keyboard focus, and on a press-and-hold where there is no hover. */
+.tipped { position: relative; flex: none; display: inline-flex; }
+.tip {
+  position: absolute; top: calc(100% + 8px); right: -48px; z-index: 20; width: max-content; max-width: 220px;
+  background: var(--ink); color: var(--bg); font-size: 12px; font-weight: 600; line-height: 1.3;
+  padding: 7px 10px; border-radius: 9px; pointer-events: none; opacity: 0; transform: translateY(-4px);
+  transition: opacity 0.12s ease, transform 0.12s ease;
 }
-.text-button:disabled { opacity: 0.4; }
+.tip::before { content: ""; position: absolute; bottom: 100%; right: 62px; border: 6px solid transparent; border-bottom-color: var(--ink); }
+.tipped.show .tip, .tipped:focus-within .tip { opacity: 1; transform: none; }
+@media (hover: hover) { .tipped:hover .tip { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
 
 .scene {
   /* Stays on screen when a short phone has to scroll the palette, so a chip always has a wok to be dragged to. */
@@ -207,7 +214,14 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       <span class="eyebrow" id="eyebrow">Sichuan · Wok · stand-in</span>
       <select class="dish" id="dish" aria-label="Dish"></select>
     </div>
-    <button class="text-button" id="restart" disabled>↺ Start over</button>
+    <span class="tipped">
+      <button class="icon-button" id="restart" aria-label="Start over" aria-describedby="restart-tip" disabled>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12a7 7 0 1 0 2.2-5.1"></path><path d="M4 4.5v4h4"></path>
+        </svg>
+      </button>
+      <span class="tip" id="restart-tip" role="tooltip">Start over: empties the wok and reshuffles the ingredients</span>
+    </span>
     <button class="icon-button sound" id="mute" aria-label="Turn sound off" aria-pressed="false">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path class="cone" d="M4 9.5h3l4.5-4v13l-4.5-4H4z" fill="currentColor" stroke="currentColor" stroke-width="1.5"></path>
@@ -871,7 +885,26 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 
   // ---------- Wiring ----------
   $('dish').addEventListener('change', function (ev) { startRound(ev.target.value); });
-  $('restart').addEventListener('click', function () { startRound(round.dish.id); });
+  // Start over. A press-and-hold shows what it does without doing it, like holding a chip.
+  (function () {
+    var button = $('restart'), wrap = button.parentNode, held = false, timer = null, hide = null;
+    function show(ms) { wrap.classList.add('show'); clearTimeout(hide); hide = setTimeout(function () { wrap.classList.remove('show'); }, ms); }
+    button.addEventListener('pointerdown', function (ev) {
+      held = false;
+      if (ev.pointerType === 'mouse') return;
+      timer = setTimeout(function () { held = true; show(2600); }, 450);
+    });
+    button.addEventListener('pointerup', function () { clearTimeout(timer); });
+    button.addEventListener('pointercancel', function () { clearTimeout(timer); });
+    button.addEventListener('contextmenu', function (ev) { ev.preventDefault(); });
+    button.addEventListener('click', function () {
+      if (held) { held = false; return; }
+      wrap.classList.remove('show'); button.blur();
+      startRound(round.dish.id);
+    });
+    // A disabled button gets no pointer events, so the wrapper answers a touch on it.
+    wrap.addEventListener('pointerdown', function (ev) { if (button.disabled && ev.pointerType !== 'mouse') show(2200); });
+  })();
   $('mute').addEventListener('click', function () {
     var muted = sound.toggle();
     $('mute').setAttribute('aria-pressed', muted ? 'true' : 'false');

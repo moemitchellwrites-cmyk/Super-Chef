@@ -108,7 +108,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   font-size: 22px; font-weight: 700; line-height: 1; flex: none; display: grid; place-items: center;
 }
 .round-button:disabled { opacity: 0.35; }
-.remove { width: 32px; height: 32px; border-radius: 8px; flex: none; font-size: 16px; }
+.remove { height: 30px; padding: 0 10px; border-radius: 15px; flex: none; font-size: 12px; font-weight: 700; background: var(--bg); color: var(--amount); }
 .stepper input[type="range"] { flex: 1; min-width: 0; accent-color: var(--chili); height: 28px; margin: 0; }
 
 .about {
@@ -129,7 +129,14 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .chip .label { font-size: 11px; font-weight: 500; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; flex: none; }
 .chip.in .label { -webkit-line-clamp: 2; }
 .chip .amt { font-size: 11px; font-weight: 700; color: var(--amount); line-height: 1.25; white-space: nowrap; flex: none; }
+.chip { position: relative; }
 .chip.in { background: var(--chili-wash); }
+/* Pantry: a picked chip wears the mark that takes it back out. */
+.chip.removable::after {
+  content: "\00d7"; position: absolute; top: 3px; right: 4px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--chili); color: var(--chili-ink); font-size: 13px; font-weight: 700; line-height: 16px; text-align: center;
+}
+.chip.removable .label { padding-right: 14px; }
 .chip.selected { border-color: var(--chili); }
 .chip.dragging { opacity: 0.35; }
 
@@ -352,7 +359,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     $('picks').hidden = !pantry;
     if (pantry) {
       var used = round.entries.length;
-      $('picks-ask').textContent = 'Pick what this dish can\u2019t be without.';
+      $('picks-ask').textContent = used ? 'Changed your mind? Tap a picked ingredient to take it out.' : 'Pick what this dish can\u2019t be without.';
       $('picks-count').textContent = used + ' of ' + round.limit + ' picks';
       $('picks').classList.toggle('full', used >= round.limit);
     }
@@ -401,7 +408,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       box.dataset.id = id;
       box.innerHTML =
         '<div class="line"><span>' + look(ingredient)[0] + '</span><span class="name" id="stepper-name"></span>' +
-        '<span class="amount" id="amount"></span><button class="remove" id="remove" aria-label="Take it out">🗑️</button></div>' +
+        '<span class="amount" id="amount"></span><button class="remove" id="remove">Take out</button></div>' +
         '<div class="line"><button class="round-button" id="less" aria-label="Less">−</button>' +
         '<input type="range" id="amount-slider" min="0" step="1" aria-label="Amount">' +
         '<button class="round-button" id="more" aria-label="More">+</button></div>';
@@ -444,8 +451,9 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       var showAmount = !!m && mode === 'kitchen';
       amt.hidden = !showAmount; amt.textContent = showAmount ? m.label : '';
       b.classList.toggle('selected', mode === 'kitchen' && round.selected === id);
+      b.classList.toggle('removable', !!m && mode === 'pantry');
       b.setAttribute('aria-pressed', m ? 'true' : 'false');
-      b.setAttribute('aria-label', !m ? ingredient.name : (mode === 'kitchen' ? ingredient.name + ', ' + m.label + ' in the wok' : ingredient.name + ', in the wok'));
+      b.setAttribute('aria-label', !m ? ingredient.name : (mode === 'kitchen' ? ingredient.name + ', ' + m.label + ' in the wok' : ingredient.name + ', in the wok. Tap to take it out'));
     });
   }
 

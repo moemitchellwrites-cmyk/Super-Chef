@@ -222,6 +222,7 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
   - **Kitchen**: the full round as built, with amounts and a method, scored out of 100.
 - Rationale: The modes ask different questions (recognition, then proportion and technique), which is a truer split than easy, medium and hard. A count is a score the player can act on: "7 of 10" says three things are missing and the sheet names them. An 81 is a verdict, and a verdict that feels wrong (PB-023) teaches nothing. The scorer already separates ingredients, ratios, flavour and technique, so Pantry is a new round type and score sheet, not a new engine.
 - Amended 2026-10-07 (Moe, after playing): the pick limit is the essentials plus three, not plus two.
+- Amended again 2026-10-07 (Moe, with Claude agreeing): the pick limit is exactly the number of essentials. Spare picks made the count mean two things and put two numbers side by side ("find the 6" next to "0 of 9 picks"). Cost, accepted: a good but inessential pick now uses a slot an essential needed, so "not wrong, just not essential" has to be said clearly, and a third aromatic costs a slot. Taking a pick out stays free.
 - Consequences: Pantry is PB-015. It must not be brute-forceable by adding every chip: cap how many can go in, since lives are ruled out (brief: no lives). PB-023 (Kitchen scores too forgiving) is not solved by this; it stays open and comes before the judge line. The vessel choice (PB-008) belongs to Kitchen only.
 
 ## PD-026: Progression is two brigade ladders, earned by consistency

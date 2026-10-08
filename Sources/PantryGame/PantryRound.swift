@@ -75,10 +75,10 @@ public struct PantryRound: Equatable, Sendable {
         case notOffered
     }
 
-    /// Picks allowed beyond the number of essentials. Enough slack to hedge a few times,
-    /// too little to pour in the whole palette (the brief rules out lives, so the limit does this job).
-    /// Three is Moe's call after playing with two (PD-025).
-    public static let slack = 3
+    /// Picks allowed beyond the number of essentials: none. "Find the 6" means six picks, so every
+    /// pick has to earn its place and the count means one thing (Moe, after playing with two and
+    /// then three spare picks; PD-025). Taking a pick back out is free.
+    public static let slack = 0
 
     public let dish: DishProfile
     public let palette: [Ingredient]

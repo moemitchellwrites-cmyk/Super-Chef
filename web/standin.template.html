@@ -424,12 +424,13 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       var ask = $('picks-ask');
       ask.textContent = '';
       var goal = document.createElement('b');
-      goal.textContent = 'Find the ' + round.essentials + ' essentials this dish can\u2019t be without.';
+      goal.textContent = 'Pick the ' + round.essentials + ' essentials this dish can\u2019t be without.';
       ask.appendChild(goal);
       var hint = document.createElement('small');
-      hint.textContent = used ? 'Changed your mind? Tap a picked ingredient to take it out.' : 'A full recipe uses more than these. You\u2019re after the core, and you get ' + round.limit + ' picks.';
+      hint.textContent = used ? 'Changed your mind? Tap a picked ingredient to take it out.' : 'A full recipe uses more than these. You\u2019re after the core.';
       ask.appendChild(hint);
-      $('picks-count').textContent = used + ' of ' + round.limit + ' picks';
+      $('picks-count').textContent = used + ' of ' + round.limit;
+      $('picks-count').setAttribute('aria-label', used + ' of ' + round.limit + ' picked');
       $('picks').classList.toggle('full', used >= round.limit);
     }
   }

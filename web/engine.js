@@ -188,7 +188,7 @@
   }
 
   // Pantry mode (Sources/PantryGame/PantryRound.swift).
-  var PANTRY_SLACK = 3;
+  var PANTRY_SLACK = 0;
   function need(requirement) { return Math.max(1, requirement.minPresent === undefined ? 1 : requirement.minPresent); }
   function pantryEssentials(dish) {
     return dish.required.reduce(function (sum, r) { return sum + need(r); }, 0);

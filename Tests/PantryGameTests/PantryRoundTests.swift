@@ -86,15 +86,15 @@ final class PantryRoundTests: XCTestCase {
         var round = PantryRound(dish: try XCTUnwrap(library.dish(id: "mapo-tofu")), library: library, seed: 1)
         XCTAssertFalse(round.canServe)
         XCTAssertNil(round.result(in: library))
-        XCTAssertEqual(round.pickLimit, 9, "six essentials plus three")
+        XCTAssertEqual(round.pickLimit, 6, "six essentials, six picks")
         XCTAssertEqual(round.toggle("parmesan"), .notOffered)
-        for ingredient in round.palette.prefix(9) {
+        for ingredient in round.palette.prefix(6) {
             XCTAssertEqual(round.toggle(ingredient.id), .added)
         }
         XCTAssertEqual(round.picksLeft, 0)
-        XCTAssertEqual(round.toggle(round.palette[9].id), .full)
+        XCTAssertEqual(round.toggle(round.palette[6].id), .full)
         XCTAssertEqual(round.toggle(round.palette[0].id), .removed)
-        XCTAssertEqual(round.toggle(round.palette[9].id), .added)
+        XCTAssertEqual(round.toggle(round.palette[6].id), .added)
         XCTAssertTrue(round.canServe)
         round.clear()
         XCTAssertEqual(round.picks, [])

@@ -259,6 +259,30 @@ public struct RatioBand: Codable, Equatable, Sendable {
     }
 }
 
+/// One real way to cook a dish, shown after the score (PD-029). Its amounts are also a
+/// known-good attempt: content validation scores the recipe against its own profile.
+public struct Recipe: Codable, Equatable, Sendable {
+    public var serves: Int
+    public var vessel: Vessel
+    public var method: CookingMethod
+    public var lines: [Attempt.Line]
+    /// The process, in order. Short, plain sentences.
+    public var steps: [String]
+
+    public init(serves: Int, vessel: Vessel, method: CookingMethod, lines: [Attempt.Line], steps: [String]) {
+        self.serves = serves
+        self.vessel = vessel
+        self.method = method
+        self.lines = lines
+        self.steps = steps
+    }
+
+    /// The recipe as an attempt at `dishId`, so the scorer can judge it.
+    public func attempt(dishId: String) -> Attempt {
+        Attempt(dishId: dishId, lines: lines, vessel: vessel, method: method)
+    }
+}
+
 public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public var id: String
     public var cuisineId: String
@@ -279,6 +303,8 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public var signature: SignatureEnvelope?
     /// The 12 to 20 ingredient ids offered in a round, real and decoy mixed.
     public var palette: [String]
+    /// Shown on the score sheet once the round is served; never before.
+    public var recipe: Recipe?
     public var cardId: String
     /// Internal: reference sources and authoring notes. Never shown to players.
     public var notes: String?
@@ -286,9 +312,10 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public init(id: String, cuisineId: String, name: String, vessels: [Vessel], methods: [CookingMethod],
                 required: [Requirement], optional: [String] = [], forbidden: [String] = [], ratios: [RatioBand] = [],
                 signature: SignatureEnvelope? = nil, palette: [String] = [], cardId: String, notes: String? = nil,
-                brief: String? = nil) {
+                brief: String? = nil, recipe: Recipe? = nil) {
         self.id = id
         self.brief = brief
+        self.recipe = recipe
         self.cuisineId = cuisineId
         self.name = name
         self.vessels = vessels

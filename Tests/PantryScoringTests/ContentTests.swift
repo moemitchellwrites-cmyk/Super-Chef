@@ -102,6 +102,34 @@ final class ContentTests: XCTestCase {
         XCTAssertTrue(problems.contains("kung-pao-chicken: brief gives a number"), "\(problems)")
     }
 
+    func testEveryDishHasARecipeThatScoresAsAGoodAttempt() throws {
+        let library = try ContentLibrary.bundled()
+        for dish in library.dishes {
+            let recipe = try XCTUnwrap(dish.recipe, dish.id)
+            let breakdown = try library.score(recipe.attempt(dishId: dish.id))
+            XCTAssertEqual(breakdown.total, 100, "\(dish.id): \(breakdown.misses.map(\.code))")
+            XCTAssertTrue(dish.methods.contains(recipe.method), dish.id)
+            XCTAssertTrue(dish.vessels.contains(recipe.vessel), dish.id)
+            // Every ingredient the recipe lists is named in its steps' vocabulary at least by being on the palette.
+            XCTAssertEqual(Set(recipe.lines.map(\.ingredientId)).count, recipe.lines.count, "\(dish.id): an ingredient is listed twice")
+        }
+    }
+
+    func testValidationCatchesARecipeThatContradictsItsProfile() throws {
+        let library = try ContentLibrary.bundled()
+        var none = try XCTUnwrap(library.dish(id: "laziji"))
+        none.recipe = nil
+        var wrong = try XCTUnwrap(library.dish(id: "mapo-tofu"))
+        wrong.recipe?.lines.append(Attempt.Line(ingredientId: "cream", amount: 240, unit: .grams))
+        wrong.recipe?.lines.append(Attempt.Line(ingredientId: "parmesan", amount: 20, unit: .grams))
+        wrong.recipe?.steps = ["Cook it."]
+        let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients, dishes: [none, wrong]).validate()
+        XCTAssertTrue(problems.contains("laziji: no recipe"), "\(problems)")
+        XCTAssertTrue(problems.contains("mapo-tofu: recipe has 1 steps, want 3 to 7"), "\(problems)")
+        XCTAssertTrue(problems.contains("mapo-tofu: recipe uses parmesan, which is not on the palette"), "\(problems)")
+        XCTAssertTrue(problems.contains { $0.hasPrefix("mapo-tofu: its own recipe scores") }, "\(problems)")
+    }
+
     func testValidationCatchesABrokenProfile() throws {
         let library = try ContentLibrary.bundled()
         var broken = try XCTUnwrap(library.dish(id: "mapo-tofu"))

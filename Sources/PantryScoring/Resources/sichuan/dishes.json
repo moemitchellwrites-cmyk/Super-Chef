@@ -167,6 +167,91 @@
     "cream",
     "basil"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "wok",
+    "method": "braise",
+    "lines": [
+     {
+      "ingredientId": "firm-tofu",
+      "amount": 400,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ground-pork",
+      "amount": 100,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "doubanjiang",
+      "amount": 2.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "douchi",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-ground",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 3,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "chili-flakes",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "stock",
+      "amount": 150,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "cornstarch",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 1,
+      "unit": "tsp"
+     }
+    ],
+    "steps": [
+     "Cut the tofu into 2 cm cubes and leave them in hot water while you start the sauce.",
+     "Heat the oil in the wok over medium heat. Fry the pork until crumbly and starting to brown.",
+     "Add the doubanjiang and fry until the oil turns red. Add the black beans, garlic, ginger and chili flakes for a few seconds.",
+     "Pour in the stock with the soy sauce and sugar. Slide in the drained tofu and simmer gently for 4 to 5 minutes, pushing rather than stirring.",
+     "Mix the cornstarch with a little cold water and stir it in until the sauce clings to the tofu.",
+     "Scatter with the scallion and the ground Sichuan pepper."
+    ]
+   },
    "cardId": "card-mapo-tofu",
    "notes": "Dunlop 2019 (ma po dou fu); Chengdu 2010. Numbing comes from the peppercorn, not the paste; the paste brings heat and the deep red colour."
   },
@@ -357,6 +442,96 @@
     "ketchup",
     "lime"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "wok",
+    "method": "stir-fry",
+    "lines": [
+     {
+      "ingredientId": "chicken-thigh",
+      "amount": 350,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "peanuts",
+      "amount": 70,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "dried-chilies",
+      "amount": 15,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-whole",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 40,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 8,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "dark-soy",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "black-vinegar",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "cornstarch",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "water",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 2,
+      "unit": "tbsp"
+     }
+    ],
+    "steps": [
+     "Cut the chicken into 1.5 cm cubes. Toss with half the light soy sauce, the Shaoxing wine and half the cornstarch.",
+     "Mix the sauce: the rest of the light soy, the dark soy, vinegar, sugar, water and the remaining cornstarch.",
+     "Heat the oil in the wok. Fry the dried chilies and Sichuan peppercorns until fragrant and just darkening.",
+     "Turn the heat up, add the chicken and stir-fry until it turns white.",
+     "Add the garlic, ginger and scallion and fry for half a minute.",
+     "Stir the sauce, pour it in and toss until glossy. Stir in the peanuts off the heat."
+    ]
+   },
    "cardId": "card-kung-pao-chicken",
    "notes": "Dunlop 2019 (gong bao ji ding): 'litchi flavour', sweet and sour in balance with scorched chili and a little numbing. No bean paste in the Sichuan original."
   },
@@ -525,6 +700,80 @@
     "basil",
     "parmesan"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "wok",
+    "method": "stir-fry",
+    "lines": [
+     {
+      "ingredientId": "eggplant",
+      "amount": 500,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "pickled-chili",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 15,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 30,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 1.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "black-vinegar",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "cornstarch",
+      "amount": 1.5,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "stock",
+      "amount": 80,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 60,
+      "unit": "grams"
+     }
+    ],
+    "steps": [
+     "Cut the eggplant into finger-length batons.",
+     "Heat the oil in the wok and fry the eggplant in batches until soft and golden. Lift out and drain.",
+     "Leave about a tablespoon of oil in the wok. Fry the chopped pickled chilies until the oil reddens, then the garlic and ginger.",
+     "Add the stock, sugar, soy sauce and Shaoxing wine. Return the eggplant and simmer for 2 minutes.",
+     "Stir in the cornstarch mixed with a little water, then the vinegar and scallion, and serve."
+    ]
+   },
    "cardId": "card-yuxiang-eggplant",
    "notes": "Dunlop 2019 (yu xiang qie zi). 'Fish-fragrant' names the seasoning once used for fish: pickled chili, garlic, ginger, scallion, sugar, vinegar. There is no fish in it and no peppercorn."
   },
@@ -705,6 +954,94 @@
     "fish-sauce",
     "coconut-milk"
    ],
+   "recipe": {
+    "serves": 2,
+    "vessel": "pot",
+    "method": "boil",
+    "lines": [
+     {
+      "ingredientId": "wheat-noodles",
+      "amount": 300,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ground-pork",
+      "amount": 120,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "yacai",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "chili-oil",
+      "amount": 3,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-ground",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sesame-paste",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "black-vinegar",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "stock",
+      "amount": 100,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "peanuts",
+      "amount": 20,
+      "unit": "grams"
+     }
+    ],
+    "steps": [
+     "Heat the oil in a small pan. Fry the pork until browned and crisp. Add the Shaoxing wine, half the soy sauce and the yacai, and fry until dry and fragrant.",
+     "In each bowl, mix the chili oil, sesame paste, remaining soy sauce, vinegar, sugar, garlic and ground Sichuan pepper. Loosen with the hot stock.",
+     "Boil the noodles in a pot of water until just tender. Drain and divide between the bowls.",
+     "Top with the pork, the scallion and the crushed peanuts. Toss everything together before eating."
+    ]
+   },
    "cardId": "card-dan-dan-noodles",
    "notes": "Dunlop 2019 (dan dan mian); Chengdu 2010. Chili oil and peppercorn in the bowl, crisp pork and yacai on top. Sesame paste is a common addition, not the base."
   },
@@ -857,6 +1194,70 @@
     "basil",
     "butter"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "wok",
+    "method": "stir-fry",
+    "lines": [
+     {
+      "ingredientId": "pork-belly",
+      "amount": 400,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "doubanjiang",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sweet-bean-sauce",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "douchi",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "leek",
+      "amount": 200,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "dark-soy",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 1,
+      "unit": "tbsp"
+     }
+    ],
+    "steps": [
+     "Simmer the pork belly in water, in one piece, for about 20 minutes, until just cooked. Cool it completely, then slice it as thin as you can.",
+     "Heat the oil in the wok. Fry the slices until the fat runs and the edges curl and brown.",
+     "Push the pork aside. Fry the doubanjiang in the fat until red, then the sweet bean sauce, black beans and ginger.",
+     "Toss everything together with the Shaoxing wine, dark soy and sugar.",
+     "Add the leek and stir-fry for under a minute, until just wilted."
+    ]
+   },
    "cardId": "card-twice-cooked-pork",
    "notes": "Dunlop 2019 (hui guo rou). Boiled, sliced, fried until the slices curl; no slurry, no liquid. Sweet bean sauce rounds the doubanjiang."
   },
@@ -1008,6 +1409,80 @@
     "butter",
     "parmesan"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "wok",
+    "method": "dry-fry",
+    "lines": [
+     {
+      "ingredientId": "green-beans",
+      "amount": 400,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ground-pork",
+      "amount": 80,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "yacai",
+      "amount": 1.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "dried-chilies",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-whole",
+      "amount": 1.5,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 8,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 15,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 0.5,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 60,
+      "unit": "grams"
+     }
+    ],
+    "steps": [
+     "Trim the beans and dry them well.",
+     "Heat the oil in the wok over medium heat. Fry the beans, turning often, for 6 to 8 minutes, until wrinkled and blistered. Lift out.",
+     "Pour off all but a tablespoon of oil. Fry the dried chilies and Sichuan peppercorns until fragrant, then the pork until crumbly.",
+     "Add the Shaoxing wine, yacai, garlic, ginger and scallion and fry briefly.",
+     "Return the beans, season with the soy sauce and sugar, and toss until dry and coated."
+    ]
+   },
    "cardId": "card-dry-fried-green-beans",
    "notes": "Dunlop 2019 (gan bian si ji dou). 'Dry-fried' means the beans blister in oil until wrinkled; nothing wet goes in."
   },
@@ -1208,6 +1683,90 @@
     "lime",
     "cream"
    ],
+   "recipe": {
+    "serves": 4,
+    "vessel": "wok",
+    "method": "poach",
+    "lines": [
+     {
+      "ingredientId": "white-fish",
+      "amount": 400,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "bean-sprouts",
+      "amount": 200,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "doubanjiang",
+      "amount": 2.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "dried-chilies",
+      "amount": 25,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-whole",
+      "amount": 1.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 15,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 20,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "stock",
+      "amount": 600,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 100,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "egg-white",
+      "amount": 30,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "cornstarch",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "salt",
+      "amount": 1,
+      "unit": "tsp"
+     }
+    ],
+    "steps": [
+     "Slice the fish thinly. Coat it with the egg white, cornstarch, Shaoxing wine and half the salt.",
+     "Blanch the bean sprouts for a minute and lay them in a deep serving bowl.",
+     "Heat a third of the oil in the wok. Fry the doubanjiang until red, then the garlic and ginger. Add the stock and the rest of the salt and bring to a simmer.",
+     "Slide in the fish, slice by slice. Poach for about a minute, until just opaque, then pour fish and broth over the sprouts.",
+     "Scatter the dried chilies, Sichuan peppercorns and scallion on top. Heat the remaining oil until it shimmers and pour it over so it sizzles."
+    ]
+   },
    "cardId": "card-shuizhu-fish",
    "notes": "Dunlop 2019 (shui zhu yu). Velveted fish slips into a doubanjiang broth over a vegetable bed; sizzling oil over chilies and peppercorn finishes it."
   },
@@ -1385,6 +1944,74 @@
     "mirin",
     "miso"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "pot",
+    "method": "poach",
+    "lines": [
+     {
+      "ingredientId": "chicken-thigh",
+      "amount": 400,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "chili-oil",
+      "amount": 4,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-ground",
+      "amount": 1.5,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "black-vinegar",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 2,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 12,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 20,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sesame-oil",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "peanuts",
+      "amount": 20,
+      "unit": "grams"
+     }
+    ],
+    "steps": [
+     "Put the chicken in a pot of cold water with the ginger and half the scallion. Bring to a bare simmer and poach for 15 minutes, then leave it in the water, off the heat, for 10 more.",
+     "Plunge the chicken into iced water until cold. Slice it and arrange it on a plate.",
+     "Mix the chili oil, soy sauce, vinegar, sugar, garlic, sesame oil and ground Sichuan pepper.",
+     "Pour the dressing over the chicken. Top with the crushed peanuts and the rest of the scallion."
+    ]
+   },
    "cardId": "card-kou-shui-chicken",
    "notes": "Dunlop 2019 (kou shui ji). A cold dish: poached chicken under a chili-oil dressing with numbing, soy, vinegar, sugar. Nothing is fried."
   },
@@ -1536,6 +2163,80 @@
     "ketchup",
     "lime"
    ],
+   "recipe": {
+    "serves": 3,
+    "vessel": "wok",
+    "method": "deep-fry",
+    "lines": [
+     {
+      "ingredientId": "chicken-thigh",
+      "amount": 400,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "dried-chilies",
+      "amount": 150,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sichuan-peppercorn-whole",
+      "amount": 2,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 15,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 20,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "salt",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "sugar",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 100,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "sesame-seeds",
+      "amount": 1,
+      "unit": "tbsp"
+     }
+    ],
+    "steps": [
+     "Cut the chicken into 1.5 cm pieces. Toss with the soy sauce, Shaoxing wine and salt and leave for 15 minutes.",
+     "Snip the dried chilies into pieces and shake out most of the seeds.",
+     "Heat the oil in the wok until very hot. Fry the chicken in batches until deep golden and crisp. Lift out.",
+     "Pour off all but two tablespoons of oil. Over low heat, fry the chilies and Sichuan peppercorns until fragrant and darkening, without burning them.",
+     "Add the garlic, ginger and scallion, return the chicken, and toss with the sugar and sesame seeds."
+    ]
+   },
    "cardId": "card-laziji",
    "notes": "Dunlop 2019 (la zi ji); Chongqing style. Chicken buried in chilies; you hunt for the meat. The chilies perfume the oil and are mostly not eaten."
   },
@@ -1690,6 +2391,80 @@
     "fish-sauce",
     "cream"
    ],
+   "recipe": {
+    "serves": 2,
+    "vessel": "wok",
+    "method": "braise",
+    "lines": [
+     {
+      "ingredientId": "glass-noodles",
+      "amount": 120,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ground-pork",
+      "amount": 100,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "doubanjiang",
+      "amount": 1.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "garlic",
+      "amount": 10,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "ginger",
+      "amount": 8,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "scallion",
+      "amount": 15,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "light-soy",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "dark-soy",
+      "amount": 1,
+      "unit": "tsp"
+     },
+     {
+      "ingredientId": "shaoxing",
+      "amount": 1,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "stock",
+      "amount": 300,
+      "unit": "grams"
+     },
+     {
+      "ingredientId": "neutral-oil",
+      "amount": 1.5,
+      "unit": "tbsp"
+     },
+     {
+      "ingredientId": "chili-flakes",
+      "amount": 0.5,
+      "unit": "tsp"
+     }
+    ],
+    "steps": [
+     "Soak the glass noodles in warm water for 10 minutes, until pliable. Drain.",
+     "Heat the oil in the wok. Fry the pork until crumbly and browned, then add the Shaoxing wine.",
+     "Add the doubanjiang and chili flakes and fry until the oil turns red, then the garlic and ginger.",
+     "Pour in the stock with both soy sauces and bring to a simmer. Add the noodles.",
+     "Simmer, stirring, until the noodles have drunk nearly all the liquid. Scatter with the scallion."
+    ]
+   },
    "cardId": "card-ants-climbing-a-tree",
    "notes": "Dunlop 2019 (ma yi shang shu). Minced pork clings to glass noodles like ants on twigs; doubanjiang colours the braising liquid, which the noodles drink up."
   }

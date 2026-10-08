@@ -258,3 +258,14 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - How it shows: touching a chip puts its note in a strip above the palette at once. Holding the chip still reads the note without adding it; a quick tap or a drag adds as before.
 - Rationale: A pop-up on first touch would sit between the finger and the wok, in a round meant to take thirty seconds, and it would stop being available after the first time, which is when a learner needs it again. The strip costs nothing to ignore and is there on every touch. Decoys get the same plain treatment as everything else, so the note never marks one out.
 - Consequences: Notes are Claude's writing and go to the chef with the profiles (PB-013). The strip costs height: on a short phone the round screen now scrolls, with the wok pinned (PB-108). In the stand-in now; the app shows it when the Pantry screen is built (PB-015).
+
+## PD-029: The score sheet ends with a real recipe
+- Date: 2026-10-07
+- Made by: Moe (the sheet should list an actual recipe with amounts and process after the scoring explanation); Claude (shape, and two objections recorded below)
+- Status: accepted for the stand-in; **two questions open for Moe before it goes into the app**
+- Decision: `DishProfile.recipe`: serves, vessel, method, amounts and three to seven steps. Shown on the score sheet after the verdict, in both modes, never before serving. Ten recipes written by Claude. Each recipe's amounts are the dish's known-good reference attempt, and content validation scores every recipe against its own profile: a recipe that the game would not call good fails the build.
+- Rationale: The verdict says what was off; the recipe shows what right looks like, with the process the round can't teach. Tying the recipe to the scorer means the game never teaches one thing and scores another.
+- Objections (Claude, once, for the record):
+  1. **This is most of "Cook It Tonight", which the brief makes the first paid feature** ($3.99 a month): "turn any attempt into a real recipe with quantities, steps, and a shopping list". A reference recipe free on every score sheet leaves the paid feature with the shopping list, scaling and export. That may be the right trade (the free recipe is the proof people cook what the game taught), but it is a pricing decision and Moe's to make.
+  2. **It works against "one judge line, one card, per round"** and the under-60-word card in the brief. A recipe is 150 to 200 words. In the stand-in it sits at the end of a scrolling sheet with the buttons pinned, so it costs nothing to skip; whether it replaces the card (PB-004) or sits beside it is open.
+- Consequences: Recipes go to the chef with everything else (PB-013); they are the most checkable thing in the content. `RecipeText` formats amounts ("2½ tbsp") and is tested. Not yet on the app's score sheet.

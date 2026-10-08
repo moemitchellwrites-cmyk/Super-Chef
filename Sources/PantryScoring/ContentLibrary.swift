@@ -53,6 +53,9 @@ public struct ContentLibrary: Sendable {
     /// The longest ingredient note: three short lines on a phone.
     public static let aboutLimit = 110
 
+    /// The longest recipe step: about three lines on a phone.
+    public static let recipeStepLimit = 190
+
     /// The longest dish brief: two lines under the dish name on a phone.
     public static let briefLimit = 120
 
@@ -179,6 +182,23 @@ public struct ContentLibrary: Sendable {
                 problems.append("\(tag): brief is over \(ContentLibrary.briefLimit) characters")
             }
             if brief.contains(where: \.isNumber) { problems.append("\(tag): brief gives a number") }
+            if let recipe = dish.recipe {
+                if recipe.serves < 1 { problems.append("\(tag): recipe serves nobody") }
+                if !(3...7).contains(recipe.steps.count) { problems.append("\(tag): recipe has \(recipe.steps.count) steps, want 3 to 7") }
+                for step in recipe.steps where step.isEmpty || step.count > ContentLibrary.recipeStepLimit {
+                    problems.append("\(tag): a recipe step is empty or over \(ContentLibrary.recipeStepLimit) characters")
+                }
+                for line in recipe.lines where !dish.palette.contains(line.ingredientId) {
+                    problems.append("\(tag): recipe uses \(line.ingredientId), which is not on the palette")
+                }
+                // The recipe is the answer the game teaches toward, so it must be a good attempt at its own dish.
+                let breakdown = scorer.score(recipe.attempt(dishId: dish.id), against: dish)
+                if breakdown.total < 85 || !breakdown.misses.isEmpty {
+                    problems.append("\(tag): its own recipe scores \(breakdown.total) with misses \(breakdown.misses.map(\.code))")
+                }
+            } else {
+                problems.append("\(tag): no recipe")
+            }
             if dish.cardId.isEmpty { problems.append("\(tag): no cardId") }
             if (dish.notes ?? "").isEmpty { problems.append("\(tag): no source notes") }
         }

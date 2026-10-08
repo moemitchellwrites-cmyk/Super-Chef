@@ -12,7 +12,7 @@ struct RoundHeader: View {
 
     @State private var showingTip = false
 
-    private static let startOverTip = "Start over: empties the wok"
+    private static let startOverTip = "Start over: clears the round"
 
     var body: some View {
         HStack(spacing: 8) {
@@ -81,7 +81,7 @@ struct RoundHeader: View {
             }
             .accessibilityElement()
             .accessibilityLabel("Start over")
-            .accessibilityHint("Empties the wok")
+            .accessibilityHint("Clears the round")
             .accessibilityAddTraits(.isButton)
             .accessibilityAction {
                 if canStartOver { onStartOver() }

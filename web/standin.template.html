@@ -98,6 +98,18 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .stage { position: relative; flex: 1; min-height: 96px; }
 .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .scene.over { box-shadow: inset 0 0 0 3px var(--chili); }
+.names .spacer { flex: 1; }
+.vessel-switch {
+  flex: none; height: 30px; padding: 0 10px; border-radius: 15px; background: var(--bg); color: var(--chili);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.vessel-choice { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.vessel-choice button {
+  width: 96px; height: 44px; border-radius: 12px; background: var(--chili); color: var(--chili-ink);
+  font-family: var(--display); font-weight: 600; font-size: 17px;
+}
+.vessel-choice.nudge { animation: nudge 0.25s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .vessel-choice.nudge { animation: none; } }
 
 .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface); border-radius: 12px; padding: 4px; width: 184px; box-sizing: border-box; flex: none; }
 .mode { height: 36px; border-radius: 9px; font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--ink-soft); }
@@ -274,11 +286,18 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     <div class="names">
       <select class="dish" id="dish" aria-label="Dish"></select>
       <span class="eyebrow" id="eyebrow">Sichuan · stand-in</span>
+      <span class="spacer"></span>
+      <button class="vessel-switch" id="vessel-switch" hidden></button>
     </div>
     <p class="brief" id="brief"></p>
     <div class="picks" id="picks" hidden><span class="ask" id="picks-ask"></span><span class="dots" id="picks-count" role="img"></span></div>
     <div class="stage" id="stage" role="img" aria-label="Wok, empty">
       <canvas id="canvas"></canvas>
+      <!-- A Kitchen round starts with a bare burner (PD-035). -->
+      <div class="vessel-choice" id="vessel-choice" hidden>
+        <button id="vessel-wok" aria-label="Cook it in a wok">Wok</button>
+        <button id="vessel-pot" aria-label="Cook it in a pot">Pot</button>
+      </div>
       <div class="about" id="about" aria-live="polite" hidden><span id="about-text"></span></div>
     </div>
     <div class="stepper" id="stepper"></div>
@@ -353,11 +372,27 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     var dish = content.dishes[dishId];
     var seen = {};
     var offered = dish.palette.filter(function (id) { if (seen[id] || !content.ingredients[id]) return false; seen[id] = true; return true; });
-    round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: 'wok', startedAt: null,
+    round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: mode === 'pantry' ? 'wok' : null, startedAt: null,
       limit: E.pantryLimit(dish), essentials: E.pantryEssentials(dish) };
     scene.clear();
+    scene.setVessel(round.vessel);
     hideAbout();
     renderAll();
+  }
+  // Puts a vessel on the burner, or swaps it. What is in it stays in (Round.place in Swift).
+  function place(vessel) {
+    if (mode !== 'kitchen' || round.vessel === vessel) return;
+    touchClock();
+    round.vessel = vessel;
+    scene.setVessel(vessel);
+    scene.twin('clatter');
+    sound.play('clatter');
+    buzz();
+    renderAll();
+  }
+  function nudgeVessel() {
+    var box = $('vessel-choice');
+    box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
   }
   function entryFor(id) { for (var i = 0; i < round.entries.length; i++) if (round.entries[i].id === id) return round.entries[i]; return null; }
   function ladder(id) { return E.ladderFor(content.ingredients[id]); }
@@ -401,6 +436,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       if (entryFor(id)) { if (fraction === undefined) remove(id); return; }
       if (round.entries.length >= round.limit) { nudgePicks(); return; }
     }
+    if (!round.vessel) { nudgeVessel(); return; }
     round.selected = id;
     if (!entryFor(id)) {
       var ingredient = content.ingredients[id];
@@ -479,10 +515,18 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       });
     }
     select.value = round.dish.id;
-    $('eyebrow').textContent = content.cuisine.name + (mode === 'pantry' ? '' : ' \u00b7 Wok');
+    $('eyebrow').textContent = content.cuisine.name;
+    var kitchen = mode === 'kitchen';
+    $('vessel-choice').hidden = !(kitchen && !round.vessel);
+    $('vessel-switch').hidden = !(kitchen && round.vessel);
+    if (kitchen && round.vessel) {
+      var other = round.vessel === 'wok' ? 'pot' : 'wok';
+      $('vessel-switch').textContent = round.vessel + ' \u21c4';
+      $('vessel-switch').setAttribute('aria-label', VESSEL_TITLE[round.vessel] + '. Switch to the ' + other);
+    }
     $('brief').textContent = round.dish.brief || '';
     $('brief').hidden = !round.dish.brief;
-    $('restart').disabled = round.entries.length === 0 && !round.method;
+    $('restart').disabled = round.entries.length === 0 && !round.method && !(kitchen && round.vessel);
   }
 
   function renderMethods() {
@@ -504,7 +548,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     var box = $('stepper');
     var id = round.selected;
     if (!id || !entryFor(id)) {
-      box.innerHTML = '<div class="hint">Tap an ingredient, or drag it into the wok.</div>';
+      box.innerHTML = '<div class="hint">' + (round.vessel ? 'Tap an ingredient, or drag it into the ' + round.vessel + '.' : 'Choose a wok or a pot to start.') + '</div>';
       return;
     }
     var ingredient = content.ingredients[id], e = entryFor(id), l = ladder(id), m = l.steps[e.step];
@@ -568,8 +612,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     });
   }
 
+  var VESSEL_TITLE = { wok: 'Wok', pot: 'Pot' };
   function servePrompt() {
-    if (!round.entries.length) return 'Add something to the wok';
+    if (!round.vessel) return 'Choose a wok or a pot';
+    if (!round.entries.length) return 'Add something to the ' + round.vessel;
     if (mode === 'pantry') return null;
     if (!round.method) return 'Choose how to cook it';
     return null;
@@ -585,9 +631,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     }
   }
   function renderSceneLabel() {
-    var label = 'Wok, empty';
+    var title = VESSEL_TITLE[round.vessel];
+    var label = title ? title + ', empty' : 'No vessel yet';
     if (round.entries.length) {
-      label = 'Wok with ' + round.entries.map(function (e) {
+      label = title + ' with ' + round.entries.map(function (e) {
         return (mode === 'kitchen' ? ladder(e.id).steps[e.step].label + ' ' : '') + chipName(content.ingredients[e.id]);
       }).join(', ');
     }
@@ -604,10 +651,11 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     button.addEventListener('pointerdown', function (ev) {
       if (ev.button !== undefined && ev.button > 0) return;
       sound.unlock();
-      showAbout(id);
+      // Pantry: the note shows at a touch. Kitchen: only when held, because there it would cover the vessel.
+      if (mode === 'pantry') showAbout(id);
       drag = { id: id, x0: ev.clientX, y0: ev.clientY, moved: false, pointer: ev.pointerId, peeked: false };
       // Held still for a moment: the player is reading, not adding.
-      drag.timer = setTimeout(function () { if (drag && drag.id === id && !drag.moved) { drag.peeked = true; button.classList.add('peek'); } }, 450);
+      drag.timer = setTimeout(function () { if (drag && drag.id === id && !drag.moved) { drag.peeked = true; button.classList.add('peek'); showAbout(id); } }, 450);
       try { button.setPointerCapture(ev.pointerId); } catch (err) { /* older browsers */ }
     });
     button.addEventListener('pointermove', function (ev) {
@@ -642,8 +690,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     button.addEventListener('pointerup', function (ev) { finish(ev, false); });
     button.addEventListener('pointercancel', function (ev) { finish(ev, true); });
     // Keyboard and switch access: Enter or Space adds it.
-    button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showAbout(id); add(id); } });
-    button.addEventListener('focus', function () { showAbout(id); });
+    button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); if (mode === 'pantry') showAbout(id); add(id); } });
+    button.addEventListener('focus', function () { if (mode === 'pantry') showAbout(id); });
     button.addEventListener('blur', releaseAbout);
     button.addEventListener('contextmenu', function (ev) { ev.preventDefault(); });
   }
@@ -700,7 +748,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   // ---------- The wok scene: pieces under simple physics, and every cue's visual twin ----------
   var scene = (function () {
     var canvas = $('canvas'), g = canvas.getContext('2d');
-    var LW = 390, LH = 260, CX = 195, RIM = 112, RADIUS = 140, DEPTH = 86, WALL = 8, R = 12;
+    var LW = 390, LH = 260, CX = 195, RIM = 112, RADIUS = 140, DEPTH = 86, WALL = 8, R = 12, POT = 112;
+    var vessel = 'wok';
     var pieces = [], dots = [], words = [], flameLevel = 0, flameKick = 0, shake = 0, last = 0, running = false;
     var colors = {};
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -714,7 +763,14 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       canvas.width = Math.max(1, Math.round(r.width * dpr)); canvas.height = Math.max(1, Math.round(r.height * dpr));
       draw();
     }
-    function clampX(x) { var reach = RADIUS - WALL - R - 30; return Math.min(Math.max(x, CX - reach), CX + reach); }
+    // The wok's bowl narrows fast below the rim; the pot's sides are straight.
+    function clampX(x) { var reach = vessel === 'pot' ? POT - WALL - R - 6 : RADIUS - WALL - R - 30; return Math.min(Math.max(x, CX - reach), CX + reach); }
+    // Puts a vessel on the burner, swaps it, or (null) takes it away. Pieces drop back in from above.
+    function setVessel(next) {
+      vessel = next;
+      pieces.forEach(function (p, index) { p.x = clampX(p.x); p.y = RIM - 46 - (index % 6) * 16 - Math.random() * 40; p.vx = 0; p.vy = 0; });
+      wake();
+    }
     function dropX(fraction) {
       // The canvas letterboxes the 390x260 scene; map the view fraction back into scene x.
       var r = canvas.getBoundingClientRect(), scale = Math.min(r.width / LW, r.height / LH);
@@ -770,7 +826,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
               if (rel < 0) { p.vx += nx * rel * 0.5; p.vy += ny * rel * 0.5; q.vx -= nx * rel * 0.5; q.vy -= ny * rel * 0.5; }
             }
           }
-          if (p.y > RIM) {
+          if (vessel === 'pot') {
+            var hx = POT - WALL - R, floor = RIM + DEPTH - WALL - R;
+            if (p.x < CX - hx) { p.x = CX - hx; p.vx = Math.abs(p.vx) * 0.2; }
+            if (p.x > CX + hx) { p.x = CX + hx; p.vx = -Math.abs(p.vx) * 0.2; }
+            if (p.y > floor) { p.y = floor; if (p.vy > 0) p.vy = -p.vy * 0.2; p.vx *= 0.9; }
+          } else if (p.y > RIM) {
             var ex = (p.x - CX) / rx, ey = (p.y - RIM) / ry, k = ex * ex + ey * ey;
             if (k > 1) {
               var s = 1 / Math.sqrt(k);
@@ -794,6 +855,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     function halfEllipse(inset) {
       g.beginPath(); g.ellipse(CX, RIM, RADIUS - inset, DEPTH - inset, 0, 0, Math.PI, false); g.closePath();
     }
+    function potShape(inset) {
+      var half = POT - inset, bottom = RIM + DEPTH - inset, corner = 16;
+      g.beginPath(); g.moveTo(CX - half, RIM); g.lineTo(CX - half, bottom - corner);
+      g.quadraticCurveTo(CX - half, bottom, CX - half + corner, bottom); g.lineTo(CX + half - corner, bottom);
+      g.quadraticCurveTo(CX + half, bottom, CX + half, bottom - corner); g.lineTo(CX + half, RIM); g.closePath();
+    }
     function draw() {
       var w = canvas.width, h = canvas.height, scale = Math.min(w / LW, h / LH);
       g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, w, h);
@@ -813,9 +880,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 
       g.save();
       if (shake > 0 && !reduced) g.translate(Math.sin(shake * 90) * 6 * (shake / 0.2), 0);
-      g.fillStyle = colors['--iron']; halfEllipse(0); g.fill();
-      roundRect(CX - RADIUS - 29, RIM - 1, 34, 11, 5); g.fill(); roundRect(CX + RADIUS - 5, RIM - 1, 34, 11, 5); g.fill();
-      g.fillStyle = colors['--iron-inside']; halfEllipse(WALL); g.fill();
+      if (vessel) {
+        var half = vessel === 'pot' ? POT : RADIUS, shape = vessel === 'pot' ? potShape : halfEllipse;
+        g.fillStyle = colors['--iron']; shape(0); g.fill();
+        roundRect(CX - half - 29, RIM - 1, 34, 11, 5); g.fill(); roundRect(CX + half - 5, RIM - 1, 34, 11, 5); g.fill();
+        g.fillStyle = colors['--iron-inside']; shape(WALL); g.fill();
+      }
       g.restore();
 
       g.textAlign = 'center'; g.textBaseline = 'middle';
@@ -867,7 +937,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
     resize();
-    return { setPieces: setPieces, clear: clear, setFlame: setFlame, twin: twin, dropX: dropX, pieceCount: function () { return pieces.length; } };
+    return { setVessel: setVessel, setPieces: setPieces, clear: clear, setFlame: setFlame, twin: twin, dropX: dropX, pieceCount: function () { return pieces.length; } };
   })();
 
   // ---------- Serving ----------
@@ -1060,6 +1130,9 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     mode = next;
     startRound(round.dish.id);
   }
+  $('vessel-wok').addEventListener('click', function () { place('wok'); });
+  $('vessel-pot').addEventListener('click', function () { place('pot'); });
+  $('vessel-switch').addEventListener('click', function () { place(round.vessel === 'wok' ? 'pot' : 'wok'); });
   $('mode-pantry').addEventListener('click', function () { setMode('pantry'); });
   $('mode-kitchen').addEventListener('click', function () { setMode('kitchen'); });
   $('next').addEventListener('click', nextDish);

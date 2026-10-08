@@ -32,6 +32,7 @@ final class StepperReachabilityTests: XCTestCase {
     static func play(_ golden: Golden, in library: ContentLibrary, vessel: Vessel) throws -> Round {
         let dish = try XCTUnwrap(library.dish(id: golden.dishId))
         var round = Round(dish: dish, library: library, seed: 1)
+        round.place(vessel)
         for line in golden.lines {
             let ingredient = try XCTUnwrap(library.ingredient(id: line.ingredientId))
             let grams = try XCTUnwrap(ingredient.grams(amount: line.amount, unit: line.unit))
@@ -39,7 +40,6 @@ final class StepperReachabilityTests: XCTestCase {
             let ladder = try XCTUnwrap(round.ladder(for: line.ingredientId))
             round.setStep(line.ingredientId, to: ladder.nearestIndex(toGrams: grams, of: ingredient))
         }
-        round.vessel = vessel
         round.choose(try XCTUnwrap(golden.method ?? dish.methods.first))
         return round
     }
@@ -58,8 +58,7 @@ final class StepperReachabilityTests: XCTestCase {
         }
     }
 
-    /// PB-002 ships one vessel. A dish that wants a pot loses the vessel points (6 of 100)
-    /// until PB-008 adds the choice; nothing may lose more than that.
+    /// Choosing the wok for everything costs a pot dish only the vessel points (6 of 100); nothing loses more.
     func testTheWokAloneCostsAtMostTheVesselPoints() throws {
         let library = try ContentLibrary.bundled()
         var potOnly: [String] = []
@@ -69,7 +68,7 @@ final class StepperReachabilityTests: XCTestCase {
             XCTAssertGreaterThanOrEqual(breakdown.total, 85, "\(golden.id) in the wok scored \(breakdown.total)")
             if breakdown.misses.contains(where: { $0.kind == .wrongVessel }) { potOnly.append(golden.dishId) }
         }
-        XCTAssertEqual(potOnly, ["kou-shui-chicken"], "update PB-008 in the backlog if this list changes")
+        XCTAssertEqual(potOnly, ["kou-shui-chicken"], "the dishes that want a pot")
     }
 
     func testLaddersAreStrictlyIncreasingByWeight() throws {

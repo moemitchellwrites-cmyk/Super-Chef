@@ -11,6 +11,9 @@ final class PantryUITests: XCTestCase {
         app.launchArguments = ["-pantryMuted", "-pantryMode", "kitchen"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
+        // A Kitchen round starts with a bare burner (PD-035). These tests cook in the wok.
+        XCTAssertEqual(app.buttons["serve"].label, "Choose a wok or a pot")
+        app.buttons["vessel-wok"].tap()
     }
 
     private func chip(_ id: String) -> XCUIElement {
@@ -154,6 +157,21 @@ final class PantryModeUITests: XCTestCase {
         app.buttons["mode-kitchen"].tap()
         XCTAssertTrue(app.buttons["method-braise"].waitForExistence(timeout: 5), "Kitchen mode didn't appear")
         XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
-        XCTAssertEqual(app.buttons["serve"].label, "Add something to the wok")
+
+        // The burner is bare: nothing goes in until there is something to put it in.
+        XCTAssertEqual(app.buttons["serve"].label, "Choose a wok or a pot")
+        XCTAssertEqual(app.otherElements["wok"].label, "No vessel yet")
+        chip("firm-tofu").tap()
+        XCTAssertFalse(app.staticTexts["amount"].exists, "an ingredient went in with no vessel")
+
+        app.buttons["vessel-pot"].tap()
+        XCTAssertEqual(app.otherElements["wok"].label, "Pot, empty")
+        XCTAssertEqual(app.buttons["serve"].label, "Add something to the pot")
+        chip("firm-tofu").tap()
+        XCTAssertEqual(app.otherElements["wok"].label, "Pot with 100 g Firm tofu")
+
+        // Swapping the vessel keeps what is in it.
+        app.buttons["vessel-switch"].tap()
+        XCTAssertEqual(app.otherElements["wok"].label, "Wok with 100 g Firm tofu")
     }
 }

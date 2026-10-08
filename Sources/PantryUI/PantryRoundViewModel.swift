@@ -18,7 +18,7 @@ final class PantryRoundViewModel {
     /// Bumps when a pick is refused because every pick is spent; the view answers with a warning tap.
     private(set) var fullCount = 0
 
-    @ObservationIgnored let scene = WokScene.make()
+    @ObservationIgnored let scene = WokScene.make(vessel: .wok)
     @ObservationIgnored private let sound: SoundPlayer
     @ObservationIgnored private var fixedSeed: UInt64?
 

@@ -1,8 +1,9 @@
 #if canImport(SwiftUI) && canImport(SpriteKit)
 import SpriteKit
 import PantryGame
+import PantryScoring
 
-/// The vessel scene: one wok on a burner. Ingredients fall in and pile up under
+/// The vessel scene: a wok or a pot on a burner. Ingredients fall in and pile up under
 /// physics, and every sound cue has its visual twin here (sparks and steam, bubbles,
 /// droplets, a shaking pan, a flaring burner) plus a comic-strip word, so the round
 /// reads the same with the sound off.
@@ -17,15 +18,18 @@ final class WokScene: SKScene {
     private let depth: CGFloat = 86
     private let wall: CGFloat = 8
     private let pieceRadius: CGFloat = 12
+    private let potHalfWidth: CGFloat = 112
 
     private let wok = SKNode()
     private let flame = SKNode()
     private let rimGlow = SKShapeNode()
     private var pieces: [String: [SKNode]] = [:]
+    private var vessel: Vessel?
     private var generator = SeededGenerator(seed: 0xD15)
 
     /// The scene, built and ready for a `SpriteView`.
-    static func make() -> WokScene {
+    /// - Parameter vessel: what starts on the burner. Kitchen starts bare; Pantry always has the wok.
+    static func make(vessel: Vessel? = nil) -> WokScene {
         let scene = WokScene(size: logicalSize)
         scene.scaleMode = .aspectFit
         // Clear, so the panel behind shows through: an aspect-fit scene can be a pixel short of its view,
@@ -33,7 +37,9 @@ final class WokScene: SKScene {
         scene.backgroundColor = .clear
         scene.physicsWorld.gravity = CGVector(dx: 0, dy: -6)
         scene.buildBurner()
-        scene.buildWok()
+        scene.wok.zPosition = 1
+        scene.addChild(scene.wok)
+        scene.setVessel(vessel)
         return scene
     }
 
@@ -54,28 +60,61 @@ final class WokScene: SKScene {
         return path
     }
 
-    private func buildWok() {
-        let shell = SKShapeNode(path: closedPath(bowlPoints(inset: 0)))
+    /// A straight-sided pot, as wide as the burner needs and as deep as the wok.
+    private func potPoints(inset: CGFloat) -> [CGPoint] {
+        let half = potHalfWidth - inset
+        let bottom = rimY - depth + inset
+        let corner: CGFloat = 16
+        var points = [CGPoint(x: centerX - half, y: rimY)]
+        for (center, start) in [(centerX - half + corner, CGFloat.pi), (centerX + half - corner, CGFloat.pi * 1.5)] {
+            for step in 0...4 {
+                let angle = start + CGFloat.pi / 2 * CGFloat(step) / 4
+                points.append(CGPoint(x: center + corner * cos(angle), y: bottom + corner + corner * sin(angle)))
+            }
+        }
+        points.append(CGPoint(x: centerX + half, y: rimY))
+        return points
+    }
+
+    private func outline(inset: CGFloat) -> [CGPoint] {
+        vessel == .pot ? potPoints(inset: inset) : bowlPoints(inset: inset)
+    }
+
+    /// Half the width of the vessel's mouth.
+    private var halfWidth: CGFloat {
+        vessel == .pot ? potHalfWidth : radius
+    }
+
+    /// Puts a vessel on the burner, swaps it, or (nil) takes it away (PD-035).
+    /// Whatever is in the scene is dropped back in from above, so nothing is left outside the new walls.
+    func setVessel(_ vessel: Vessel?) {
+        self.vessel = vessel
+        wok.removeAllChildren()
+        wok.physicsBody = nil
+        wok.position = .zero
+        guard vessel != nil else { return }
+
+        let shell = SKShapeNode(path: closedPath(outline(inset: 0)))
         shell.fillColor = SKColor(red: 0.17, green: 0.18, blue: 0.20, alpha: 1)
         shell.strokeColor = .clear
         wok.addChild(shell)
 
-        let inside = SKShapeNode(path: closedPath(bowlPoints(inset: wall)))
+        let inside = SKShapeNode(path: closedPath(outline(inset: wall)))
         inside.fillColor = SKColor(red: 0.33, green: 0.34, blue: 0.37, alpha: 1)
         inside.strokeColor = .clear
         wok.addChild(inside)
 
         for side in [CGFloat(-1), 1] {
             let handle = SKShapeNode(rectOf: CGSize(width: 34, height: 11), cornerRadius: 5)
-            handle.position = CGPoint(x: centerX + side * (radius + 12), y: rimY - 5)
+            handle.position = CGPoint(x: centerX + side * (halfWidth + 12), y: rimY - 5)
             handle.fillColor = SKColor(red: 0.17, green: 0.18, blue: 0.20, alpha: 1)
             handle.strokeColor = .clear
             wok.addChild(handle)
         }
 
         let rim = CGMutablePath()
-        rim.move(to: CGPoint(x: centerX - radius, y: rimY))
-        rim.addLine(to: CGPoint(x: centerX + radius, y: rimY))
+        rim.move(to: CGPoint(x: centerX - halfWidth, y: rimY))
+        rim.addLine(to: CGPoint(x: centerX + halfWidth, y: rimY))
         rimGlow.path = rim
         rimGlow.strokeColor = SKColor(red: 1.0, green: 0.55, blue: 0.10, alpha: 1)
         rimGlow.lineWidth = 6
@@ -84,19 +123,23 @@ final class WokScene: SKScene {
         rimGlow.zPosition = 5
         wok.addChild(rimGlow)
 
-        // The inside of the bowl, with tall sides above the rim so a pile can't spill out of the scene.
-        let interior = bowlPoints(inset: wall)
+        // The inside of the vessel, with tall sides above the rim so a pile can't spill out of the scene.
+        let interior = outline(inset: wall)
         let edge = CGMutablePath()
-        edge.move(to: CGPoint(x: centerX - radius + wall, y: WokScene.logicalSize.height + 400))
+        edge.move(to: CGPoint(x: centerX - halfWidth + wall, y: WokScene.logicalSize.height + 400))
         for point in interior {
             edge.addLine(to: point)
         }
-        edge.addLine(to: CGPoint(x: centerX + radius - wall, y: WokScene.logicalSize.height + 400))
+        edge.addLine(to: CGPoint(x: centerX + halfWidth - wall, y: WokScene.logicalSize.height + 400))
         wok.physicsBody = SKPhysicsBody(edgeChainFrom: edge)
         wok.physicsBody?.friction = 0.6
 
-        wok.zPosition = 1
-        addChild(wok)
+        for nodes in pieces.values {
+            for (index, node) in nodes.enumerated() {
+                node.physicsBody?.velocity = .zero
+                node.position = CGPoint(x: clampX(node.position.x), y: rimY + 46 + CGFloat(index) * 16 + random(0...40))
+            }
+        }
     }
 
     private func buildBurner() {
@@ -142,7 +185,8 @@ final class WokScene: SKScene {
     }
 
     private func clampX(_ x: CGFloat) -> CGFloat {
-        let reach = radius - wall - pieceRadius - 30
+        // The wok's bowl narrows fast below the rim; the pot's sides are straight.
+        let reach = halfWidth - wall - pieceRadius - (vessel == .pot ? 6 : 30)
         return min(max(x, centerX - reach), centerX + reach)
     }
 
@@ -206,7 +250,7 @@ final class WokScene: SKScene {
         flame.isHidden = true
     }
 
-    /// The rim lights up while an ingredient is held over the wok.
+    /// The rim lights up while an ingredient is held over the vessel.
     func setDropHighlight(_ on: Bool) {
         rimGlow.removeAllActions()
         rimGlow.run(.fadeAlpha(to: on ? 1 : 0, duration: 0.1))

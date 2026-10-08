@@ -162,6 +162,8 @@ struct DemoScript {
     @MainActor
     func run(on model: RoundViewModel) async {
         try? await Task.sleep(for: .milliseconds(700))
+        model.place(.wok)
+        try? await Task.sleep(for: .milliseconds(350))
         for step in steps {
             model.add(step.id, atFraction: step.fraction)
             model.setAmount(step.id, label: step.amount)

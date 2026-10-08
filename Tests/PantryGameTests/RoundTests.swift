@@ -6,7 +6,9 @@ final class RoundTests: XCTestCase {
     private func makeRound(_ dishId: String = "mapo-tofu", seed: UInt64 = 7) throws -> (Round, ContentLibrary) {
         let library = try ContentLibrary.bundled()
         let dish = try XCTUnwrap(library.dish(id: dishId))
-        return (Round(dish: dish, library: library, seed: seed), library)
+        var round = Round(dish: dish, library: library, seed: seed)
+        round.place(.wok)
+        return (round, library)
     }
 
     func testPaletteOffersEveryProfileIngredientOnce() throws {
@@ -176,5 +178,43 @@ final class RoundTests: XCTestCase {
                 }
             }
         }
+    }
+
+    // MARK: Vessel (PD-035)
+
+    func testARoundStartsWithABareBurnerAndTakesNothingUntilAVesselIsChosen() throws {
+        let library = try ContentLibrary.bundled()
+        var round = Round(dish: try XCTUnwrap(library.dish(id: "mapo-tofu")), library: library, seed: 7)
+        XCTAssertNil(round.vessel)
+        XCTAssertEqual(round.servePrompt, "Choose a wok or a pot")
+        XCTAssertEqual(round.add("firm-tofu"), .needsVessel)
+        XCTAssertTrue(round.entries.isEmpty)
+        XCTAssertNil(round.selectedId)
+
+        XCTAssertTrue(round.place(.pot))
+        XCTAssertEqual(round.servePrompt, "Add something to the pot")
+        XCTAssertEqual(round.add("firm-tofu"), .added)
+        round.choose(.braise)
+        XCTAssertEqual(round.attempt()?.vessel, .pot)
+    }
+
+    func testSwappingTheVesselKeepsWhatIsInIt() throws {
+        var (round, _) = try makeRound()
+        round.add("firm-tofu")
+        round.choose(.braise)
+        XCTAssertFalse(round.place(.wok), "the same vessel again is no change")
+        XCTAssertTrue(round.place(.pot))
+        XCTAssertEqual(round.entries.map(\.ingredientId), ["firm-tofu"])
+        XCTAssertEqual(round.method, .braise)
+        XCTAssertFalse(round.place(.skillet), "only the vessels on offer")
+        XCTAssertEqual(round.vessel, .pot)
+    }
+
+    func testStartingOverClearsTheVesselToo() throws {
+        var (round, _) = try makeRound()
+        round.add("firm-tofu")
+        round.clear()
+        XCTAssertNil(round.vessel)
+        XCTAssertEqual(round.servePrompt, "Choose a wok or a pot")
     }
 }

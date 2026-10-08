@@ -18,6 +18,8 @@ public struct Round: Equatable, Sendable {
         case alreadyIn
         /// Not on this round's palette.
         case notOffered
+        /// Nothing to put it in yet: the player hasn't chosen a vessel.
+        case needsVessel
     }
 
     public let dish: DishProfile
@@ -28,8 +30,10 @@ public struct Round: Equatable, Sendable {
     /// The cooking methods on offer: every method some dish in the cuisine uses.
     public let methodChoices: [CookingMethod]
     public private(set) var entries: [Entry] = []
-    /// PB-002 has one vessel, the wok. A vessel choice is PB-008.
-    public var vessel: Vessel = .wok
+    /// The vessels on offer (PD-035).
+    public static let vesselChoices: [Vessel] = [.wok, .pot]
+    /// What the dish is cooked in. Nil until the player chooses: the round starts with a bare burner.
+    public private(set) var vessel: Vessel?
     public private(set) var method: CookingMethod?
     /// The ingredient the amount stepper is showing.
     public private(set) var selectedId: String?
@@ -85,12 +89,13 @@ public struct Round: Equatable, Sendable {
     /// A method is required before serving (PD-015): with the method optional, skipping
     /// it would be the safest play, because the vessel alone then carries all ten technique points.
     public var canServe: Bool {
-        !entries.isEmpty && method != nil
+        vessel != nil && !entries.isEmpty && method != nil
     }
 
     /// What still stands between the player and serving, or nil when ready.
     public var servePrompt: String? {
-        if entries.isEmpty { return "Add something to the wok" }
+        guard let vessel else { return "Choose a wok or a pot" }
+        if entries.isEmpty { return "Add something to the \(vessel.noun)" }
         if method == nil { return "Choose how to cook it" }
         return nil
     }
@@ -100,6 +105,7 @@ public struct Round: Equatable, Sendable {
     @discardableResult
     public mutating func add(_ id: String) -> AddOutcome {
         guard let ladder = ladders[id] else { return .notOffered }
+        guard vessel != nil else { return .needsVessel }
         selectedId = id
         guard !contains(id) else { return .alreadyIn }
         entries.append(Entry(ingredientId: id, stepIndex: ladder.startIndex))
@@ -145,7 +151,18 @@ public struct Round: Equatable, Sendable {
         self.method = method
     }
 
+    /// Puts a vessel on the burner, or swaps it. What is already in it stays in.
+    /// Returns true when the vessel changed.
+    @discardableResult
+    public mutating func place(_ vessel: Vessel) -> Bool {
+        guard Round.vesselChoices.contains(vessel), self.vessel != vessel else { return false }
+        self.vessel = vessel
+        return true
+    }
+
+    /// Back to a bare burner.
     public mutating func clear() {
+        vessel = nil
         entries = []
         method = nil
         selectedId = nil
@@ -155,12 +172,31 @@ public struct Round: Equatable, Sendable {
 
     /// The attempt the scorer sees. Nil until the round can be served.
     public func attempt(timestamp: Date? = nil) -> Attempt? {
-        guard canServe else { return nil }
+        guard canServe, let vessel else { return nil }
         let lines = entries.compactMap { entry -> Attempt.Line? in
             guard let measure = ladders[entry.ingredientId]?.measure(at: entry.stepIndex) else { return nil }
             return Attempt.Line(ingredientId: entry.ingredientId, amount: measure.amount, unit: measure.unit)
         }
         return Attempt(dishId: dish.id, lines: lines, vessel: vessel, method: method, timestamp: timestamp)
+    }
+}
+
+extension Vessel {
+    /// Player-facing name: "Wok".
+    public var title: String {
+        noun.prefix(1).uppercased() + noun.dropFirst()
+    }
+
+    /// As it reads mid-sentence: "Add something to the wok".
+    public var noun: String {
+        switch self {
+        case .wok: return "wok"
+        case .pot: return "pot"
+        case .pan: return "pan"
+        case .skillet: return "skillet"
+        case .bakingDish: return "baking dish"
+        case .breadPan: return "bread pan"
+        }
     }
 }
 

@@ -17,6 +17,8 @@ final class RoundViewModel {
     private(set) var isMuted: Bool
     /// Bumps whenever something lands in the wok or the burner lights; the view turns it into a haptic tap.
     private(set) var impactCount = 0
+    /// Bumps when an ingredient is offered before there is a vessel; the view answers with a warning tap.
+    private(set) var vesselNudge = 0
 
     @ObservationIgnored let scene = WokScene.make()
     @ObservationIgnored private let sound: SoundPlayer
@@ -47,24 +49,37 @@ final class RoundViewModel {
 
     func start(_ dish: DishProfile) {
         scene.clear()
+        scene.setVessel(nil)
         result = nil
         round = Round(dish: dish, library: library, seed: fixedSeed ?? UInt64.random(in: .min ... .max))
     }
 
     func startOver() {
         scene.clear()
+        scene.setVessel(nil)
         result = nil
         round.clear()
     }
 
     /// Tap or drop. `fraction` is how far across the wok view the ingredient was dropped (0...1); nil for a tap.
     func add(_ id: String, atFraction fraction: Double? = nil) {
-        guard round.add(id) == .added, let ingredient = round.ingredient(id) else { return }
+        let outcome = round.add(id)
+        if outcome == .needsVessel { vesselNudge += 1 }
+        guard outcome == .added, let ingredient = round.ingredient(id) else { return }
         let x = fraction.map { scene.dropX(fraction: CGFloat($0)) }
         let cue = SoundCue(contentCue: ingredient.soundCue)
         scene.setPieces(for: id, count: round.pieceCount(for: id), look: IngredientLook(for: ingredient), atX: x)
         scene.playTwin(cue, atX: x)
         sound.play(cue)
+        impactCount += 1
+    }
+
+    /// Puts a vessel on the burner, or swaps it (PD-035). It lands with a clatter.
+    func place(_ vessel: Vessel) {
+        guard round.place(vessel) else { return }
+        scene.setVessel(vessel)
+        scene.playTwin(.clatter)
+        sound.play(.clatter)
         impactCount += 1
     }
 

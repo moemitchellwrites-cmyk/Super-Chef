@@ -315,3 +315,12 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Rationale: Pantry is the easier way in (PD-025's progression). Throwing away a half-built Kitchen round because the player peeked at Pantry would punish curiosity.
 - Consequences: Two SpriteKit scenes are alive at once; if that costs battery or memory on a phone, share one. `-pantryMode kitchen` opens in Kitchen (the Kitchen UI tests use it). The session loop (PB-005) will decide which mode a session deals; this is the interim.
 
+## PD-035: A Kitchen round starts with a bare burner; the player chooses wok or pot
+- Date: 2026-10-08
+- Made by: Claude (PB-008, from the brief: the player "picks a cooking vessel")
+- Status: accepted, for Moe's review in the stand-in.
+- Decision: A Kitchen round opens with an empty burner and two buttons, Wok and Pot. Nothing can be added until one is chosen; it lands with a clatter. A small switch beside the dish name swaps it at any time and keeps what is in it. Start over clears the vessel too. Pantry mode always shows the wok and asks nothing.
+- Rationale: The vessel is worth 6 of the 100 points. Starting every round in a wok gave those points away on nine dishes of ten and taught nothing about the tenth. Making it the first act costs one tap and reads naturally: you can't cook without a pan.
+- Alternatives: default to the wok with a switch (no decision, no learning); offer every vessel in the model (only wok and pot are used by this cuisine).
+- Consequences: Mouth-watering chicken can now reach 100. `Round.vessel` is optional and `Round.add` can answer `.needsVessel`. The scene draws a pot. Showing the right vessel in Pantry would leak a Kitchen answer, so Pantry keeps the wok for every dish, including the pot dish; if that reads as wrong, Pantry should show a neutral bowl. In the stand-in the Kitchen ingredient note now shows only when a chip is held, because at a touch it covered the vessel.
+

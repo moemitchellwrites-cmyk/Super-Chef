@@ -98,6 +98,12 @@ run_on() {
   shot "$udid" "$label-6-pantry-verdict"
   must_be_alive "$pid" "$name" "pantry round, served" || FAILED=1
 
+  # Kitchen mode before a vessel is chosen: the bare burner and the two choices.
+  pid="$(launch "$udid" -pantryMuted -pantryMode kitchen)"
+  sleep 6
+  shot "$udid" "$label-7-kitchen-bare"
+  must_be_alive "$pid" "$name" "kitchen, bare burner" || FAILED=1
+
   xcrun simctl shutdown "$udid" || true
 }
 

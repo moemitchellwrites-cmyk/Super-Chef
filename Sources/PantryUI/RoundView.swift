@@ -46,7 +46,7 @@ struct RoundView: View {
         VStack(spacing: 8) {
             RoundHeader(
                 mode: $mode,
-                canStartOver: !(round.entries.isEmpty && round.method == nil),
+                canStartOver: round.vessel != nil || !round.entries.isEmpty || round.method != nil,
                 isMuted: model.isMuted,
                 onStartOver: { model.startOver() },
                 onToggleMute: onToggleMute
@@ -70,6 +70,7 @@ struct RoundView: View {
             }
         }
         .sensoryFeedback(.impact(weight: .light), trigger: model.impactCount)
+        .sensoryFeedback(.warning, trigger: model.vesselNudge)
         .onChange(of: isOverWok) { _, over in
             model.scene.setDropHighlight(over)
         }
@@ -97,6 +98,11 @@ struct RoundView: View {
                 .accessibilityElement()
                 .accessibilityLabel(wokSummary)
                 .accessibilityIdentifier("wok")
+                .overlay {
+                    if round.vessel == nil {
+                        vesselChoice
+                    }
+                }
             stepperBar(compact: compact)
         }
         .padding(EdgeInsets(top: compact ? 10 : 12, leading: 14, bottom: compact ? 8 : 10, trailing: 14))
@@ -132,23 +138,70 @@ struct RoundView: View {
                 .foregroundStyle(PanelInk.chili)
             }
             .accessibilityIdentifier("dish-menu")
-            Text("\(model.library.cuisine.name) · Wok".uppercased())
+            Text(model.library.cuisine.name.uppercased())
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(PanelInk.soft)
                 .lineLimit(1)
             Spacer(minLength: 0)
+            if let vessel = round.vessel {
+                vesselSwitch(vessel)
+            }
         }
+    }
+
+    // MARK: Vessel (PD-035)
+
+    /// The round's first act: the burner is bare until the player says what goes on it.
+    private var vesselChoice: some View {
+        HStack(spacing: 10) {
+            ForEach(Round.vesselChoices, id: \.self) { vessel in
+                Button {
+                    model.place(vessel)
+                } label: {
+                    Text(vessel.title)
+                        .font(.system(.headline, design: .rounded))
+                        .frame(width: 96, height: 44)
+                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(PanelInk.chili))
+                        .foregroundStyle(Color.white)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Cook it in a \(vessel.noun)")
+                .accessibilityIdentifier("vessel-\(vessel.rawValue)")
+            }
+        }
+    }
+
+    /// Shows the vessel and swaps it for the other one. What is in it stays in.
+    private func vesselSwitch(_ vessel: Vessel) -> some View {
+        let other: Vessel = vessel == .wok ? .pot : .wok
+        return Button {
+            model.place(other)
+        } label: {
+            HStack(spacing: 4) {
+                Text(vessel.title.uppercased())
+                Image(systemName: "arrow.left.arrow.right")
+            }
+            .font(.caption2.weight(.bold))
+            .padding(.horizontal, 9)
+            .frame(height: 30)
+            .background(Capsule().fill(Color.white.opacity(0.7)))
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(PanelInk.chili)
+        .accessibilityLabel("\(vessel.title). Switch to the \(other.noun)")
+        .accessibilityIdentifier("vessel-switch")
     }
 
     // MARK: Wok
 
     private var wokSummary: String {
-        if round.entries.isEmpty { return "Wok, empty" }
+        guard let vessel = round.vessel else { return "No vessel yet" }
+        if round.entries.isEmpty { return "\(vessel.title), empty" }
         let contents = round.entries.compactMap { entry -> String? in
             guard let ingredient = round.ingredient(entry.ingredientId), let measure = round.measure(for: entry.ingredientId) else { return nil }
             return "\(measure.label) \(ingredient.chipName)"
         }
-        return "Wok with " + contents.joined(separator: ", ")
+        return "\(vessel.title) with " + contents.joined(separator: ", ")
     }
 
     private var isOverWok: Bool {
@@ -248,7 +301,7 @@ struct RoundView: View {
                     }
                 }
             } else {
-                Text("Tap an ingredient, or drag it into the wok.")
+                Text(round.vessel.map { "Tap an ingredient, or drag it into the \($0.noun)." } ?? "Choose a wok or a pot to start.")
                     .font(.footnote)
                     .foregroundStyle(PanelInk.soft)
                     .multilineTextAlignment(.center)
@@ -324,6 +377,7 @@ struct RoundView: View {
                     ingredient: ingredient,
                     amount: round.measure(for: ingredient.id)?.label,
                     isSelected: round.selectedId == ingredient.id,
+                    vesselNoun: round.vessel?.noun ?? "wok",
                     height: compact ? 46 : 50
                 )
                 .opacity(drag?.ingredientId == ingredient.id ? 0.35 : 1)
@@ -372,6 +426,7 @@ private struct PaletteChip: View {
     let ingredient: Ingredient
     let amount: String?
     let isSelected: Bool
+    let vesselNoun: String
     let height: CGFloat
 
     var body: some View {
@@ -403,8 +458,8 @@ private struct PaletteChip: View {
         )
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(amount.map { "\(ingredient.name), \($0) in the wok" } ?? ingredient.name)
-        .accessibilityHint(amount == nil ? "Adds it to the wok" : "Selects it to change the amount")
+        .accessibilityLabel(amount.map { "\(ingredient.name), \($0) in the \(vesselNoun)" } ?? ingredient.name)
+        .accessibilityHint(amount == nil ? "Adds it to the \(vesselNoun)" : "Selects it to change the amount")
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier("chip-\(ingredient.id)")
     }

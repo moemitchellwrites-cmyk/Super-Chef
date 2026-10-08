@@ -92,7 +92,7 @@ struct PantryRoundView: View {
                     .accessibilityIdentifier("brief")
             }
             askRow(compact: compact)
-            SpriteView(scene: model.scene)
+            SpriteView(scene: model.scene, options: [.allowsTransparency])
                 .aspectRatio(WokScene.logicalSize.width / WokScene.logicalSize.height, contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .accessibilityElement()
@@ -366,10 +366,11 @@ private struct PantryChip: View {
             )
             .overlay(alignment: .topTrailing) {
                 if isPicked {
+                    // Sits on the corner, so it doesn't cover the name on a narrow chip.
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 15))
-                        .foregroundStyle(Color.orange)
-                        .padding(3)
+                        .foregroundStyle(Color.white, Color.orange)
+                        .offset(x: 5, y: -5)
                 }
             }
             .contentShape(Rectangle())

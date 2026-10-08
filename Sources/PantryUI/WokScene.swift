@@ -28,7 +28,9 @@ final class WokScene: SKScene {
     static func make() -> WokScene {
         let scene = WokScene(size: logicalSize)
         scene.scaleMode = .aspectFit
-        scene.backgroundColor = SKColor(red: 0.99, green: 0.95, blue: 0.87, alpha: 1)
+        // Clear, so the panel behind shows through: an aspect-fit scene can be a pixel short of its view,
+        // and an opaque scene paints that sliver black.
+        scene.backgroundColor = .clear
         scene.physicsWorld.gravity = CGVector(dx: 0, dy: -6)
         scene.buildBurner()
         scene.buildWok()

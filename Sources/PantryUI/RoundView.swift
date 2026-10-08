@@ -89,7 +89,7 @@ struct RoundView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("brief")
             }
-            SpriteView(scene: model.scene)
+            SpriteView(scene: model.scene, options: [.allowsTransparency])
                 .aspectRatio(WokScene.logicalSize.width / WokScene.logicalSize.height, contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .accessibilityElement()
@@ -203,7 +203,7 @@ struct RoundView: View {
                 let measure = ladder.measure(at: entry.stepIndex)
                 if compact {
                     VStack(alignment: .leading, spacing: 0) {
-                        stepperName(ingredient, size: 11)
+                        stepperName(ingredient, size: 11, short: false)
                         HStack(spacing: 6) {
                             stepperControls(ingredient: ingredient, ladder: ladder, entry: entry, measure: measure)
                             amountText(measure, size: 16)
@@ -224,7 +224,7 @@ struct RoundView: View {
                 } else {
                     VStack(spacing: 4) {
                         HStack(spacing: 8) {
-                            stepperName(ingredient, size: 13)
+                            stepperName(ingredient, size: 13, short: true)
                             Spacer(minLength: 4)
                             amountText(measure, size: 18)
                             Button {
@@ -259,12 +259,13 @@ struct RoundView: View {
         .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Color.white.opacity(0.55)))
     }
 
-    private func stepperName(_ ingredient: Ingredient, size: CGFloat) -> some View {
-        Text("\(IngredientLook(for: ingredient).emoji) \(ingredient.name)")
+    /// The short name where the amount and "Take out" share its row; the full one where it has a row to itself.
+    private func stepperName(_ ingredient: Ingredient, size: CGFloat, short: Bool) -> some View {
+        Text("\(IngredientLook(for: ingredient).emoji) \(short ? ingredient.chipName : ingredient.name)")
             .font(.system(size: size, weight: .semibold))
             .foregroundStyle(PanelInk.ink)
             .lineLimit(1)
-            .minimumScaleFactor(0.6)
+            .minimumScaleFactor(0.8)
     }
 
     private func amountText(_ measure: Measure, size: CGFloat) -> some View {
@@ -378,7 +379,7 @@ private struct PaletteChip: View {
                 .font(.system(size: 11, weight: .medium))
                 .lineLimit(2)
                 .allowsTightening(true)
-                .minimumScaleFactor(0.85)
+                .minimumScaleFactor(0.75)
                 .multilineTextAlignment(.leading)
             if let amount {
                 Text(amount)

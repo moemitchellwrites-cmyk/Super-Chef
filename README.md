@@ -50,16 +50,28 @@ the session loop until PB-005.
 ## Scoring in one paragraph
 
 Every amount converts to grams (per-ingredient grams per teaspoon; a pinch is
-an eighth of a teaspoon). Coverage (40) credits required ingredient families by
-weight (half credit when a family is present but its key ratio is off by 3x
+an eighth of a teaspoon). Coverage (30) credits required ingredient families by
+weight (half credit when a family is present but its key ratio is off by 2.5x
 or more) and charges 5 to 12 points per forbidden or off-cuisine ingredient,
-scaled by how much of the dish it is. Ratio fit (35) compares key weight
+scaled by how much of the dish it is. Ratio fit (45) compares key weight
 ratios against bands in log space, with linear partial credit that reaches
-zero at 3x off. Signature (15) measures heat, numbing, acid, umami and
+zero at 2.5x off. Signature (15) measures heat, numbing, acid, umami and
 sweetness as potency times percent of the dish by weight, against the dish's
 envelope. Technique (10) is the vessel, and the cooking method when one is
 given. The breakdown carries a list of misses and a `pattern` string for
 caching judge feedback.
+
+Anything that doesn't belong (off-cuisine, or forbidden for the dish) also
+sets a ceiling on the total: 79 for a trace, falling to 50 when it is a fifth
+of the dish (PD-027).
+
+## Pantry mode
+
+`PantryRound` and `PantryJudge` (in `Sources/PantryGame/`) are the
+ingredients-only round (PD-025): pick what the dish can't be without, limited
+to the essentials plus two. The verdict is a count of essentials found, with
+names for what was missed, what doesn't belong, and what belongs but isn't
+essential. Playable in the stand-in; the app screen comes next.
 
 ## Commands
 

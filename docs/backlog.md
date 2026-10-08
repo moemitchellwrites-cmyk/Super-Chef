@@ -3,8 +3,9 @@
 ## Next session: open with this
 1. PB-002 is built and in review (pull request #1): CI is green: it plays a scripted round on an iPhone 16 and an iPhone SE simulator, and UI tests drag, tap, step and serve. It is **not done** until Moe has played a round on a phone: see "PB-002: what's left" below.
 2. Needed from Moe: play it. From a phone today: the browser stand-in (PD-023, the "Pantry Stand-in" artifact) for round length and scoring feel. For drag, sound and the wok: Xcode 15 or newer, open `App/Pantry.xcodeproj`, run on an iPhone or a simulator. Then say what feels wrong. Name the bundle identifier and Apple team (PD-017).
-3. Then, in order: PB-015 (Pantry mode, PD-025), a decision on PB-023 (Kitchen scores too forgiving), PB-008 (vessel choice), PB-003 (canned judge line).
-4. The real app can't run on either of Moe's current Macs (Mac Pro on Catalina; MacBook Pro Early 2015 tops out at macOS 12, Xcode 14.2, iOS 16). It waits for the new laptop, or for TestFlight from CI, which needs an Apple Developer account (PB-006). The stand-in is the review tool until then.
+3. In Moe's hands now, in the stand-in: Pantry mode (PB-015, rules built and tested; app screen not built) and the Kitchen scoring fix (PD-027, closes PB-023 if it feels right). Needed from Moe: play both and say what feels wrong.
+4. Then: the Pantry screen in the app (rest of PB-015), PB-008 (vessel choice), PB-003 (canned judge line).
+5. The real app can't run on either of Moe's current Macs (Mac Pro on Catalina; MacBook Pro Early 2015 tops out at macOS 12, Xcode 14.2, iOS 16). It waits for the new laptop, or for TestFlight from CI, which needs an Apple Developer account (PB-006). The stand-in is the review tool until then.
 
 ### PB-002: what's left
 - [ ] Moe plays a round on a real phone: drag and tap both feel right, a round fits 60 to 120 seconds one-handed, the sounds are tolerable as placeholders. Nothing in CI can judge these.
@@ -16,7 +17,7 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## MVP (brief, build order)
 - [ ] PB-002: Vessel scene: one wok, drag-and-drop ingredients, amount stepper, a one-tap cooking method (PD-007), placeholder sounds. Ugly is fine. **Built 2026-10-07, in review (PR #1); awaiting Moe's hands on a phone.**
-- [ ] PB-015: Pantry mode (PD-025): an ingredients-only round, about thirty seconds, no amounts or method. Scored as a count ("7 of 10"), with what was missed and what doesn't belong named. A cap on how many chips can go in, so it can't be brute-forced. In the app and the stand-in. After Moe has played PB-002; before PB-008.
+- [ ] PB-015: Pantry mode (PD-025): an ingredients-only round, about thirty seconds, no amounts or method. Scored as a count ("4 of 6 essentials found"), with what was missed, what doesn't belong and what belongs but isn't essential named. Picks are limited to the essentials plus two, so it can't be brute-forced. **Rules built and tested (`PantryRound`, `PantryJudge`) and playable in the stand-in, 2026-10-07. Left: the Pantry screen in the app, after Moe's reaction to the stand-in.**
 - [ ] PB-008: Vessel choice: wok or pot, one tap, with the flame click. Mouth-watering chicken is a pot dish and tops out at 94 in the wok (PD-019). Before PB-005.
 - [ ] PB-003: Canned judge line from the score breakdown (`ScoreBreakdown.misses` and `pattern`). No LLM yet.
 - [ ] PB-016: Brigade ladders (PD-026): a title earned by holding a level over the last five rounds, one ladder per mode (Pantry: commis, chef de partie, sous chef; Kitchen adds chef de cuisine). Titles are kept once earned. Thresholds and what each rung means are open; ask the chef. After PB-003 and PB-023.
@@ -33,7 +34,7 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## Engine follow-ups
 - [ ] PB-021: Free-cook scoring (lessons 37 to 40): score an attempt against the cuisine with no dish named. Needs a cuisine-level profile.
-- [ ] PB-023: Should an off-cuisine ingredient cap the score? The CI demo round is a sound mapo tofu with 25 g of basil and no chili, and it scores 88, above the "good" line. Needs Moe's ear and then the chef's (found building PB-002). Second case, from the stand-in: 100 g of tofu with every seasoning at its starting amount is "too much" on all four ratios and still scores 81.
+- [ ] PB-023: **Fix in for Moe's test (PD-027); close when he says it feels right.** Should an off-cuisine ingredient cap the score? The CI demo round is a sound mapo tofu with 25 g of basil and no chili, and it scores 88, above the "good" line. Needs Moe's ear and then the chef's (found building PB-002). Second case, from the stand-in: 100 g of tofu with every seasoning at its starting amount is "too much" on all four ratios and still scores 81.
 - [ ] PB-022: A second cuisine's content to prove the schema isn't Sichuan-shaped (Japanese home cooking: 1:1:1 soy, mirin, sake is a clean ratio test).
 
 ## Parking lot

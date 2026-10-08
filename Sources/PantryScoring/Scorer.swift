@@ -1,11 +1,11 @@
 import Foundation
 
-/// The point values. They sum to 100 and come from the product brief
-/// (docs/brief.md, "Score composition"); the tuning constants under them are
-/// Claude's calls, logged in docs/decisions.md.
+/// The point values. They sum to 100. The brief's split was 40/35/15/10; PD-027 moved
+/// ten points from coverage to ratio fit once Pantry mode took over the question of
+/// what belongs. The tuning constants under them are Claude's calls, logged in docs/decisions.md.
 public enum ScoreWeights {
-    public static let coverage = 40.0
-    public static let ratioFit = 35.0
+    public static let coverage = 30.0
+    public static let ratioFit = 45.0
     public static let signature = 15.0
     public static let technique = 10.0
 
@@ -21,8 +21,18 @@ public enum ScoreWeights {
     public static let forbiddenFullAt = 0.10
 
     /// A ratio outside its band loses credit linearly in log space and reaches zero
-    /// when it is off by this factor. 1.5x off keeps about 63 %; 2x keeps about 37 %.
-    public static let ratioZeroAtFactor = 3.0
+    /// when it is off by this factor. 1.5x off keeps about 56 %; 2x keeps about 24 %.
+    public static let ratioZeroAtFactor = 2.5
+
+    /// A dish with anything in it that doesn't belong (off-cuisine, or forbidden for the
+    /// dish) can't score above a ceiling, however good the rest is (PD-027). A trace caps
+    /// it at `wrongIngredientCeiling`, under the 85 where "good" starts; the ceiling then
+    /// falls in a straight line to `wrongIngredientLowCeiling`, reached when the things
+    /// that don't belong are `wrongIngredientLowAt` of the dish by weight.
+    /// A pinch of basil caps a perfect mapo tofu at 79; a cup of cream caps it at 50.
+    public static let wrongIngredientCeiling = 79.0
+    public static let wrongIngredientLowCeiling = 50.0
+    public static let wrongIngredientLowAt = 0.20
 
     /// A flavour axis outside its band loses credit linearly and reaches zero this
     /// many levels (on the 0 to 5 scale) past the band edge.
@@ -114,12 +124,16 @@ public struct Scorer: Sendable {
         let offCuisine = Set(cuisine.offCuisineFamilies)
         let forbidden = Set(dish.forbidden)
         var penalty = 0.0
+        var wrongFraction = 0.0
+        var hasWrongIngredient = false
         for id in ingredientOrder {
             guard let ingredient = ingredients[id] else { continue }
             let isOff = offCuisine.contains(ingredient.family)
             let isForbidden = forbidden.contains(ingredient.family)
             guard isOff || isForbidden else { continue }
             let fraction = totalGrams > 0 ? (gramsByIngredient[id] ?? 0) / totalGrams : 0
+            hasWrongIngredient = true
+            wrongFraction += fraction
             penalty += ScoreWeights.forbiddenFloor
                 + ScoreWeights.forbiddenScaled * min(1, fraction / ScoreWeights.forbiddenFullAt)
             misses.append(Miss(isOff ? .offCuisine : .forbiddenForDish, id))
@@ -186,15 +200,23 @@ public struct Scorer: Sendable {
         }
         if !vesselFits { misses.append(Miss(.wrongVessel, attempt.vessel.rawValue)) }
 
-        let total = coverage + ratioFit + signature + technique
+        let sum = Int(min(100, max(0, coverage + ratioFit + signature + technique)).rounded())
+        var ceiling: Int?
+        if hasWrongIngredient {
+            let slide = min(1, wrongFraction / ScoreWeights.wrongIngredientLowAt)
+            let limit = ScoreWeights.wrongIngredientCeiling
+                - (ScoreWeights.wrongIngredientCeiling - ScoreWeights.wrongIngredientLowCeiling) * slide
+            if Double(sum) > limit { ceiling = Int(limit.rounded(.down)) }
+        }
         return ScoreBreakdown(
             coverage: Scorer.tenths(coverage),
             ratioFit: Scorer.tenths(ratioFit),
             signature: Scorer.tenths(signature),
             technique: Scorer.tenths(technique),
-            total: Int(min(100, max(0, total)).rounded()),
+            total: ceiling ?? sum,
             levels: levels,
-            misses: misses
+            misses: misses,
+            cappedAt: ceiling
         )
     }
 

@@ -354,22 +354,26 @@ public struct Miss: Codable, Equatable, Hashable, Sendable {
 }
 
 public struct ScoreBreakdown: Codable, Equatable, Sendable {
-    /// Out of 40: required families present, forbidden ones absent.
+    /// Out of `ScoreWeights.coverage`: required families present, forbidden ones absent.
     public var coverage: Double
-    /// Out of 35: key ratios inside their bands, with partial credit for near misses.
+    /// Out of `ScoreWeights.ratioFit`: key ratios inside their bands, with partial credit for near misses.
     public var ratioFit: Double
     /// Out of 15: heat, numbing, acid, umami and sweetness inside the dish's envelope.
     public var signature: Double
     /// Out of 10: vessel and method.
     public var technique: Double
-    /// Out of 100, rounded from the unrounded parts.
+    /// Out of 100, rounded from the unrounded parts, then held to `cappedAt` when that is set.
     public var total: Int
+    /// Set when something in the dish didn't belong and the ceiling lowered the total (PD-027).
+    /// The four parts then add up to more than `total`.
+    public var cappedAt: Int?
     /// The attempt's measured flavour levels, 0 to 5 per axis. For the judge.
     public var levels: FlavorVector
     public var misses: [Miss]
 
     public init(coverage: Double, ratioFit: Double, signature: Double, technique: Double, total: Int,
-                levels: FlavorVector, misses: [Miss]) {
+                levels: FlavorVector, misses: [Miss], cappedAt: Int? = nil) {
+        self.cappedAt = cappedAt
         self.coverage = coverage
         self.ratioFit = ratioFit
         self.signature = signature

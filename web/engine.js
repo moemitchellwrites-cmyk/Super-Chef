@@ -7,9 +7,10 @@
   var TEASPOONS = { pinch: 1 / 8, tsp: 1, tbsp: 3, cup: 48 };
   var AXES = ['heat', 'numbing', 'acid', 'umami', 'sweet'];
   var W = {
-    coverage: 40, ratioFit: 35, signature: 15, technique: 10, vessel: 6, method: 4,
+    coverage: 30, ratioFit: 45, signature: 15, technique: 10, vessel: 6, method: 4,
     forbiddenFloor: 5, forbiddenScaled: 7, forbiddenFullAt: 0.10,
-    ratioZeroAtFactor: 3, signatureZeroAtLevels: 2, maxLevel: 5
+    ratioZeroAtFactor: 2.5, signatureZeroAtLevels: 2, maxLevel: 5,
+    wrongIngredientCeiling: 79, wrongIngredientLowCeiling: 50, wrongIngredientLowAt: 0.20
   };
 
   function grams(ingredient, amount, unit) {
@@ -77,13 +78,15 @@
     });
     var coverage = requiredWeight > 0 ? W.coverage * earned / requiredWeight : W.coverage;
 
-    var penalty = 0;
+    var penalty = 0, wrongFraction = 0, hasWrong = false;
     order.forEach(function (id) {
       var family = content.ingredients[id].family;
       var isOff = cuisine.offCuisineFamilies.indexOf(family) >= 0;
       var isForbidden = dish.forbidden.indexOf(family) >= 0;
       if (!isOff && !isForbidden) return;
       var fraction = total > 0 ? byIngredient[id] / total : 0;
+      hasWrong = true;
+      wrongFraction += fraction;
       penalty += W.forbiddenFloor + W.forbiddenScaled * Math.min(1, fraction / W.forbiddenFullAt);
       misses.push({ kind: isOff ? 'offCuisine' : 'forbiddenForDish', subject: id });
     });
@@ -131,10 +134,17 @@
     }
     if (!vesselFits) misses.push({ kind: 'wrongVessel', subject: attempt.vessel });
 
-    var sum = coverage + ratioFit + signature + technique;
+    var sum = Math.round(Math.min(100, Math.max(0, coverage + ratioFit + signature + technique)));
+    // PD-027: anything that doesn't belong sets a ceiling, lower the more of the dish it is.
+    var cappedAt = null;
+    if (hasWrong) {
+      var slide = Math.min(1, wrongFraction / W.wrongIngredientLowAt);
+      var limit = W.wrongIngredientCeiling - (W.wrongIngredientCeiling - W.wrongIngredientLowCeiling) * slide;
+      if (sum > limit) cappedAt = Math.floor(limit);
+    }
     return {
       coverage: tenths(coverage), ratioFit: tenths(ratioFit), signature: tenths(signature),
-      technique: tenths(technique), total: Math.round(Math.min(100, Math.max(0, sum))),
+      technique: tenths(technique), total: cappedAt === null ? sum : cappedAt, cappedAt: cappedAt,
       levels: levels, misses: misses
     };
   }
@@ -177,6 +187,40 @@
     return 1 + Math.floor(index * (most - 1) / (ladder.steps.length - 1));
   }
 
+  // Pantry mode (Sources/PantryGame/PantryRound.swift).
+  var PANTRY_SLACK = 2;
+  function need(requirement) { return Math.max(1, requirement.minPresent === undefined ? 1 : requirement.minPresent); }
+  function pantryEssentials(dish) {
+    return dish.required.reduce(function (sum, r) { return sum + need(r); }, 0);
+  }
+  function pantryLimit(dish) {
+    var unique = dish.palette.filter(function (id, i) { return dish.palette.indexOf(id) === i; }).length;
+    return Math.min(unique, pantryEssentials(dish) + PANTRY_SLACK);
+  }
+  function pantryJudge(content, dishId, picks) {
+    var dish = content.dishes[dishId];
+    var filled = dish.required.map(function () { return []; });
+    var result = { found: [], missed: [], alsoBelongs: [], wrong: [], essentials: pantryEssentials(dish) };
+    var seen = {};
+    picks.forEach(function (id) {
+      var ingredient = content.ingredients[id];
+      if (seen[id] || !ingredient) return;
+      seen[id] = true;
+      var family = ingredient.family;
+      if (content.cuisine.offCuisineFamilies.indexOf(family) >= 0 || dish.forbidden.indexOf(family) >= 0) { result.wrong.push(id); return; }
+      var filledASlot = false;
+      for (var i = 0; i < dish.required.length && !filledASlot; i++) {
+        var r = dish.required[i];
+        if (r.anyOf.indexOf(family) >= 0 && filled[i].length < need(r) && filled[i].indexOf(family) < 0) {
+          filled[i].push(family); filledASlot = true;
+        }
+      }
+      (filledASlot ? result.found : result.alsoBelongs).push(id);
+    });
+    dish.required.forEach(function (r, i) { if (filled[i].length < need(r)) result.missed.push(r.label); });
+    return result;
+  }
+
   var METHOD_ORDER = ['stir-fry', 'deep-fry', 'dry-fry', 'braise', 'boil', 'simmer', 'steam', 'poach', 'bake'];
   function methodChoices(content) {
     var used = {};
@@ -193,7 +237,8 @@
 
   var api = {
     score: score, grams: grams, ladderFor: ladderFor, nearestIndex: nearestIndex, pieceCount: pieceCount,
-    methodChoices: methodChoices, indexContent: indexContent, VOLUME: VOLUME, WEIGHT: WEIGHT
+    methodChoices: methodChoices, indexContent: indexContent, VOLUME: VOLUME, WEIGHT: WEIGHT, WEIGHTS: W,
+    pantryJudge: pantryJudge, pantryEssentials: pantryEssentials, pantryLimit: pantryLimit
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.PantryEngine = api;

@@ -38,7 +38,50 @@ for (const id of Object.keys(content.ingredients)) {
   if (start.label !== expected) fail(`${id} starts at ${start.label}, wanted ${expected}`);
 }
 
-// The CI demo round in the app scores 88 (see PB-023); the port must agree.
+// Exact parity with the Swift engine: Tests/PantryGameTests/ParityTests.swift asserts the
+// same file. Regenerate with `node web/test-engine.cjs --write-parity` after a deliberate
+// scoring change, then make sure `swift test` agrees.
+const parityPath = 'Tests/PantryScoringTests/Fixtures/parity.json';
+function parityCases() {
+  const scoring = goldens.map((golden) => {
+    const r = engine.score(content, golden);
+    return {
+      id: golden.id, dishId: golden.dishId, vessel: golden.vessel, method: golden.method || null, lines: golden.lines,
+      expect: { total: r.total, coverage: r.coverage, ratioFit: r.ratioFit, signature: r.signature, technique: r.technique,
+        cappedAt: r.cappedAt, misses: r.misses.map((m) => m.kind + ':' + m.subject) },
+    };
+  });
+  const extra = [
+    ['mapo-tofu.pinch-of-basil', [['basil', 5, 'grams']]],
+    ['mapo-tofu.cup-of-cream', [['cream', 240, 'grams']]],
+    ['mapo-tofu.sesame-paste', [['sesame-paste', 1, 'tbsp']]],
+  ];
+  const goodMapo = goldens.find((g) => g.id === 'mapo-tofu.good');
+  for (const [id, added] of extra) {
+    const lines = goodMapo.lines.concat(added.map(([ingredientId, amount, unit]) => ({ ingredientId, amount, unit })));
+    const r = engine.score(content, { ...goodMapo, lines });
+    scoring.push({ id, dishId: goodMapo.dishId, vessel: goodMapo.vessel, method: goodMapo.method, lines,
+      expect: { total: r.total, coverage: r.coverage, ratioFit: r.ratioFit, signature: r.signature, technique: r.technique,
+        cappedAt: r.cappedAt, misses: r.misses.map((m) => m.kind + ':' + m.subject) } });
+  }
+  const pantry = [];
+  for (const dishId of content.dishOrder) {
+    const palette = content.dishes[dishId].palette;
+    const limit = engine.pantryLimit(content.dishes[dishId]);
+    const sets = { first: palette.slice(0, limit), last: palette.slice(-limit).reverse(), every: palette.slice(), few: palette.filter((_, i) => i % 3 === 0) };
+    for (const [name, picks] of Object.entries(sets)) {
+      pantry.push({ id: dishId + '.' + name, dishId, picks, limit, expect: engine.pantryJudge(content, dishId, picks) });
+    }
+  }
+  return { schemaVersion: 1, scoring, pantry };
+}
+if (process.argv.includes('--write-parity')) {
+  fs.writeFileSync(path.join(root, parityPath), JSON.stringify(parityCases(), null, 1) + '\n');
+  console.log('wrote ' + parityPath);
+}
+if (JSON.stringify(read(parityPath)) !== JSON.stringify(parityCases())) fail('web/engine.js no longer matches ' + parityPath);
+
+// The first too-forgiving rounds (PB-023), pinned after the fix (PD-027).
 const demo = engine.score(content, {
   dishId: 'mapo-tofu', vessel: 'wok', method: 'braise', lines: [
     ['firm-tofu', 400, 'grams'], ['neutral-oil', 2, 'tbsp'], ['doubanjiang', 2.5, 'tbsp'], ['garlic', 1, 'tbsp'],
@@ -46,7 +89,14 @@ const demo = engine.score(content, {
     ['scallion', 3, 'tbsp'],
   ].map(([ingredientId, amount, unit]) => ({ ingredientId, amount, unit })),
 });
-if (demo.total !== 88) fail(`demo round scored ${demo.total}, the app scores 88`);
+if (demo.total >= 85) fail(`the basil mapo tofu scored ${demo.total}; anything that doesn't belong keeps a dish under 85`);
+const drowned = engine.score(content, {
+  dishId: 'mapo-tofu', vessel: 'wok', method: 'braise', lines: [
+    ['firm-tofu', 100, 'grams'], ['doubanjiang', 1.5, 'tbsp'], ['garlic', 1, 'tbsp'], ['ginger', 1, 'tsp'], ['stock', 1, 'cup'],
+    ['sichuan-peppercorn-ground', 1, 'tsp'], ['chili-flakes', 1, 'tsp'], ['scallion', 1, 'tbsp'],
+  ].map(([ingredientId, amount, unit]) => ({ ingredientId, amount, unit })),
+});
+if (drowned.total > 75) fail(`every ratio too high scored ${drowned.total}`);
 
 if (failures > 0) process.exit(1);
-console.log(`ok: ${goldens.length} goldens in range, good goldens reachable on the stepper, demo round ${demo.total}`);
+console.log(`ok: ${goldens.length} goldens in range, good goldens reachable on the stepper, parity file matches, basil mapo ${demo.total}, every-ratio-high ${drowned.total}`);

@@ -75,6 +75,19 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .scene.over { box-shadow: 0 0 0 8px var(--bg), inset 0 0 0 3px var(--chili); }
 
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface); border-radius: 12px; padding: 4px; }
+.mode { height: 34px; border-radius: 9px; font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--ink-soft); }
+.mode[aria-pressed="true"] { background: var(--bg); color: var(--ink); font-weight: 600; }
+.picks {
+  background: var(--surface); border-radius: 14px; padding: 10px 12px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px;
+}
+.picks .ask { color: var(--ink-soft); min-width: 0; }
+.picks .count { font-family: var(--display); font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.picks.full .count { color: var(--amount); }
+@keyframes nudge { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.picks.nudge { animation: nudge 0.25s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .picks.nudge { animation: none; } }
 .methods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .method {
   height: 32px; border-radius: 16px; background: var(--surface);
@@ -141,6 +154,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .misses { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
 .misses-title { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
 .clean { color: var(--good); font-weight: 600; font-size: 14px; }
+.capped { font-size: 13px; line-height: 1.35; background: var(--chili-wash); border-radius: 10px; padding: 8px 10px; }
+.groups { display: flex; flex-direction: column; gap: 10px; }
+.group .misses-title { margin-bottom: 2px; }
+.group p { margin: 0; font-size: 14px; line-height: 1.4; }
+.group.bad .misses-title { color: var(--amount); }
+.group.good .misses-title { color: var(--good); }
 .took { font-size: 12px; color: var(--ink-soft); text-align: center; }
 .sheet .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .sheet .actions button { height: 48px; border-radius: 14px; font-family: var(--display); font-weight: 600; font-size: 16px; }
@@ -160,9 +179,16 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     <button class="icon-button" id="mute" aria-label="Turn sound off">🔊</button>
   </header>
 
+  <div class="modes" role="group" aria-label="Mode">
+    <button class="mode" id="mode-pantry" aria-pressed="true">Pantry</button>
+    <button class="mode" id="mode-kitchen" aria-pressed="false">Kitchen</button>
+  </div>
+
   <p class="brief" id="brief"></p>
 
   <div class="scene" id="scene" role="img" aria-label="Wok, empty"><canvas id="canvas"></canvas></div>
+
+  <div class="picks" id="picks" hidden><span class="ask" id="picks-ask"></span><span class="count" id="picks-count"></span></div>
 
   <div class="methods" id="methods"></div>
 
@@ -178,6 +204,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-dish">
     <h2 id="sheet-dish"></h2>
     <div class="total" id="total"></div>
+    <div class="capped" id="capped" hidden></div>
     <div class="parts" id="parts"></div>
     <div id="misses-wrap"></div>
     <div class="took" id="took"></div>
@@ -215,6 +242,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 
   // ---------- Round state (mirrors Sources/PantryGame/Round.swift) ----------
   var round = null;
+  var mode = 'pantry';   // 'pantry': pick what belongs (PD-025). 'kitchen': amounts and a method too.
   function shuffled(list) {
     var a = list.slice();
     for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
@@ -224,7 +252,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     var dish = content.dishes[dishId];
     var seen = {};
     var offered = dish.palette.filter(function (id) { if (seen[id] || !content.ingredients[id]) return false; seen[id] = true; return true; });
-    round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: 'wok', startedAt: null };
+    round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: 'wok', startedAt: null,
+      limit: E.pantryLimit(dish), essentials: E.pantryEssentials(dish) };
     scene.clear();
     renderAll();
   }
@@ -233,15 +262,24 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   function measure(id) { var e = entryFor(id); return e ? ladder(id).steps[e.step] : null; }
   function touchClock() { if (round.startedAt === null) round.startedAt = Date.now(); }
 
+  function nudgePicks() {
+    var box = $('picks');
+    box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
+  }
   function add(id, fraction) {
     touchClock();
+    if (mode === 'pantry') {
+      // Pantry: a tap puts it in or takes it out, up to the limit.
+      if (entryFor(id)) { if (fraction === undefined) remove(id); return; }
+      if (round.entries.length >= round.limit) { nudgePicks(); return; }
+    }
     round.selected = id;
     if (!entryFor(id)) {
       var ingredient = content.ingredients[id];
       var l = ladder(id);
       round.entries.push({ id: id, step: l.startIndex });
       var x = fraction === undefined ? undefined : scene.dropX(fraction);
-      scene.setPieces(id, E.pieceCount(l, l.startIndex), look(ingredient), x);
+      scene.setPieces(id, mode === 'pantry' ? 2 : E.pieceCount(l, l.startIndex), look(ingredient), x);
       scene.twin(ingredient.soundCue, x);
       sound.play(ingredient.soundCue);
       buzz();
@@ -281,7 +319,22 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   function buzz() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (err) { /* not available */ } }
 
   // ---------- Rendering the controls ----------
-  function renderAll() { renderHeader(); renderMethods(); renderStepper(); renderPalette(); renderServe(); renderSceneLabel(); }
+  function renderAll() { renderHeader(); renderMode(); renderMethods(); renderStepper(); renderPalette(); renderServe(); renderSceneLabel(); }
+
+  function renderMode() {
+    var pantry = mode === 'pantry';
+    $('mode-pantry').setAttribute('aria-pressed', pantry ? 'true' : 'false');
+    $('mode-kitchen').setAttribute('aria-pressed', pantry ? 'false' : 'true');
+    $('methods').hidden = pantry;
+    $('stepper').hidden = pantry;
+    $('picks').hidden = !pantry;
+    if (pantry) {
+      var used = round.entries.length;
+      $('picks-ask').textContent = 'Pick what this dish can\u2019t be without.';
+      $('picks-count').textContent = used + ' of ' + round.limit + ' picks';
+      $('picks').classList.toggle('full', used >= round.limit);
+    }
+  }
 
   function renderHeader() {
     var select = $('dish');
@@ -293,7 +346,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       });
     }
     select.value = round.dish.id;
-    $('eyebrow').textContent = content.cuisine.name + ' · Wok · stand-in';
+    $('eyebrow').textContent = content.cuisine.name + (mode === 'pantry' ? '' : ' · Wok') + ' · stand-in';
     $('brief').textContent = round.dish.brief || '';
     $('brief').hidden = !round.dish.brief;
     $('restart').disabled = round.entries.length === 0 && !round.method;
@@ -366,13 +419,17 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       b.classList.toggle('in', !!m);
       b.classList.toggle('selected', round.selected === id);
       var amt = b.querySelector('.amt');
-      amt.hidden = !m; amt.textContent = m ? m.label : '';
-      b.setAttribute('aria-label', m ? ingredient.name + ', ' + m.label + ' in the wok' : ingredient.name);
+      var showAmount = !!m && mode === 'kitchen';
+      amt.hidden = !showAmount; amt.textContent = showAmount ? m.label : '';
+      b.classList.toggle('selected', mode === 'kitchen' && round.selected === id);
+      b.setAttribute('aria-pressed', m ? 'true' : 'false');
+      b.setAttribute('aria-label', !m ? ingredient.name : (mode === 'kitchen' ? ingredient.name + ', ' + m.label + ' in the wok' : ingredient.name + ', in the wok'));
     });
   }
 
   function servePrompt() {
     if (!round.entries.length) return 'Add something to the wok';
+    if (mode === 'pantry') return null;
     if (!round.method) return 'Choose how to cook it';
     return null;
   }
@@ -384,7 +441,9 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   function renderSceneLabel() {
     var label = 'Wok, empty';
     if (round.entries.length) {
-      label = 'Wok with ' + round.entries.map(function (e) { return ladder(e.id).steps[e.step].label + ' ' + chipName(content.ingredients[e.id]); }).join(', ');
+      label = 'Wok with ' + round.entries.map(function (e) {
+        return (mode === 'kitchen' ? ladder(e.id).steps[e.step].label + ' ' : '') + chipName(content.ingredients[e.id]);
+      }).join(', ');
     }
     $('scene').setAttribute('aria-label', label);
   }
@@ -673,12 +732,56 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   function ingredientName(id) { var i = content.ingredients[id]; return i ? chipName(i) : id; }
   function axisName(axis) { return { heat: 'heat', numbing: 'numbing', acid: 'sourness', umami: 'savoury depth', sweet: 'sweetness' }[axis] || axis; }
 
-  function serve() {
-    var result = E.score(content, attempt());
+  function tookLine() {
     var seconds = round.startedAt === null ? 0 : Math.round((Date.now() - round.startedAt) / 1000);
+    var target = mode === 'pantry' ? 'about 0:30' : '1:00 to 2:00';
+    return 'This round took ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + '. The target is ' + target + '. (Shown only in this stand-in.)';
+  }
+  function group(wrap, kind, title, text) {
+    var box = document.createElement('div'); box.className = 'group ' + kind;
+    var head = document.createElement('div'); head.className = 'misses-title'; head.textContent = title;
+    var body = document.createElement('p'); body.textContent = text;
+    box.appendChild(head); box.appendChild(body); wrap.appendChild(box);
+  }
+  function names(ids) { return ids.map(ingredientName).join(', '); }
+
+  function serve() {
+    if (mode === 'pantry') servePantry(); else serveKitchen();
+    $('took').textContent = tookLine();
+    $('scrim').hidden = false;
+    $('keep').focus();
+  }
+
+  // Pantry: the count is the score (PD-025). No percentage.
+  function servePantry() {
+    var result = E.pantryJudge(content, round.dish.id, round.entries.map(function (e) { return e.id; }));
+    $('sheet-dish').textContent = round.dish.name;
+    $('total').innerHTML = result.found.length + '<small>of ' + result.essentials + ' essentials found</small>';
+    $('capped').hidden = true;
+    $('parts').innerHTML = '';
+    var wrap = $('misses-wrap');
+    wrap.innerHTML = ''; wrap.className = 'groups';
+    if (result.found.length === result.essentials && !result.wrong.length) {
+      var clean = document.createElement('div'); clean.className = 'clean';
+      clean.textContent = 'Clean: every essential, and nothing that doesn\u2019t belong.'; wrap.appendChild(clean);
+    }
+    if (result.wrong.length) group(wrap, 'bad', 'Doesn\u2019t belong', names(result.wrong));
+    if (result.missed.length) group(wrap, 'bad', 'Missed', result.missed.join(', '));
+    if (result.found.length) group(wrap, 'good', 'Found', names(result.found));
+    if (result.alsoBelongs.length) group(wrap, '', 'At home here, but the dish stands without it', names(result.alsoBelongs));
+    $('keep').textContent = 'Try again';
+  }
+
+  function serveKitchen() {
+    var result = E.score(content, attempt());
+    var W = E.WEIGHTS;
     $('sheet-dish').textContent = round.dish.name;
     $('total').innerHTML = result.total + '<small>out of 100</small>';
-    var parts = [['Ingredients', result.coverage, 40], ['Ratios', result.ratioFit, 35], ['Flavour', result.signature, 15], ['Technique', result.technique, 10]];
+    $('capped').hidden = result.cappedAt === null;
+    if (result.cappedAt !== null) {
+      $('capped').textContent = 'Held at ' + result.cappedAt + ': something in the wok doesn\u2019t belong, and the more of the dish it is, the lower the ceiling. The parts below add up to more.';
+    }
+    var parts = [['Ingredients', result.coverage, W.coverage], ['Ratios', result.ratioFit, W.ratioFit], ['Flavour', result.signature, W.signature], ['Technique', result.technique, W.technique]];
     $('parts').innerHTML = parts.map(function (p) {
       return '<div class="part"><span>' + p[0] + '</span><span class="bar"><i style="width:' + Math.max(0, Math.min(100, p[1] / p[2] * 100)) + '%"></i></span><span class="num">' + p[1] + ' / ' + p[2] + '</span></div>';
     }).join('');
@@ -688,7 +791,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       var fn = MISS_TEXT[m.kind]; lines.push(fn ? fn(m.subject) : key);
     });
     var wrap = $('misses-wrap');
-    wrap.innerHTML = '';
+    wrap.innerHTML = ''; wrap.className = '';
     if (lines.length) {
       var title = document.createElement('div'); title.className = 'misses-title'; title.textContent = 'What cost points';
       var list = document.createElement('ul'); list.className = 'misses';
@@ -697,9 +800,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     } else {
       var clean = document.createElement('div'); clean.className = 'clean'; clean.textContent = 'Nothing cost you points.'; wrap.appendChild(clean);
     }
-    $('took').textContent = 'This round took ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + '. The target is 1:00 to 2:00. (Shown only in this stand-in.)';
-    $('scrim').hidden = false;
-    $('keep').focus();
+    $('keep').textContent = 'Keep cooking';
   }
   function nextDish() {
     var index = content.dishOrder.indexOf(round.dish.id);
@@ -718,12 +819,23 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   });
   $('methods').addEventListener('pointerdown', function () { sound.unlock(); });
   $('serve').addEventListener('click', serve);
-  $('keep').addEventListener('click', function () { $('scrim').hidden = true; });
+  $('keep').addEventListener('click', function () {
+    $('scrim').hidden = true;
+    // Pantry has shown the answer, so "Try again" deals the dish afresh; Kitchen lets you keep adjusting.
+    if (mode === 'pantry') startRound(round.dish.id);
+  });
+  function setMode(next) {
+    if (mode === next) return;
+    mode = next;
+    startRound(round.dish.id);
+  }
+  $('mode-pantry').addEventListener('click', function () { setMode('pantry'); });
+  $('mode-kitchen').addEventListener('click', function () { setMode('kitchen'); });
   $('next').addEventListener('click', nextDish);
   $('scrim').addEventListener('click', function (ev) { if (ev.target === $('scrim')) $('scrim').hidden = true; });
 
   // For checks from outside the page.
-  window.__pantry = { round: function () { return round; }, pieces: function () { return scene.pieceCount(); } };
+  window.__pantry = { round: function () { return round; }, mode: function () { return mode; }, pieces: function () { return scene.pieceCount(); } };
 
   startRound(content.dishOrder[0]);
 })();

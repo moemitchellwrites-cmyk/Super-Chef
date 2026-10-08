@@ -40,6 +40,14 @@ struct ScoreSheet: View {
                     .font(.system(size: 76, weight: .heavy, design: .rounded))
                     .accessibilityIdentifier("score-total")
                     .accessibilityLabel("\(breakdown.total) out of 100")
+                if let ceiling = breakdown.cappedAt {
+                    Text("Held at \(ceiling): something in the wok doesn't belong, and the more of the dish it is, the lower the ceiling. The parts below add up to more.")
+                        .font(.footnote)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(10)
+                        .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.orange.opacity(0.16)))
+                        .accessibilityIdentifier("score-capped")
+                }
                 VStack(spacing: 8) {
                     ForEach(parts) { part in
                         HStack(spacing: 10) {

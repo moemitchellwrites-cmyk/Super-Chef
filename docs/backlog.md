@@ -3,7 +3,8 @@
 ## Next session: open with this
 1. PB-002 is built and in review (pull request #1): CI is green: it plays a scripted round on an iPhone 16 and an iPhone SE simulator, and UI tests drag, tap, step and serve. It is **not done** until Moe has played a round on a phone: see "PB-002: what's left" below.
 2. Needed from Moe: play it. From a phone today: the browser stand-in (PD-023, the "Pantry Stand-in" artifact) for round length and scoring feel. For drag, sound and the wok: Xcode 15 or newer, open `App/Pantry.xcodeproj`, run on an iPhone or a simulator. Then say what feels wrong. Name the bundle identifier and Apple team (PD-017).
-3. Then PB-008 (vessel choice) and PB-003 (canned judge line).
+3. Then, in order: PB-015 (Pantry mode, PD-025), a decision on PB-023 (Kitchen scores too forgiving), PB-008 (vessel choice), PB-003 (canned judge line).
+4. The real app can't run on either of Moe's current Macs (Mac Pro on Catalina; MacBook Pro Early 2015 tops out at macOS 12, Xcode 14.2, iOS 16). It waits for the new laptop, or for TestFlight from CI, which needs an Apple Developer account (PB-006). The stand-in is the review tool until then.
 
 ### PB-002: what's left
 - [ ] Moe plays a round on a real phone: drag and tap both feel right, a round fits 60 to 120 seconds one-handed, the sounds are tolerable as placeholders. Nothing in CI can judge these.
@@ -15,8 +16,10 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## MVP (brief, build order)
 - [ ] PB-002: Vessel scene: one wok, drag-and-drop ingredients, amount stepper, a one-tap cooking method (PD-007), placeholder sounds. Ugly is fine. **Built 2026-10-07, in review (PR #1); awaiting Moe's hands on a phone.**
+- [ ] PB-015: Pantry mode (PD-025): an ingredients-only round, about thirty seconds, no amounts or method. Scored as a count ("7 of 10"), with what was missed and what doesn't belong named. A cap on how many chips can go in, so it can't be brute-forced. In the app and the stand-in. After Moe has played PB-002; before PB-008.
 - [ ] PB-008: Vessel choice: wok or pot, one tap, with the flame click. Mouth-watering chicken is a pot dish and tops out at 94 in the wok (PD-019). Before PB-005.
 - [ ] PB-003: Canned judge line from the score breakdown (`ScoreBreakdown.misses` and `pattern`). No LLM yet.
+- [ ] PB-016: Brigade ladders (PD-026): a title earned by holding a level over the last five rounds, one ladder per mode (Pantry: commis, chef de partie, sous chef; Kitchen adds chef de cuisine). Titles are kept once earned. Thresholds and what each rung means are open; ask the chef. After PB-003 and PB-023.
 - [ ] PB-004: Ten cards, one per dish, shown on submit. Card ids are already in the profiles.
 - [ ] PB-005: Session loop: five rounds, summary screen, local progress (SwiftData).
 - [ ] PB-006: TestFlight to 20 people; measure session completion, day-two return, lowest-scoring dishes.

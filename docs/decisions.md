@@ -211,3 +211,26 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Decision: `DishProfile.brief`, one line of at most 120 characters, shown under the dish name before cooking in the app and the stand-in. It describes texture, look and how the dish should taste, and may name what the dish's own name names (or its main body in plain words). It never names a seasoning, an amount, a vessel or a method. Validation requires it and rejects digits; a test rejects seasoning and method words.
 - Rationale: The brief gives the target ("hot, numbing and deeply savoury"); finding what delivers it is still the round.
 - Consequences: Ten briefs written by Claude, for chef review with the profiles (PB-013). The field is optional in the schema and required by validation, so `schemaVersion` stays 1. Closes PB-009. The brief costs the wok a little height on small phones (PB-108).
+
+## PD-025: Two modes: Pantry (ingredients only) and Kitchen (the full round)
+- Date: 2026-10-07
+- Made by: Moe raised it (amounts are a lot to ask of a beginner, and recipes disagree on them); Claude argued for two modes over three levels; Moe: "two is probably fine"
+- Status: accepted (direction; not built)
+- Context: The round built in PB-002 asks for ingredients, amounts and a method at once. Moe's worry after playing: choosing amounts is tricky for a first-timer, especially when cookbooks differ.
+- Decision: Two modes, working names Moe can change.
+  - **Pantry**: pick what belongs. No amounts, no method, about thirty seconds a round. The score is a count, not a percentage: how many of the dish's ingredients you found, out of how many there are, plus a plain list of what you missed and what you added that doesn't belong.
+  - **Kitchen**: the full round as built, with amounts and a method, scored out of 100.
+- Rationale: The modes ask different questions (recognition, then proportion and technique), which is a truer split than easy, medium and hard. A count is a score the player can act on: "7 of 10" says three things are missing and the sheet names them. An 81 is a verdict, and a verdict that feels wrong (PB-023) teaches nothing. The scorer already separates ingredients, ratios, flavour and technique, so Pantry is a new round type and score sheet, not a new engine.
+- Consequences: Pantry is PB-015. It must not be brute-forceable by adding every chip: cap how many can go in, since lives are ruled out (brief: no lives). PB-023 (Kitchen scores too forgiving) is not solved by this; it stays open and comes before the judge line. The vessel choice (PB-008) belongs to Kitchen only.
+
+## PD-026: Progression is two brigade ladders, earned by consistency
+- Date: 2026-10-07
+- Made by: Moe (titles for consistent scores; build them on the traditional brigade; a separate ladder per mode); Claude (shape, rungs, ordering)
+- Status: accepted (direction; not built)
+- Decision: A title is earned by holding a level across the last five rounds, not by one good dish. Each mode has its own ladder, named from the kitchen brigade:
+  - Pantry: commis, chef de partie, sous chef.
+  - Kitchen: the same rungs and one more, chef de cuisine.
+  - Executive chef is held back until there is more than one cuisine.
+  - Three or four rungs per ladder, no more: a title only means something if it is rare.
+- Rationale: A rolling five rewards knowing the food over getting lucky, and gives a reason to keep playing once every dish has been seen. Separate ladders keep a title honest about what the player knows: finding ten of ten ingredients is not the same skill as holding 90 on proportions.
+- Consequences: Thresholds are open (Moe's examples: 80 over five for the first rung, 90 for the next). A title, once earned, is kept: taking one away would be streak shaming, which the brief rules out (Claude's call; say so if you disagree). What each rung should mean is a question for the chef reviewer. Built as PB-016, after the judge line (PB-003) and the scoring fix (PB-023): a badge on a score nobody trusts is decoration.

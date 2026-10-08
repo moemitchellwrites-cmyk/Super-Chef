@@ -31,6 +31,12 @@ so you get better at real cooking.
 6. TestFlight.
 7. LLM judge, art and real sound, StoreKit, first paid track.
 
+## Direction set in review (2026-10-07)
+
+- Two modes (PD-025): **Pantry**, ingredients only, scored as a count; **Kitchen**, the full round, scored out of 100.
+- Progression (PD-026): two brigade ladders, one per mode, earned over the last five rounds.
+- Every dish opens with a one-line brief of the plate (PD-024).
+
 ## Where it lives
 
 https://github.com/moemitchellwrites-cmyk/Super-Chef, its own repository

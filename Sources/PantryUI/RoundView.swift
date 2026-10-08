@@ -91,6 +91,8 @@ struct RoundView: View {
             }
             SpriteView(scene: model.scene, options: [.allowsTransparency])
                 .aspectRatio(WokScene.logicalSize.width / WokScene.logicalSize.height, contentMode: .fit)
+                // SpriteKit can draw a stray dark column on the view's last pixel (seen on an iPhone 16); trim the edge.
+                .clipShape(Rectangle().inset(by: 1.5))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .accessibilityElement()
                 .accessibilityLabel(wokSummary)

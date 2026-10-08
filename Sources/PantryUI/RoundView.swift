@@ -11,6 +11,8 @@ import PantryScoring
 /// or dragged: the drag is tracked here and handed to the scene when it ends over the wok.
 struct RoundView: View {
     @State private var model: RoundViewModel
+    @Binding private var mode: GameMode
+    private let onToggleMute: () -> Void
     @State private var drag: Drag?
     @State private var wokFrame: CGRect = .zero
 
@@ -21,14 +23,23 @@ struct RoundView: View {
         var location: CGPoint
     }
 
-    init(model: RoundViewModel) {
+    init(model: RoundViewModel, mode: Binding<GameMode>, onToggleMute: @escaping () -> Void) {
         _model = State(initialValue: model)
+        _mode = mode
+        self.onToggleMute = onToggleMute
     }
 
     private var round: Round { model.round }
 
     var body: some View {
         VStack(spacing: 8) {
+            RoundHeader(
+                mode: $mode,
+                canStartOver: !(round.entries.isEmpty && round.method == nil),
+                isMuted: model.isMuted,
+                onStartOver: { model.startOver() },
+                onToggleMute: onToggleMute
+            )
             header
             if let brief = round.dish.brief {
                 Text(brief)
@@ -92,21 +103,6 @@ struct RoundView: View {
                 .accessibilityIdentifier("dish-menu")
             }
             Spacer(minLength: 0)
-            Button {
-                model.startOver()
-            } label: {
-                Image(systemName: "arrow.counterclockwise")
-                    .frame(width: 36, height: 36)
-            }
-            .disabled(round.entries.isEmpty && round.method == nil)
-            .accessibilityLabel("Start over")
-            Button {
-                model.toggleMute()
-            } label: {
-                Image(systemName: model.isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
-                    .frame(width: 36, height: 36)
-            }
-            .accessibilityLabel(model.isMuted ? "Turn sound on" : "Turn sound off")
         }
     }
 

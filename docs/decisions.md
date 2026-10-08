@@ -307,3 +307,11 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Rationale: The recipe is the answer to the round. If it says "10 g garlic" and the stepper only offers "2 tsp", the player can't act on what they just learned.
 - Consequences: Amounts moved by a rounding step at most; every recipe still scores as a good attempt (PD-029 check). The goldens keep their sourced gram figures. What the measures should be in each country is PB-026.
 
+## PD-034: The app opens in Pantry mode; each mode keeps its own wok
+- Date: 2026-10-08
+- Made by: Claude
+- Status: accepted, for Moe's review when he can run the app.
+- Decision: The app opens in Pantry mode, as the stand-in does. A switch in the header changes mode. Each mode has its own round and wok, so switching back finds it as it was left; choosing a different dish in one mode carries to the other when you switch. Sound on or off is shared. The app's Pantry screen follows PD-031; the Kitchen screen has the shared header but not yet the rest of layout B.
+- Rationale: Pantry is the easier way in (PD-025's progression). Throwing away a half-built Kitchen round because the player peeked at Pantry would punish curiosity.
+- Consequences: Two SpriteKit scenes are alive at once; if that costs battery or memory on a phone, share one. `-pantryMode kitchen` opens in Kitchen (the Kitchen UI tests use it). The session loop (PB-005) will decide which mode a session deals; this is the interim.
+

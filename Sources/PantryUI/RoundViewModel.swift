@@ -38,9 +38,9 @@ final class RoundViewModel {
         sound.prepare()
     }
 
-    func toggleMute() {
-        isMuted.toggle()
-        sound.isMuted = isMuted
+    func setMuted(_ muted: Bool) {
+        isMuted = muted
+        sound.isMuted = muted
     }
 
     // MARK: The round

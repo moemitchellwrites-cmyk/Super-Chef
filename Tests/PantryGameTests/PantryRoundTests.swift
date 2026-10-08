@@ -110,4 +110,17 @@ final class PantryRoundTests: XCTestCase {
         XCTAssertNotEqual(a.palette.map(\.id), c.palette.map(\.id))
         XCTAssertEqual(Set(a.palette.map(\.id)), Set(dish.palette))
     }
+
+    func testTheRoundSaysWhatItAsksAndHowFarAlongItIs() throws {
+        let library = try library()
+        var round = PantryRound(dish: try XCTUnwrap(library.dish(id: "mapo-tofu")), library: library, seed: 1)
+        XCTAssertEqual(round.ask, "Pick the 6 essentials")
+        XCTAssertEqual(round.countLabel, "0 of 6")
+        XCTAssertEqual(round.servePrompt, "Add something to the wok")
+        XCTAssertEqual(round.toggle("firm-tofu"), .added)
+        XCTAssertEqual(round.countLabel, "1 of 6")
+        XCTAssertNil(round.servePrompt)
+        XCTAssertEqual(round.ingredient("firm-tofu")?.id, "firm-tofu")
+        XCTAssertNil(round.ingredient("not-on-the-palette"))
+    }
 }

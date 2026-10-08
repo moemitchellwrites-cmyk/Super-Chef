@@ -66,6 +66,15 @@ public enum PantryJudge {
     }
 }
 
+/// The two ways to play a dish (PD-025): Pantry asks what goes in, Kitchen asks how much and how.
+public enum GameMode: String, CaseIterable, Sendable {
+    case pantry, kitchen
+
+    public var title: String {
+        self == .pantry ? "Pantry" : "Kitchen"
+    }
+}
+
 /// One Pantry round: pick what the dish can't be without. A value type like `Round`.
 public struct PantryRound: Equatable, Sendable {
     public enum ToggleOutcome: Equatable, Sendable {
@@ -101,6 +110,25 @@ public struct PantryRound: Equatable, Sendable {
 
     public var picksLeft: Int { pickLimit - picks.count }
     public var canServe: Bool { !picks.isEmpty }
+
+    /// What still stands between the player and serving, or nil when ready.
+    public var servePrompt: String? {
+        picks.isEmpty ? "Add something to the wok" : nil
+    }
+
+    /// The round's one instruction. It names the number before the first pick (Moe, 2026-10-07).
+    public var ask: String {
+        "Pick the \(essentials) essentials"
+    }
+
+    /// "3 of 6": the picks made, out of the picks allowed.
+    public var countLabel: String {
+        "\(picks.count) of \(pickLimit)"
+    }
+
+    public func ingredient(_ id: String) -> Ingredient? {
+        palette.first { $0.id == id }
+    }
 
     public func contains(_ id: String) -> Bool {
         picks.contains(id)

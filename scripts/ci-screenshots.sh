@@ -64,7 +64,7 @@ run_on() {
   xcrun simctl bootstatus "$udid" -b > /dev/null
   xcrun simctl install "$udid" "$APP"
 
-  # A cold start with the sound on: the empty round, and proof the audio path doesn't crash.
+  # A cold start with the sound on: the empty Pantry round, and proof the audio path doesn't crash.
   pid="$(launch "$udid")"
   sleep 8
   shot "$udid" "$label-1-empty"
@@ -86,6 +86,17 @@ run_on() {
   sleep 11
   shot "$udid" "$label-4-score"
   must_be_alive "$pid" "$name" "demo round, served" || FAILED=1
+
+  # Pantry mode: a few picks, then the verdict.
+  pid="$(launch "$udid" -pantryDemoPantry)"
+  sleep 7
+  shot "$udid" "$label-5-pantry"
+  must_be_alive "$pid" "$name" "pantry round" || FAILED=1
+
+  pid="$(launch "$udid" -pantryDemoPantry -pantryDemoServe)"
+  sleep 9
+  shot "$udid" "$label-6-pantry-verdict"
+  must_be_alive "$pid" "$name" "pantry round, served" || FAILED=1
 
   xcrun simctl shutdown "$udid" || true
 }

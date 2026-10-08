@@ -1,6 +1,6 @@
 import XCTest
 
-/// Plays a round through the real screen on a simulator: the gestures CI can't
+/// Plays a Kitchen round through the real screen on a simulator: the gestures CI can't
 /// otherwise vouch for. The rules themselves are tested in the package.
 final class PantryUITests: XCTestCase {
     private var app: XCUIApplication!
@@ -8,7 +8,7 @@ final class PantryUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-pantryMuted"]
+        app.launchArguments = ["-pantryMuted", "-pantryMode", "kitchen"]
         app.launch()
         XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
     }
@@ -88,5 +88,72 @@ final class PantryUITests: XCTestCase {
         XCTAssertFalse(amount.exists)
         XCTAssertEqual(chip("garlic").label, "Garlic, minced")
         XCTAssertEqual(app.otherElements["wok"].label, "Wok, empty")
+    }
+}
+
+/// Plays a Pantry round through the real screen (PD-025, laid out per PD-031). The app opens in this mode.
+final class PantryModeUITests: XCTestCase {
+    private var app: XCUIApplication!
+
+    override func setUp() {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        app.launchArguments = ["-pantryMuted"]
+        app.launch()
+        XCTAssertTrue(app.buttons["serve"].waitForExistence(timeout: 30), "the round screen never appeared")
+    }
+
+    private func chip(_ id: String) -> XCUIElement {
+        app.buttons["chip-\(id)"]
+    }
+
+    private var picks: XCUIElement {
+        app.otherElements["picks"]
+    }
+
+    func testTheAppOpensInPantryModeSayingHowManyEssentialsToFind() {
+        XCTAssertTrue(app.buttons["mode-pantry"].isSelected)
+        XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
+        XCTAssertEqual(app.staticTexts["ask"].label, "Pick the 6 essentials")
+        XCTAssertEqual(picks.label, "0 of 6 picked")
+        XCTAssertFalse(app.buttons["serve"].isEnabled)
+        XCTAssertFalse(app.buttons["method-braise"].exists, "Pantry mode has no cooking method")
+    }
+
+    func testPickReadTakeOutServeAndOpenTheRecipe() {
+        chip("firm-tofu").tap()
+        XCTAssertEqual(picks.label, "1 of 6 picked")
+        XCTAssertEqual(chip("firm-tofu").label, "Firm tofu, picked")
+        let note = app.staticTexts["note"]
+        XCTAssertTrue(note.waitForExistence(timeout: 2), "touching an ingredient showed no note")
+        XCTAssertTrue(note.label.hasPrefix("Firm tofu."), note.label)
+
+        // Tapping a picked ingredient takes it back out.
+        chip("firm-tofu").tap()
+        XCTAssertEqual(picks.label, "0 of 6 picked")
+
+        chip("firm-tofu").tap()
+        chip("doubanjiang").tap()
+        chip("garlic").tap()
+        XCTAssertEqual(picks.label, "3 of 6 picked")
+        app.buttons["serve"].tap()
+        let score = app.staticTexts["score-total"]
+        XCTAssertTrue(score.waitForExistence(timeout: 5), "serving showed no verdict")
+        XCTAssertEqual(score.label, "3 of 6 essentials found")
+
+        app.buttons["see-recipe"].tap()
+        XCTAssertTrue(app.staticTexts["recipe-title"].waitForExistence(timeout: 5), "the recipe didn't open")
+    }
+
+    func testDraggingAChipOntoThePanelPicksIt() {
+        chip("firm-tofu").press(forDuration: 0.2, thenDragTo: app.otherElements["wok"])
+        XCTAssertEqual(picks.label, "1 of 6 picked")
+    }
+
+    func testSwitchingToKitchenKeepsTheDish() {
+        app.buttons["mode-kitchen"].tap()
+        XCTAssertTrue(app.buttons["method-braise"].waitForExistence(timeout: 5), "Kitchen mode didn't appear")
+        XCTAssertTrue(app.buttons["dish-menu"].label.contains("Mapo tofu"), app.buttons["dish-menu"].label)
+        XCTAssertEqual(app.buttons["serve"].label, "Add something to the wok")
     }
 }

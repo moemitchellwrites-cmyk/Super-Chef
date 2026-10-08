@@ -201,12 +201,18 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .group p { margin: 0; font-size: 14px; line-height: 1.4; }
 .group.bad .misses-title { color: var(--amount); }
 .group.good .misses-title { color: var(--good); }
+.group.fine .misses-title { color: var(--ink); }
+.group .aside { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
 .took { font-size: 12px; color: var(--ink-soft); text-align: center; }
 .recipe { border-top: 1.5px solid var(--surface-strong); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; -webkit-user-select: text; user-select: text; }
 .recipe h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 18px; }
 .recipe-meta { margin: 0; font-size: 12px; color: var(--ink-soft); }
 .recipe-lines { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; font-size: 13px; line-height: 1.35; }
-.recipe-lines li { min-width: 0; }
+.recipe-lines li { min-width: 0; padding-left: 12px; position: relative; }
+.recipe-lines li.core::before, .recipe-key .dot { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--chili); }
+.recipe-lines li.core::before { position: absolute; left: 0; top: 0.5em; }
+.recipe-key { margin: 0; font-size: 12px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+.recipe-key .dot { display: inline-block; flex: none; }
 .recipe-lines b { font-weight: 600; font-variant-numeric: tabular-nums; }
 .recipe-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.45; }
 @media (max-width: 340px) { .recipe-lines { grid-template-columns: 1fr; } }
@@ -276,6 +282,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     <section class="recipe" id="recipe" hidden aria-labelledby="recipe-title">
       <h3 id="recipe-title">One way to cook it</h3>
       <p class="recipe-meta" id="recipe-meta"></p>
+      <p class="recipe-key"><span class="dot" aria-hidden="true"></span><span id="recipe-key"></span></p>
       <ul class="recipe-lines" id="recipe-lines"></ul>
       <ol class="recipe-steps" id="recipe-steps"></ol>
     </section>
@@ -420,7 +427,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       goal.textContent = 'Find the ' + round.essentials + ' essentials this dish can\u2019t be without.';
       ask.appendChild(goal);
       var hint = document.createElement('small');
-      hint.textContent = used ? 'Changed your mind? Tap a picked ingredient to take it out.' : 'You get ' + round.limit + ' picks, so there is room for a few guesses.';
+      hint.textContent = used ? 'Changed your mind? Tap a picked ingredient to take it out.' : 'A full recipe uses more than these. You\u2019re after the core, and you get ' + round.limit + ' picks.';
       ask.appendChild(hint);
       $('picks-count').textContent = used + ' of ' + round.limit + ' picks';
       $('picks').classList.toggle('full', used >= round.limit);
@@ -867,10 +874,14 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     box.hidden = !recipe;
     if (!recipe) return;
     $('recipe-meta').textContent = 'Serves ' + recipe.serves + ' \u00b7 ' + (recipe.vessel === 'wok' ? 'Wok' : 'Pot') + ' \u00b7 ' + METHOD_TITLE[recipe.method];
+    var core = {};
+    E.pantryJudge(content, round.dish.id, recipe.lines.map(function (l) { return l.ingredientId; })).found.forEach(function (id) { core[id] = true; });
+    $('recipe-key').textContent = 'Marked: the ' + round.essentials + ' essentials. The rest round the dish out.';
     var lines = $('recipe-lines'); lines.innerHTML = '';
     recipe.lines.forEach(function (line) {
       var ingredient = content.ingredients[line.ingredientId];
       var li = document.createElement('li'), amount = document.createElement('b');
+      if (core[line.ingredientId]) { li.className = 'core'; li.setAttribute('aria-label', 'Essential: ' + recipeAmount(line.amount, line.unit) + ' ' + (ingredient ? ingredient.name : line.ingredientId)); }
       amount.textContent = recipeAmount(line.amount, line.unit);
       li.appendChild(amount);
       li.appendChild(document.createTextNode(' ' + lowerFirst(ingredient ? ingredient.name : line.ingredientId)));
@@ -905,7 +916,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     if (result.wrong.length) group(wrap, 'bad', 'Doesn\u2019t belong', names(result.wrong));
     if (result.missed.length) group(wrap, 'bad', 'Missed', result.missed.join(', '));
     if (result.found.length) group(wrap, 'good', 'Found', names(result.found));
-    if (result.alsoBelongs.length) group(wrap, '', 'At home here, but the dish stands without it', names(result.alsoBelongs));
+    if (result.alsoBelongs.length) {
+      group(wrap, 'fine', 'Not wrong, just not essential', names(result.alsoBelongs));
+      var why = document.createElement('p'); why.className = 'aside';
+      why.textContent = 'These belong in the dish and may be in the recipe below. This round only counts the ' + result.essentials + ' things the dish can\u2019t be without.';
+      wrap.lastChild.appendChild(why);
+    }
     $('keep').textContent = 'Try again';
   }
 

@@ -17,6 +17,7 @@ final class ParityTests: XCTestCase {
                 let technique: Double
                 let cappedAt: Int?
                 let misses: [String]
+                let line: String
             }
 
             let id: String
@@ -34,6 +35,7 @@ final class ParityTests: XCTestCase {
                 let alsoBelongs: [String]
                 let wrong: [String]
                 let essentials: Int
+                let line: String
             }
 
             let id: String
@@ -68,6 +70,8 @@ final class ParityTests: XCTestCase {
             XCTAssertEqual(breakdown.technique, expected.expect.technique, accuracy: 0.0001, expected.id)
             XCTAssertEqual(breakdown.cappedAt, expected.expect.cappedAt, expected.id)
             XCTAssertEqual(breakdown.misses.map(\.code), expected.expect.misses, expected.id)
+            let dish = try XCTUnwrap(library.dish(id: expected.dishId))
+            XCTAssertEqual(JudgeLine.kitchen(breakdown, dish: dish, library: library), expected.expect.line, expected.id)
         }
     }
 
@@ -83,6 +87,7 @@ final class ParityTests: XCTestCase {
             XCTAssertEqual(result.alsoBelongs, expected.expect.alsoBelongs, expected.id)
             XCTAssertEqual(result.wrong, expected.expect.wrong, expected.id)
             XCTAssertEqual(result.essentials, expected.expect.essentials, expected.id)
+            XCTAssertEqual(JudgeLine.pantry(result, dish: dish, library: library), expected.expect.line, expected.id)
             XCTAssertEqual(PantryRound(dish: dish, library: library, seed: 1).pickLimit, expected.limit, expected.id)
         }
     }

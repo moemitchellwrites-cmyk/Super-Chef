@@ -43,7 +43,7 @@ public enum RecipeText {
 
     /// "Garlic, minced" reads as "garlic, minced" after an amount; "Sichuan peppercorns" keeps its capital.
     static func lowercasedFirst(_ name: String) -> String {
-        let properNouns = ["Sichuan", "Shaoxing", "Chinkiang", "Napa"]
+        let properNouns = ["Sichuan", "Shaoxing", "Chinkiang", "Napa", "Chongqing"]
         if properNouns.contains(where: name.hasPrefix) { return name }
         return name.prefix(1).lowercased() + name.dropFirst()
     }

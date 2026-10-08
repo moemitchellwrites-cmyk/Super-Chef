@@ -1,9 +1,10 @@
 #if canImport(SwiftUI) && canImport(SpriteKit)
 import SwiftUI
+import PantryGame
 import PantryScoring
 
-/// The score for a served attempt. A stand-in: the judge's line (PB-003) and the
-/// card (PB-004) replace the raw breakdown below the number.
+/// The score for a served Kitchen attempt: the number, the judge's one line (PB-003) and the four parts.
+/// The card (PB-004) goes between the parts and the recipe button.
 struct ScoreSheet: View {
     let dish: DishProfile
     let breakdown: ScoreBreakdown
@@ -29,10 +30,6 @@ struct ScoreSheet: View {
 
     @State private var showingRecipe = false
 
-    private var missCodes: [String] {
-        Array(Set(breakdown.misses.map(\.code))).sorted()
-    }
-
     var body: some View {
         ScrollView {
             VStack(spacing: 14) {
@@ -43,6 +40,12 @@ struct ScoreSheet: View {
                     .font(.system(size: 76, weight: .heavy, design: .rounded))
                     .accessibilityIdentifier("score-total")
                     .accessibilityLabel("\(breakdown.total) out of 100")
+                // The judge's one line (PB-003): the single thing most worth fixing.
+                Text(JudgeLine.kitchen(breakdown, dish: dish, library: library))
+                    .font(.system(.title3, design: .rounded).weight(.medium))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("judge-line")
                 if let ceiling = breakdown.cappedAt {
                     Text("Held at \(ceiling): something in the wok doesn't belong, and the more of the dish it is, the lower the ceiling. The parts below add up to more.")
                         .font(.footnote)
@@ -65,18 +68,6 @@ struct ScoreSheet: View {
                         }
                         .accessibilityElement(children: .combine)
                     }
-                }
-                if !missCodes.isEmpty {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("What cost points (raw, until the judge can talk)")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
-                        ForEach(missCodes, id: \.self) { code in
-                            Text(code)
-                                .font(.caption.monospaced())
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 // The recipe is one tap away, so the sheet stays one screen (PD-032).
                 if dish.recipe != nil {

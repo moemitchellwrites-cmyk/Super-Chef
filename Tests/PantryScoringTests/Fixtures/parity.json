@@ -85,7 +85,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's mapo tofu. Nothing to fix."
    }
   },
   {
@@ -158,7 +159,8 @@
      "signatureLow:heat",
      "signatureLow:numbing",
      "wrongVessel:pan"
-    ]
+    ],
+    "line": "The cream came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -234,7 +236,8 @@
      "ratioUndefined:Sichuan peppercorn to tofu",
      "signatureLow:heat",
      "signatureLow:numbing"
-    ]
+    ],
+    "line": "The chopped salted chilies came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -326,7 +329,8 @@
      "ratioHigh:doubanjiang to tofu",
      "signatureLow:numbing",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "There's doubanjiang in it, but the amount is far off."
    }
   },
   {
@@ -418,7 +422,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's kung pao chicken. Nothing to fix."
    }
   },
   {
@@ -501,7 +506,8 @@
      "signatureHigh:acid",
      "signatureHigh:umami",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The fish sauce came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -584,7 +590,8 @@
      "signatureLow:numbing",
      "signatureLow:acid",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The hoisin sauce came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -661,7 +668,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's fish-fragrant eggplant. Nothing to fix."
    }
   },
   {
@@ -731,7 +739,8 @@
      "signatureHigh:umami",
      "signatureLow:sweet",
      "wrongVessel:pan"
-    ]
+    ],
+    "line": "The basil came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -808,7 +817,8 @@
      "signatureLow:acid",
      "signatureHigh:umami",
      "signatureLow:sweet"
-    ]
+    ],
+    "line": "No white fish in fish-fragrant eggplant. Start by leaving that out."
    }
   },
   {
@@ -900,7 +910,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's dan dan noodles. Nothing to fix."
    }
   },
   {
@@ -972,7 +983,8 @@
      "ratioUndefined:soy sauce to noodles",
      "signatureLow:heat",
      "signatureLow:numbing"
-    ]
+    ],
+    "line": "The miso came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1044,7 +1056,8 @@
      "ratioUndefined:Sichuan peppercorn to noodles",
      "signatureLow:heat",
      "signatureLow:numbing"
-    ]
+    ],
+    "line": "It isn't dan dan noodles without chili oil."
    }
   },
   {
@@ -1111,7 +1124,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's twice-cooked pork. Nothing to fix."
    }
   },
   {
@@ -1179,7 +1193,8 @@
      "ratioUndefined:sweet bean sauce to pork",
      "signatureHigh:sweet",
      "wrongVessel:pan"
-    ]
+    ],
+    "line": "The gochujang came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1250,7 +1265,8 @@
      "ratioUndefined:doubanjiang to pork",
      "ratioUndefined:sweet bean sauce to pork",
      "signatureLow:sweet"
-    ]
+    ],
+    "line": "The chopped salted chilies came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1327,7 +1343,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's dry-fried green beans. Nothing to fix."
    }
   },
   {
@@ -1394,7 +1411,8 @@
      "signatureLow:numbing",
      "signatureHigh:acid",
      "wrongVessel:pan"
-    ]
+    ],
+    "line": "The butter came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1465,7 +1483,8 @@
      "signatureLow:numbing",
      "signatureHigh:umami",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The oyster sauce came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1552,7 +1571,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's fish in chili oil broth. Nothing to fix."
    }
   },
   {
@@ -1637,7 +1657,8 @@
      "signatureLow:numbing",
      "signatureHigh:acid",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The coconut milk came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1710,7 +1731,8 @@
      "ratioLow:oil to fish",
      "signatureLow:heat",
      "signatureLow:numbing"
-    ]
+    ],
+    "line": "It isn't fish in chili oil broth without doubanjiang."
    }
   },
   {
@@ -1782,7 +1804,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's mouth-watering chicken. Nothing to fix."
    }
   },
   {
@@ -1856,7 +1879,8 @@
      "signatureHigh:acid",
      "signatureHigh:umami",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The fish sauce came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -1931,7 +1955,8 @@
      "signatureLow:acid",
      "signatureHigh:umami",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The hoisin sauce came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -2008,7 +2033,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's Chongqing chili chicken. Nothing to fix."
    }
   },
   {
@@ -2078,7 +2104,8 @@
      "signatureHigh:sweet",
      "wrongMethod:bake",
      "wrongVessel:baking-dish"
-    ]
+    ],
+    "line": "The curry powder came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -2150,7 +2177,8 @@
      "signatureLow:numbing",
      "signatureHigh:umami",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The gochujang came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -2227,7 +2255,8 @@
     "signature": 15,
     "technique": 10,
     "cappedAt": null,
-    "misses": []
+    "misses": [],
+    "line": "That's ants climbing a tree. Nothing to fix."
    }
   },
   {
@@ -2298,7 +2327,8 @@
      "ratioUndefined:liquid to glass noodles",
      "signatureLow:heat",
      "wrongVessel:pan"
-    ]
+    ],
+    "line": "The cream came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -2366,7 +2396,8 @@
      "ratioUndefined:doubanjiang to glass noodles",
      "signatureLow:heat",
      "signatureHigh:sweet"
-    ]
+    ],
+    "line": "The oyster sauce came from another kitchen. Start by leaving that out."
    }
   },
   {
@@ -2460,7 +2491,8 @@
     "cappedAt": 77,
     "misses": [
      "offCuisine:basil"
-    ]
+    ],
+    "line": "The basil came from another kitchen. Leave that out and this is close."
    }
   },
   {
@@ -2556,7 +2588,8 @@
      "offCuisine:cream",
      "signatureLow:heat",
      "signatureLow:numbing"
-    ]
+    ],
+    "line": "The cream came from another kitchen. Leave that out and this is close."
    }
   },
   {
@@ -2650,7 +2683,8 @@
     "cappedAt": 73,
     "misses": [
      "forbiddenForDish:sesame-paste"
-    ]
+    ],
+    "line": "No sesame paste in mapo tofu. Leave that out and this is close."
    }
   }
  ],
@@ -2682,7 +2716,8 @@
      "douchi"
     ],
     "wrong": [],
-    "essentials": 6
+    "essentials": 6,
+    "line": "4 of 6. Start with aromatics."
    }
   },
   {
@@ -2715,7 +2750,8 @@
      "black-vinegar",
      "sesame-paste"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No basil in mapo tofu. And it still needs tofu."
    }
   },
   {
@@ -2772,7 +2808,8 @@
      "cream",
      "basil"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No sesame paste in mapo tofu."
    }
   },
   {
@@ -2808,7 +2845,8 @@
      "black-vinegar",
      "cream"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No black vinegar in mapo tofu. And it still needs doubanjiang."
    }
   },
   {
@@ -2843,7 +2881,8 @@
      "light-soy"
     ],
     "wrong": [],
-    "essentials": 8
+    "essentials": 8,
+    "line": "6 of 8. Start with sugar."
    }
   },
   {
@@ -2883,7 +2922,8 @@
      "sesame-paste",
      "doubanjiang"
     ],
-    "essentials": 8
+    "essentials": 8,
+    "line": "No lime juice in kung pao chicken. And it still needs chicken."
    }
   },
   {
@@ -2940,7 +2980,8 @@
      "ketchup",
      "lime"
     ],
-    "essentials": 8
+    "essentials": 8,
+    "line": "No doubanjiang in kung pao chicken."
    }
   },
   {
@@ -2976,7 +3017,8 @@
      "doubanjiang",
      "ketchup"
     ],
-    "essentials": 8
+    "essentials": 8,
+    "line": "No doubanjiang in kung pao chicken. And it still needs dried chilies."
    }
   },
   {
@@ -3008,7 +3050,8 @@
      "doubanjiang"
     ],
     "wrong": [],
-    "essentials": 7
+    "essentials": 7,
+    "line": "One short: it needs black vinegar."
    }
   },
   {
@@ -3044,7 +3087,8 @@
      "sichuan-peppercorn-ground",
      "white-fish"
     ],
-    "essentials": 7
+    "essentials": 7,
+    "line": "No parmesan in fish-fragrant eggplant. And it still needs eggplant."
    }
   },
   {
@@ -3101,7 +3145,8 @@
      "basil",
      "parmesan"
     ],
-    "essentials": 7
+    "essentials": 7,
+    "line": "No white fish in fish-fragrant eggplant."
    }
   },
   {
@@ -3136,7 +3181,8 @@
      "sichuan-peppercorn-ground",
      "basil"
     ],
-    "essentials": 7
+    "essentials": 7,
+    "line": "No ground Sichuan pepper in fish-fragrant eggplant. And it still needs pickled chili or bean paste."
    }
   },
   {
@@ -3168,7 +3214,8 @@
      "sesame-paste"
     ],
     "wrong": [],
-    "essentials": 7
+    "essentials": 7,
+    "line": "One short: it needs aromatics."
    }
   },
   {
@@ -3206,7 +3253,8 @@
      "miso",
      "glass-noodles"
     ],
-    "essentials": 7
+    "essentials": 7,
+    "line": "No coconut milk in dan dan noodles. And it still needs noodles."
    }
   },
   {
@@ -3263,7 +3311,8 @@
      "fish-sauce",
      "coconut-milk"
     ],
-    "essentials": 7
+    "essentials": 7,
+    "line": "No glass noodles in dan dan noodles."
    }
   },
   {
@@ -3299,7 +3348,8 @@
      "glass-noodles",
      "fish-sauce"
     ],
-    "essentials": 7
+    "essentials": 7,
+    "line": "No glass noodles in dan dan noodles. And it still needs Sichuan peppercorn."
    }
   },
   {
@@ -3327,7 +3377,8 @@
      "douchi"
     ],
     "wrong": [],
-    "essentials": 5
+    "essentials": 5,
+    "line": "One short: it needs aromatics."
    }
   },
   {
@@ -3359,7 +3410,8 @@
      "duojiao",
      "gochujang"
     ],
-    "essentials": 5
+    "essentials": 5,
+    "line": "No butter in twice-cooked pork. And it still needs pork belly."
    }
   },
   {
@@ -3416,7 +3468,8 @@
      "basil",
      "butter"
     ],
-    "essentials": 5
+    "essentials": 5,
+    "line": "No cornstarch in twice-cooked pork."
    }
   },
   {
@@ -3452,7 +3505,8 @@
      "gochujang",
      "basil"
     ],
-    "essentials": 5
+    "essentials": 5,
+    "line": "No sesame paste in twice-cooked pork. And it still needs doubanjiang."
    }
   },
   {
@@ -3482,7 +3536,8 @@
      "ground-pork"
     ],
     "wrong": [],
-    "essentials": 6
+    "essentials": 6,
+    "line": "One short: it needs aromatics."
    }
   },
   {
@@ -3515,7 +3570,8 @@
      "black-vinegar",
      "cornstarch"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No parmesan in dry-fried green beans. And it still needs green beans."
    }
   },
   {
@@ -3572,7 +3628,8 @@
      "butter",
      "parmesan"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No chicken stock in dry-fried green beans."
    }
   },
   {
@@ -3607,7 +3664,8 @@
      "black-vinegar",
      "butter"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No black vinegar in dry-fried green beans. And it still needs Sichuan peppercorn."
    }
   },
   {
@@ -3643,7 +3701,8 @@
      "scallion"
     ],
     "wrong": [],
-    "essentials": 9
+    "essentials": 9,
+    "line": "One short: it needs oil."
    }
   },
   {
@@ -3686,7 +3745,8 @@
      "sesame-paste",
      "black-vinegar"
     ],
-    "essentials": 9
+    "essentials": 9,
+    "line": "No cream in fish in chili oil broth. And it still needs fish."
    }
   },
   {
@@ -3743,7 +3803,8 @@
      "lime",
      "cream"
     ],
-    "essentials": 9
+    "essentials": 9,
+    "line": "No black vinegar in fish in chili oil broth."
    }
   },
   {
@@ -3780,7 +3841,8 @@
      "sesame-paste",
      "lime"
     ],
-    "essentials": 9
+    "essentials": 9,
+    "line": "No sesame paste in fish in chili oil broth. And it still needs doubanjiang."
    }
   },
   {
@@ -3811,7 +3873,8 @@
     "missed": [],
     "alsoBelongs": [],
     "wrong": [],
-    "essentials": 8
+    "essentials": 8,
+    "line": "All 8 essentials, and nothing that doesn't belong."
    }
   },
   {
@@ -3851,7 +3914,8 @@
      "cornstarch",
      "doubanjiang"
     ],
-    "essentials": 8
+    "essentials": 8,
+    "line": "No miso in mouth-watering chicken. And it still needs chicken."
    }
   },
   {
@@ -3908,7 +3972,8 @@
      "mirin",
      "miso"
     ],
-    "essentials": 8
+    "essentials": 8,
+    "line": "No doubanjiang in mouth-watering chicken."
    }
   },
   {
@@ -3945,7 +4010,8 @@
      "fish-sauce",
      "mirin"
     ],
-    "essentials": 8
+    "essentials": 8,
+    "line": "No fish sauce in mouth-watering chicken. And it still needs chili oil."
    }
   },
   {
@@ -3975,7 +4041,8 @@
      "scallion"
     ],
     "wrong": [],
-    "essentials": 6
+    "essentials": 6,
+    "line": "One short: it needs oil."
    }
   },
   {
@@ -4009,7 +4076,8 @@
      "gochujang",
      "black-vinegar"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No lime juice in Chongqing chili chicken. And it still needs chicken."
    }
   },
   {
@@ -4066,7 +4134,8 @@
      "ketchup",
      "lime"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No chicken stock in Chongqing chili chicken."
    }
   },
   {
@@ -4102,7 +4171,8 @@
     "wrong": [
      "ketchup"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No ketchup in Chongqing chili chicken. And it still needs dried chilies."
    }
   },
   {
@@ -4132,7 +4202,8 @@
      "scallion"
     ],
     "wrong": [],
-    "essentials": 6
+    "essentials": 6,
+    "line": "One short: it needs liquid."
    }
   },
   {
@@ -4165,7 +4236,8 @@
      "black-vinegar",
      "firm-tofu"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No cream in ants climbing a tree. And it still needs glass noodles."
    }
   },
   {
@@ -4222,7 +4294,8 @@
      "fish-sauce",
      "cream"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No wheat noodles in ants climbing a tree."
    }
   },
   {
@@ -4257,7 +4330,8 @@
      "black-vinegar",
      "fish-sauce"
     ],
-    "essentials": 6
+    "essentials": 6,
+    "line": "No black vinegar in ants climbing a tree. And it still needs ground pork."
    }
   }
  ]

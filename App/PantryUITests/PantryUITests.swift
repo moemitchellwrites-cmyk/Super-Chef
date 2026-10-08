@@ -75,6 +75,8 @@ final class PantryUITests: XCTestCase {
         let score = app.staticTexts["score-total"]
         XCTAssertTrue(score.waitForExistence(timeout: 5), "serving showed no score")
         XCTAssertTrue(score.label.hasSuffix("out of 100"), score.label)
+        // Tofu and doubanjiang alone: the judge names the first essential that is missing.
+        XCTAssertEqual(app.staticTexts["judge-line"].label, "It isn't mapo tofu without Sichuan peppercorn.")
 
         // The recipe is one tap from the score sheet, never on it (PD-032).
         XCTAssertFalse(app.staticTexts["recipe-title"].exists)
@@ -143,6 +145,7 @@ final class PantryModeUITests: XCTestCase {
         let score = app.staticTexts["score-total"]
         XCTAssertTrue(score.waitForExistence(timeout: 5), "serving showed no verdict")
         XCTAssertEqual(score.label, "3 of 6 essentials found")
+        XCTAssertEqual(app.staticTexts["judge-line"].label, "3 of 6. Start with Sichuan peppercorn.")
 
         app.buttons["see-recipe"].tap()
         XCTAssertTrue(app.staticTexts["recipe-title"].waitForExistence(timeout: 5), "the recipe didn't open")

@@ -48,7 +48,7 @@ function parityCases() {
     return {
       id: golden.id, dishId: golden.dishId, vessel: golden.vessel, method: golden.method || null, lines: golden.lines,
       expect: { total: r.total, coverage: r.coverage, ratioFit: r.ratioFit, signature: r.signature, technique: r.technique,
-        cappedAt: r.cappedAt, misses: r.misses.map((m) => m.kind + ':' + m.subject) },
+        cappedAt: r.cappedAt, misses: r.misses.map((m) => m.kind + ':' + m.subject), line: engine.judgeKitchen(content, golden.dishId, r) },
     };
   });
   const extra = [
@@ -62,7 +62,7 @@ function parityCases() {
     const r = engine.score(content, { ...goodMapo, lines });
     scoring.push({ id, dishId: goodMapo.dishId, vessel: goodMapo.vessel, method: goodMapo.method, lines,
       expect: { total: r.total, coverage: r.coverage, ratioFit: r.ratioFit, signature: r.signature, technique: r.technique,
-        cappedAt: r.cappedAt, misses: r.misses.map((m) => m.kind + ':' + m.subject) } });
+        cappedAt: r.cappedAt, misses: r.misses.map((m) => m.kind + ':' + m.subject), line: engine.judgeKitchen(content, goodMapo.dishId, r) } });
   }
   const pantry = [];
   for (const dishId of content.dishOrder) {
@@ -70,7 +70,8 @@ function parityCases() {
     const limit = engine.pantryLimit(content.dishes[dishId]);
     const sets = { first: palette.slice(0, limit), last: palette.slice(-limit).reverse(), every: palette.slice(), few: palette.filter((_, i) => i % 3 === 0) };
     for (const [name, picks] of Object.entries(sets)) {
-      pantry.push({ id: dishId + '.' + name, dishId, picks, limit, expect: engine.pantryJudge(content, dishId, picks) });
+      const verdict = engine.pantryJudge(content, dishId, picks);
+      pantry.push({ id: dishId + '.' + name, dishId, picks, limit, expect: { ...verdict, line: engine.judgePantry(content, dishId, verdict) } });
     }
   }
   return { schemaVersion: 1, scoring, pantry };

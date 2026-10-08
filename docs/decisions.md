@@ -324,3 +324,13 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Alternatives: default to the wok with a switch (no decision, no learning); offer every vessel in the model (only wok and pot are used by this cuisine).
 - Consequences: Mouth-watering chicken can now reach 100. `Round.vessel` is optional and `Round.add` can answer `.needsVessel`. The scene draws a pot. Showing the right vessel in Pantry would leak a Kitchen answer, so Pantry keeps the wok for every dish, including the pot dish; if that reads as wrong, Pantry should show a neutral bowl. In the stand-in the Kitchen ingredient note now shows only when a chip is held, because at a touch it covered the vessel.
 
+## PD-036: The judge's one line is canned, and names one thing
+- Date: 2026-10-08
+- Made by: Claude (PB-003)
+- Status: accepted, for Moe's review in the stand-in.
+- Decision: Every verdict carries one sentence, built from the score with no model call. It names the single thing most worth fixing, in this order: something from another cuisine, something wrong for the dish, a missing essential, the wrong pan, the wrong method, then amounts and flavour balance. A clean dish is told so. Pantry gets its own line from its own verdict. The raw miss codes leave the app's score sheet.
+- Rationale: The brief promises one judge line per round. One named fix is something a player can act on next round; a list isn't. Canned lines are free, instant, offline and testable, and they are the fallback when the AI judge (later) can't be reached.
+- Consequences: The sentences live in `JudgeLine` (Swift) and `engine.js`, and every golden's line is pinned in the parity file, so the two can't drift. The wrong-pan and wrong-method lines name what the recipe uses. Lines are worded to read the same for singular and plural ingredient names ("The chopped salted chilies came from another kitchen"). The voice is plain; whether the judge has a persona is the brief's open question and not decided here.
+
+Addendum to PD-035 (Moe, 2026-10-08): the wok stays in Pantry mode. It is a neutral container for the essentials; revisit only if players carry it over as the Kitchen answer.
+

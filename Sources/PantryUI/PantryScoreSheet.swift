@@ -36,11 +36,13 @@ struct PantryScoreSheet: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .accessibilityHidden(true)
-                if result.isClean {
-                    Text("Clean: every essential, and nothing that doesn't belong.")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.green)
-                }
+                // The judge's one line (PB-003).
+                Text(JudgeLine.pantry(result, dish: dish, library: library))
+                    .font(.system(.title3, design: .rounded).weight(.medium))
+                    .foregroundStyle(result.isClean ? Color.green : Color.primary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("judge-line")
                 if !result.wrong.isEmpty {
                     TagGroup(title: "Doesn't belong", items: names(result.wrong), tint: .red, note: nil)
                 }

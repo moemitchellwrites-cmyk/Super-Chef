@@ -221,6 +221,64 @@
     return result;
   }
 
+  // The judge's one line: Sources/PantryGame/JudgeLine.swift, sentence for sentence.
+  var JUDGE_PRIORITY = ['offCuisine', 'forbiddenForDish', 'missingRequired', 'wrongVessel', 'wrongMethod',
+    'partialRequired', 'wrongAmount', 'ratioHigh', 'ratioLow', 'signatureHigh', 'signatureLow'];
+  var GERUND = { 'stir-fry': 'stir-frying', 'deep-fry': 'deep-frying', 'dry-fry': 'dry-frying', braise: 'braising', boil: 'boiling',
+    simmer: 'simmering', steam: 'steaming', poach: 'poaching', bake: 'baking' };
+  var VESSEL_NOUN = { wok: 'wok', pot: 'pot', pan: 'pan', skillet: 'skillet', 'baking-dish': 'baking dish', 'bread-pan': 'bread pan' };
+  var AXIS_NAME = { heat: 'heat', numbing: 'numbing', acid: 'sourness', umami: 'savoury depth', sweet: 'sweetness' };
+  var PROPER = ['Sichuan', 'Shaoxing', 'Chinkiang', 'Napa', 'Chongqing'];
+  function lowerFirst(name) {
+    for (var i = 0; i < PROPER.length; i++) if (name.indexOf(PROPER[i]) === 0) return name;
+    return name.charAt(0).toLowerCase() + name.slice(1);
+  }
+  function judgeName(content, id) { var i = content.ingredients[id]; return lowerFirst(i ? (i.shortName || i.name) : id); }
+  function ratioSides(label) {
+    var sides = label.split(' (')[0].split(' to ');
+    return sides.length === 2 ? sides : null;
+  }
+  function judgeKitchen(content, dishId, result) {
+    var dish = content.dishes[dishId], name = lowerFirst(dish.name), miss = null, i, j;
+    for (i = 0; i < JUDGE_PRIORITY.length && !miss; i++) {
+      for (j = 0; j < result.misses.length; j++) if (result.misses[j].kind === JUDGE_PRIORITY[i]) { miss = result.misses[j]; break; }
+    }
+    if (!miss) return result.total >= 95 ? "That's " + name + '. Nothing to fix.' : 'Close to the mark all round.';
+    var earned = result.coverage + result.ratioFit + result.signature + result.technique;
+    var leaveOut = earned >= 80 ? 'Leave that out and this is close.' : 'Start by leaving that out.';
+    var s = miss.subject, sides;
+    switch (miss.kind) {
+      case 'offCuisine': return 'The ' + judgeName(content, s) + ' came from another kitchen. ' + leaveOut;
+      case 'forbiddenForDish': return 'No ' + judgeName(content, s) + ' in ' + name + '. ' + leaveOut;
+      case 'missingRequired': return "It isn't " + name + ' without ' + s + '.';
+      case 'wrongVessel':
+        var pan = dish.recipe ? dish.recipe.vessel : dish.vessels[0];
+        return pan ? 'Right idea, wrong pan: ' + name + ' is cooked in a ' + VESSEL_NOUN[pan] + '.' : 'Right idea, wrong pan.';
+      case 'wrongMethod':
+        var used = GERUND[s] || s, start = used.charAt(0).toUpperCase() + used.slice(1);
+        var wanted = dish.recipe ? dish.recipe.method : dish.methods[0];
+        return wanted ? start + ' is the wrong method here: ' + name + ' wants ' + GERUND[wanted] + '.' : start + ' is the wrong method here.';
+      case 'partialRequired': return "It's thin on " + s + '.';
+      case 'wrongAmount': return "There's " + s + ' in it, but the amount is far off.';
+      case 'ratioHigh': sides = ratioSides(s); return sides ? 'Too much ' + sides[0] + ' for the ' + sides[1] + '.' : 'Too much ' + s + '.';
+      case 'ratioLow': sides = ratioSides(s); return sides ? 'It wants more ' + sides[0] + ' for that much ' + sides[1] + '.' : 'It wants more ' + s + '.';
+      case 'signatureHigh': return 'Too much ' + (AXIS_NAME[s] || s) + ' for ' + name + '.';
+      case 'signatureLow': return 'It wants more ' + (AXIS_NAME[s] || s) + '.';
+    }
+    return 'Close to the mark all round.';
+  }
+  function judgePantry(content, dishId, result) {
+    var dish = content.dishes[dishId];
+    if (result.found.length === result.essentials && !result.wrong.length) return 'All ' + result.essentials + " essentials, and nothing that doesn't belong.";
+    if (result.wrong.length) {
+      var line = 'No ' + judgeName(content, result.wrong[0]) + ' in ' + lowerFirst(dish.name) + '.';
+      return result.missed.length ? line + ' And it still needs ' + result.missed[0] + '.' : line;
+    }
+    if (!result.missed.length) return result.found.length + ' of ' + result.essentials + ' essentials found.';
+    if (result.essentials - result.found.length === 1) return 'One short: it needs ' + result.missed[0] + '.';
+    return result.found.length + ' of ' + result.essentials + '. Start with ' + result.missed[0] + '.';
+  }
+
   var METHOD_ORDER = ['stir-fry', 'deep-fry', 'dry-fry', 'braise', 'boil', 'simmer', 'steam', 'poach', 'bake'];
   function methodChoices(content) {
     var used = {};
@@ -238,7 +296,8 @@
   var api = {
     score: score, grams: grams, ladderFor: ladderFor, nearestIndex: nearestIndex, pieceCount: pieceCount,
     methodChoices: methodChoices, indexContent: indexContent, VOLUME: VOLUME, WEIGHT: WEIGHT, WEIGHTS: W,
-    pantryJudge: pantryJudge, pantryEssentials: pantryEssentials, pantryLimit: pantryLimit
+    pantryJudge: pantryJudge, pantryEssentials: pantryEssentials, pantryLimit: pantryLimit,
+    judgeKitchen: judgeKitchen, judgePantry: judgePantry
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.PantryEngine = api;

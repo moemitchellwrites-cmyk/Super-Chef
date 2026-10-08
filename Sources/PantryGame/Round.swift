@@ -216,6 +216,21 @@ extension CookingMethod {
         }
     }
 
+    /// As a noun mid-sentence: "mapo tofu wants braising".
+    public var gerund: String {
+        switch self {
+        case .stirFry: return "stir-frying"
+        case .deepFry: return "deep-frying"
+        case .dryFry: return "dry-frying"
+        case .braise: return "braising"
+        case .boil: return "boiling"
+        case .simmer: return "simmering"
+        case .steam: return "steaming"
+        case .poach: return "poaching"
+        case .bake: return "baking"
+        }
+    }
+
     /// How hard the burner runs for this method, 0...1. Drives the flame's size, nothing else.
     public var flameLevel: Double {
         switch self {

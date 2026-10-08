@@ -4,7 +4,7 @@ import PantryGame
 import PantryScoring
 
 /// The score for a served Kitchen attempt: the number, the judge's one line (PB-003) and the four parts.
-/// The card (PB-004) goes between the parts and the recipe button.
+/// then the card (PB-004) and the way to the recipe.
 struct ScoreSheet: View {
     let dish: DishProfile
     let breakdown: ScoreBreakdown
@@ -68,6 +68,9 @@ struct ScoreSheet: View {
                         }
                         .accessibilityElement(children: .combine)
                     }
+                }
+                if let card = library.card(for: dish) {
+                    CardView(card: card)
                 }
                 // The recipe is one tap away, so the sheet stays one screen (PD-032).
                 if dish.recipe != nil {

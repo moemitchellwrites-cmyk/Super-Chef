@@ -11,11 +11,18 @@ public struct ContentLibrary: Sendable {
     public let cuisine: Cuisine
     public let ingredients: [Ingredient]
     public let dishes: [DishProfile]
+    public let cards: [Card]
 
-    public init(cuisine: Cuisine, ingredients: [Ingredient], dishes: [DishProfile]) {
+    public init(cuisine: Cuisine, ingredients: [Ingredient], dishes: [DishProfile], cards: [Card] = []) {
         self.cuisine = cuisine
         self.ingredients = ingredients
         self.dishes = dishes
+        self.cards = cards
+    }
+
+    struct CardsFile: Codable {
+        var schemaVersion: Int
+        var cards: [Card]
     }
 
     struct IngredientsFile: Codable {
@@ -44,7 +51,8 @@ public struct ContentLibrary: Sendable {
         let cuisine = try decoder.decode(Cuisine.self, from: data("cuisine"))
         let ingredients = try decoder.decode(IngredientsFile.self, from: data("ingredients")).ingredients
         let dishes = try decoder.decode(DishesFile.self, from: data("dishes")).dishes
-        return ContentLibrary(cuisine: cuisine, ingredients: ingredients, dishes: dishes)
+        let cards = try decoder.decode(CardsFile.self, from: data("cards")).cards
+        return ContentLibrary(cuisine: cuisine, ingredients: ingredients, dishes: dishes, cards: cards)
     }
 
     /// The longest label a palette chip can show on two lines.
@@ -67,6 +75,18 @@ public struct ContentLibrary: Sendable {
         ingredients.first { $0.id == id }
     }
 
+    public func card(id: String) -> Card? {
+        cards.first { $0.id == id }
+    }
+
+    /// The card a round of this dish ends on.
+    public func card(for dish: DishProfile) -> Card? {
+        card(id: dish.cardId)
+    }
+
+    /// A card must stay under this many words (brief: "under 60 words").
+    public static let cardWordLimit = 60
+
     public var scorer: Scorer {
         Scorer(cuisine: cuisine, ingredients: ingredients)
     }
@@ -81,6 +101,24 @@ public struct ContentLibrary: Sendable {
     /// Returns one line per problem; empty means the content is sound.
     public func validate() -> [String] {
         var problems: [String] = []
+        if Set(cards.map(\.id)).count != cards.count {
+            problems.append("duplicate card ids")
+        }
+        for card in cards {
+            if card.wordCount >= ContentLibrary.cardWordLimit {
+                problems.append("\(card.id): \(card.wordCount) words, want under \(ContentLibrary.cardWordLimit)")
+            }
+            if card.title.isEmpty || card.rule.isEmpty || card.tryTonight.isEmpty {
+                problems.append("\(card.id): needs a title, a rule and something to try tonight")
+            }
+            let sentences = card.body.split(whereSeparator: { ".!?".contains($0) }).filter { !$0.allSatisfy(\.isWhitespace) }.count
+            if !(2...4).contains(sentences) {
+                problems.append("\(card.id): body has \(sentences) sentences, want two to four")
+            }
+            if !dishes.contains(where: { $0.cardId == card.id }) {
+                problems.append("\(card.id): no dish uses this card")
+            }
+        }
         let ingredientIds = Set(ingredients.map(\.id))
         let families = Set(ingredients.map(\.family))
         let offCuisine = Set(cuisine.offCuisineFamilies)
@@ -199,7 +237,11 @@ public struct ContentLibrary: Sendable {
             } else {
                 problems.append("\(tag): no recipe")
             }
-            if dish.cardId.isEmpty { problems.append("\(tag): no cardId") }
+            if dish.cardId.isEmpty {
+                problems.append("\(tag): no cardId")
+            } else if card(id: dish.cardId) == nil {
+                problems.append("\(tag): card \(dish.cardId) is not in cards.json")
+            }
             if (dish.notes ?? "").isEmpty { problems.append("\(tag): no source notes") }
         }
         return problems

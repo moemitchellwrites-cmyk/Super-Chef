@@ -334,3 +334,11 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 
 Addendum to PD-035 (Moe, 2026-10-08): the wok stays in Pantry mode. It is a neutral container for the essentials; revisit only if players carry it over as the Kitchen answer.
 
+## PD-037: Ten cards, one per dish, written to the brief's format
+- Date: 2026-10-08
+- Made by: Claude (PB-004)
+- Status: accepted as a draft for the chef's review (PB-013); Moe to read them in the stand-in.
+- Decision: Each dish has one card: a title, two or three sentences, one rule, one "try this tonight". Every card is under sixty words, enforced by content validation. The card shows on the score sheet in both modes, after the verdict and before the way to the recipe (PD-032). Rules are stated as relations ("sugar and vinegar in about equal measure", "paste before liquid") and never in grams or cups.
+- Rationale: A rule without units survives the US and metric split (PB-026) and is what a cook remembers at the stove. One card per dish is the MVP in the brief; a card chosen by what the player fumbled is the richer version and needs more cards than ten.
+- Consequences: The same card shows every time a dish is played, win or lose. That will wear thin within a session of repeats; the session loop (PB-005) deals five different dishes, which hides it for now. Card history and "earned" cards are not built. The cards are the most quotable content in the game and the first thing the chef should red-pen.
+

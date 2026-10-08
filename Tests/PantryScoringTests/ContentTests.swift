@@ -45,7 +45,7 @@ final class ContentTests: XCTestCase {
         let chatty = Ingredient(id: "chatty", name: "Chatty", family: "sugar", defaultUnit: .grams,
                                 about: String(repeating: "and so on ", count: 20))
         let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients + [silent, chatty],
-                                      dishes: library.dishes).validate()
+                                      dishes: library.dishes, cards: library.cards).validate()
         XCTAssertEqual(problems, ["silent: no about line", "chatty: about line is over 110 characters"])
     }
 
@@ -58,7 +58,7 @@ final class ContentTests: XCTestCase {
         let blank = Ingredient(id: "blank", name: "Sugar", family: "sugar", defaultUnit: .grams, shortName: "",
                                about: "A test ingredient.")
         let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients + [wordy, padded, blank],
-                                      dishes: library.dishes).validate()
+                                      dishes: library.dishes, cards: library.cards).validate()
         XCTAssertTrue(problems.contains { $0.hasPrefix("wordy:") && $0.contains("no shortName") }, "\(problems)")
         XCTAssertTrue(problems.contains { $0.hasPrefix("padded:") && $0.contains("shortName must be") }, "\(problems)")
         XCTAssertTrue(problems.contains { $0.hasPrefix("blank:") && $0.contains("shortName must be") }, "\(problems)")
@@ -158,5 +158,28 @@ final class ContentTests: XCTestCase {
             XCTAssertTrue(families.contains(where: offCuisine.contains), "\(dish.id) has no off-cuisine decoy")
             XCTAssertTrue(families.contains(where: Set(dish.forbidden).contains), "\(dish.id) has no in-cuisine decoy")
         }
+    }
+
+    // MARK: Cards (PB-004)
+
+    func testEveryDishEndsOnACardUnderSixtyWords() throws {
+        let library = try ContentLibrary.bundled()
+        XCTAssertEqual(library.cards.count, library.dishes.count)
+        for dish in library.dishes {
+            let card = try XCTUnwrap(library.card(for: dish), dish.id)
+            XCTAssertLessThan(card.wordCount, ContentLibrary.cardWordLimit, card.id)
+            XCTAssertFalse(card.rule.isEmpty, card.id)
+            XCTAssertFalse(card.tryTonight.isEmpty, card.id)
+        }
+    }
+
+    func testValidationCatchesALongCardAndAMissingOne() throws {
+        let library = try ContentLibrary.bundled()
+        var cards = library.cards
+        let dropped = cards.removeLast()
+        cards[0].body = Array(repeating: "word", count: 70).joined(separator: " ") + ". And more."
+        let problems = ContentLibrary(cuisine: library.cuisine, ingredients: library.ingredients, dishes: library.dishes, cards: cards).validate()
+        XCTAssertTrue(problems.contains { $0.hasPrefix("\(cards[0].id):") && $0.contains("words") }, "\(problems)")
+        XCTAssertTrue(problems.contains { $0.contains("card \(dropped.id) is not in cards.json") }, "\(problems)")
     }
 }

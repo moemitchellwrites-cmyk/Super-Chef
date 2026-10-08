@@ -61,6 +61,9 @@ struct PantryScoreSheet: View {
                         note: "These belong in the dish and may be in the recipe. This round only counts the \(result.essentials) things the dish can't be without."
                     )
                 }
+                if let card = library.card(for: dish) {
+                    CardView(card: card)
+                }
                 if dish.recipe != nil {
                     Button("See the recipe") { showingRecipe = true }
                         .buttonStyle(.bordered)

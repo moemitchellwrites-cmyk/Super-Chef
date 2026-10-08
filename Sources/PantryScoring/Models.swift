@@ -361,6 +361,31 @@ public struct Attempt: Codable, Equatable, Sendable {
     }
 }
 
+/// The one lesson a round ends on (brief: "one educational card"). Short enough to read standing up.
+public struct Card: Codable, Equatable, Identifiable, Sendable {
+    public var id: String
+    public var title: String
+    /// Two to four sentences.
+    public var body: String
+    /// One rule or ratio, stated plainly.
+    public var rule: String
+    /// One thing to try at the stove.
+    public var tryTonight: String
+
+    public init(id: String, title: String, body: String, rule: String, tryTonight: String) {
+        self.id = id
+        self.title = title
+        self.body = body
+        self.rule = rule
+        self.tryTonight = tryTonight
+    }
+
+    /// Every word on the card. The brief holds a card under sixty.
+    public var wordCount: Int {
+        [title, body, rule, tryTonight].reduce(0) { $0 + $1.split(whereSeparator: \.isWhitespace).count }
+    }
+}
+
 /// One specific thing that cost points. The judge (canned or LLM) turns these into a sentence.
 public struct Miss: Codable, Equatable, Hashable, Sendable {
     public enum Kind: String, Codable, CaseIterable, Sendable {

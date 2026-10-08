@@ -26,7 +26,8 @@ def main():
         dish.pop("notes", None)  # internal source notes; never shown to players
     cuisine = load("cuisine.json")
     cuisine.pop("notes", None)
-    content = {"cuisine": cuisine, "ingredients": load("ingredients.json")["ingredients"], "dishes": dishes}
+    content = {"cuisine": cuisine, "ingredients": load("ingredients.json")["ingredients"], "dishes": dishes,
+               "cards": load("cards.json")["cards"]}
     blob = json.dumps(content, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     page = (root / "web/standin.template.html").read_text(encoding="utf-8")
     engine = (root / "web/engine.js").read_text(encoding="utf-8")

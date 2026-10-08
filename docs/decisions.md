@@ -278,3 +278,15 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Decision: Free: the recipe appears on the score sheet after a round. Paid (Cook It Tonight): save it to a recipe list, shopping list, scale the servings, export.
 - Rationale: The free recipe proves the game teaches real cooking. The paid step is keeping and using what was learned.
 - Consequences: A screenshot gets a free player the recipe, so the saved list has to be worth more than a screenshot: the shopping list and scaling carry that. Saving is PB-019. Still open from PD-029: whether the recipe replaces the 60-word card or sits beside it.
+
+## PD-031: The round screen is layout B, with layout C for Pantry on small phones
+- Date: 2026-10-07
+- Made by: Moe, from three options Claude put on the "Pantry Round Screen" design canvas (PB-025). Claude recommended B; the small-phone exception is Moe's and Claude agrees with it.
+- Status: accepted. Spec for the app's Pantry screen (PB-015) and for the Kitchen screen when it is next touched. The stand-in follows it.
+- Decision:
+  - **Both modes, every size:** the mode switch sits in the header row with start-over and sound. The dish name, cuisine and brief live inside the wok's panel. Four-column palette, serve button at the bottom, nothing scrolls on a 375 × 667 screen.
+  - **Pantry, regular phones (B):** "Pick the N essentials" with N dots that fill, inside the panel. The ingredient note is a dark callout floating over the bottom of the panel while a chip is touched and for a moment after.
+  - **Pantry, small phones (C):** the ask is a full sentence in the panel, the count rides on the serve button ("Serve it · 3 of 6"), and the ingredient note is a fixed strip between the panel and the palette.
+  - **Kitchen, every size (B):** the amount stepper sits in the bottom of the panel and the six methods are one row of 44-point buttons. On small phones the brief is one line and the stepper is one row with a × for take-out.
+- Rationale: A (today's stack) is 133 points too tall on a small phone and spends four rows before the wok. B puts what the round is about next to the wok. On a small phone the panel is short, so B's floating note covers the wok just as the player is looking at it; C's strip doesn't.
+- Consequences: Two placements for the note and the count, switched on screen height (the stand-in uses 700 points). The small-phone stepper's × has no words, which goes against "say Take out in words" from PB-015: it keeps the accessibility label and is the one exception, for width. Placeholder art only; art direction stays with PB-011.

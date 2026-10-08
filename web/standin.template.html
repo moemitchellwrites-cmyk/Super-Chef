@@ -52,15 +52,17 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 }
 
 .top { display: flex; align-items: center; gap: 8px; }
-.top .names { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.top .spacer { flex: 1; }
+.names { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.names .dish { flex: 0 1 auto; min-width: 0; }
+.eyebrow { flex: none; white-space: nowrap; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
 .dish {
   font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.2; color: var(--chili);
   background: transparent; border: 0; padding: 0; max-width: 100%; text-overflow: ellipsis;
 }
 .brief { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-soft); -webkit-user-select: text; user-select: text; }
 .icon-button {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--surface);
+  width: 44px; height: 44px; border-radius: 50%; background: var(--surface);
   display: grid; place-items: center; font-size: 18px; flex: none;
 }
 .icon-button:disabled { opacity: 0.4; }
@@ -89,61 +91,55 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 @media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
 
 .scene {
-  /* Stays on screen when a short phone has to scroll the palette, so a chip always has a wok to be dragged to. */
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  flex: 1 1 140px; min-height: 140px; max-height: 300px;
-  background: var(--scene); border-radius: 18px; overflow: hidden;
-  box-shadow: 0 0 0 8px var(--bg);
+  position: relative; flex: 1 0 auto; box-sizing: border-box;
+  background: var(--scene); border-radius: 18px; padding: 12px 14px 10px;
+  display: flex; flex-direction: column; gap: 5px;
 }
-.scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.scene.over { box-shadow: 0 0 0 8px var(--bg), inset 0 0 0 3px var(--chili); }
+.stage { position: relative; flex: 1; min-height: 96px; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.scene.over { box-shadow: inset 0 0 0 3px var(--chili); }
 
-.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface); border-radius: 12px; padding: 4px; }
-.mode { height: 34px; border-radius: 9px; font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--ink-soft); }
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface); border-radius: 12px; padding: 4px; width: 184px; box-sizing: border-box; flex: none; }
+.mode { height: 36px; border-radius: 9px; font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--ink-soft); }
 .mode[aria-pressed="true"] { background: var(--bg); color: var(--ink); font-weight: 600; }
-.picks {
-  background: var(--surface); border-radius: 14px; padding: 10px 12px; box-sizing: border-box;
-  display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px;
-}
-.picks .ask { color: var(--ink-soft); min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.picks .ask b { color: var(--ink); font-weight: 600; font-size: 14px; line-height: 1.3; }
-.picks .ask small { font-size: 12px; line-height: 1.3; }
-.picks .count { font-family: var(--display); font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.picks.full .count { color: var(--amount); }
+.picks { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 2px; }
+.picks .ask { font-size: 13px; font-weight: 700; min-width: 0; }
+.dots { display: flex; gap: 5px; flex: none; }
+.dots i { width: 16px; height: 16px; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--ink-soft); }
+.dots i.on { background: var(--chili); border-color: var(--chili); }
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 .picks.nudge { animation: nudge 0.25s ease-in-out; }
 @media (prefers-reduced-motion: reduce) { .picks.nudge { animation: none; } }
-.methods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 4px; }
 .method {
-  height: 32px; border-radius: 16px; background: var(--surface);
-  font-family: var(--display); font-weight: 500; font-size: 15px;
+  height: 44px; border-radius: 12px; background: var(--surface);
+  font-size: 12px; font-weight: 600;
 }
 .method[aria-pressed="true"] { background: var(--chili); color: var(--chili-ink); }
 
 .stepper {
-  background: var(--surface); border-radius: 14px; padding: 8px 10px; height: 76px; box-sizing: border-box;
-  display: flex; flex-direction: column; justify-content: center; gap: 4px;
+  background: var(--bg); border-radius: 14px; padding: 6px 8px; box-sizing: border-box; flex: none;
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
 }
-.stepper .hint { text-align: center; color: var(--ink-soft); font-size: 14px; }
+.stepper .hint { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 4px 0; }
 .stepper .line { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .stepper .name { flex: 1; min-width: 0; font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stepper .amount { font-family: var(--display); font-weight: 600; font-size: 18px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .round-button {
-  width: 34px; height: 34px; border-radius: 50%; background: var(--chili); color: var(--chili-ink);
+  width: 44px; height: 44px; border-radius: 50%; background: var(--chili); color: var(--chili-ink);
   font-size: 22px; font-weight: 700; line-height: 1; flex: none; display: grid; place-items: center;
 }
 .round-button:disabled { opacity: 0.35; }
 .remove { height: 30px; padding: 0 10px; border-radius: 15px; flex: none; font-size: 12px; font-weight: 700; background: var(--bg); color: var(--amount); }
 .stepper input[type="range"] { flex: 1; min-width: 0; accent-color: var(--chili); height: 28px; margin: 0; }
 
+/* The ingredient note floats over the bottom of the wok while a chip is touched, and for a moment after. */
 .about {
-  box-sizing: border-box; height: 58px; padding: 6px 10px; border-radius: 12px; border: 1.5px dashed var(--surface-strong);
-  font-size: 12px; line-height: 1.33; color: var(--ink-soft); overflow: hidden;
-  display: flex; align-items: center;
+  position: absolute; left: 0; right: 0; bottom: 2px; z-index: 6; box-sizing: border-box; padding: 8px 12px;
+  border-radius: 12px; background: var(--ink); color: var(--bg); font-size: 12.5px; line-height: 1.35;
+  box-shadow: 0 6px 16px var(--scrim); pointer-events: none;
 }
-.about.on { border-style: solid; border-color: var(--chili); color: var(--ink); }
 .about b { font-weight: 700; }
-.about span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
 .chip.peek { border-color: var(--chili); }
 .palette { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .chip {
@@ -168,6 +164,25 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 .serve {
   height: 50px; border-radius: 14px; background: var(--chili); color: var(--chili-ink);
   font-family: var(--display); font-weight: 600; font-size: 18px; flex: none;
+}
+/* Small phones (PD-031): Pantry takes layout C, with the note as a fixed strip under the wok and the count
+   on the serve button; Kitchen keeps layout B with a one-line brief and a one-row stepper. */
+.about.strip {
+  position: static; height: 50px; flex: none; padding: 2px 10px; border-radius: 10px; box-shadow: none;
+  background: var(--surface); color: var(--ink); font-size: 11.5px; line-height: 1.3; display: flex; align-items: center; overflow: hidden;
+}
+.about.strip.idle { color: var(--ink-soft); }
+.serve .count { margin-left: 12px; padding: 2px 10px; border-radius: 12px; background: var(--scrim); font-weight: 500; }
+.stepper.compact { padding: 3px 6px 4px; gap: 0; border-radius: 12px; }
+.stepper.compact .name { font-size: 11px; line-height: 1.2; padding-left: 4px; flex: none; }
+.stepper.compact .line { gap: 6px; }
+.stepper.compact .amount { font-size: 16px; width: 62px; text-align: right; flex: none; }
+.remove.cross { width: 44px; height: 44px; padding: 0; border-radius: 50%; display: grid; place-items: center; font-size: 20px; }
+@media (max-height: 700px) {
+  .chip { height: 46px; }
+  .stage { min-height: 72px; }
+  .scene[data-mode="pantry"] .dots { display: none; }
+  .scene[data-mode="kitchen"] .brief { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
 .serve:disabled { background: var(--surface-strong); color: var(--ink-soft); }
 .note { margin: 0; text-align: center; font-size: 11px; color: var(--ink-soft); line-height: 1.35; }
@@ -230,10 +245,11 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 
 <main class="app" id="app">
   <header class="top">
-    <div class="names">
-      <span class="eyebrow" id="eyebrow">Sichuan · Wok · stand-in</span>
-      <select class="dish" id="dish" aria-label="Dish"></select>
+    <div class="modes" role="group" aria-label="Mode">
+      <button class="mode" id="mode-pantry" aria-pressed="true">Pantry</button>
+      <button class="mode" id="mode-kitchen" aria-pressed="false">Kitchen</button>
     </div>
+    <span class="spacer"></span>
     <span class="tipped">
       <button class="icon-button" id="restart" aria-label="Start over" aria-describedby="restart-tip" disabled>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -252,22 +268,23 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     </button>
   </header>
 
-  <div class="modes" role="group" aria-label="Mode">
-    <button class="mode" id="mode-pantry" aria-pressed="true">Pantry</button>
-    <button class="mode" id="mode-kitchen" aria-pressed="false">Kitchen</button>
-  </div>
-
-  <p class="brief" id="brief"></p>
-
-  <div class="scene" id="scene" role="img" aria-label="Wok, empty"><canvas id="canvas"></canvas></div>
-
-  <div class="picks" id="picks" hidden><span class="ask" id="picks-ask"></span><span class="count" id="picks-count"></span></div>
+  <!-- Layout B, "stage" (PB-025): the dish, its brief and the round's progress live in the wok's panel. -->
+  <section class="scene" id="scene">
+    <div class="names">
+      <select class="dish" id="dish" aria-label="Dish"></select>
+      <span class="eyebrow" id="eyebrow">Sichuan · stand-in</span>
+    </div>
+    <p class="brief" id="brief"></p>
+    <div class="picks" id="picks" hidden><span class="ask" id="picks-ask"></span><span class="dots" id="picks-count" role="img"></span></div>
+    <div class="stage" id="stage" role="img" aria-label="Wok, empty">
+      <canvas id="canvas"></canvas>
+      <div class="about" id="about" aria-live="polite" hidden><span id="about-text"></span></div>
+    </div>
+    <div class="stepper" id="stepper"></div>
+  </section>
 
   <div class="methods" id="methods"></div>
-
-  <div class="stepper" id="stepper"></div>
-
-  <div class="about" id="about" aria-live="polite"><span id="about-text">Touch an ingredient to read what it is. Hold it to read without adding it.</span></div>
+  <div id="app-note-slot" style="display: contents"></div>
 
   <div class="palette" id="palette"></div>
 
@@ -337,8 +354,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: 'wok', startedAt: null,
       limit: E.pantryLimit(dish), essentials: E.pantryEssentials(dish) };
     scene.clear();
-    $('about').classList.remove('on');
-    $('about-text').textContent = 'Touch an ingredient to read what it is. Hold it to read without adding it.';
+    hideAbout();
     renderAll();
   }
   function entryFor(id) { for (var i = 0; i < round.entries.length; i++) if (round.entries[i].id === id) return round.entries[i]; return null; }
@@ -353,8 +369,25 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     var name = document.createElement('b'); name.textContent = chipName(ingredient) + '. ';
     box.appendChild(name);
     box.appendChild(document.createTextNode(ingredient.about || ''));
-    $('about').classList.add('on');
+    clearTimeout(aboutTimer);
+    $('about').classList.remove('idle');
+    $('about').hidden = false;
   }
+  var aboutTimer = null;
+  var small = window.matchMedia('(max-height: 700px)');
+  function stripNote() { return small.matches && mode === 'pantry'; }
+  function hideAbout() {
+    clearTimeout(aboutTimer);
+    var box = $('about'), strip = stripNote();
+    // Small-phone Pantry keeps the note in its own strip, so it never covers the wok.
+    if (strip && box.parentNode !== $('app-note-slot')) $('app-note-slot').appendChild(box);
+    if (!strip && box.parentNode !== $('stage')) $('stage').appendChild(box);
+    box.classList.toggle('strip', strip); box.classList.toggle('idle', strip);
+    box.hidden = !strip;
+    if (strip) $('about-text').textContent = 'Touch an ingredient to read what it is. Hold it to read without adding it.';
+  }
+  // The note stays up while the chip is held, then lingers long enough to finish reading.
+  function releaseAbout() { clearTimeout(aboutTimer); if (!stripNote()) aboutTimer = setTimeout(hideAbout, 2800); }
   function nudgePicks() {
     var box = $('picks');
     box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
@@ -421,20 +454,16 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     $('methods').hidden = pantry;
     $('stepper').hidden = pantry;
     $('picks').hidden = !pantry;
+    $('scene').dataset.mode = mode;
+    if (stripNote() !== $('about').classList.contains('strip')) hideAbout();
     if (pantry) {
       var used = round.entries.length;
-      // Say how many there are to find (Moe): the limit alone doesn't tell you what you're aiming for.
-      var ask = $('picks-ask');
-      ask.textContent = '';
-      var goal = document.createElement('b');
-      goal.textContent = 'Pick the ' + round.essentials + ' essentials this dish can\u2019t be without.';
-      ask.appendChild(goal);
-      var hint = document.createElement('small');
-      hint.textContent = used ? 'Changed your mind? Tap a picked ingredient to take it out.' : 'A full recipe uses more than these. You\u2019re after the core.';
-      ask.appendChild(hint);
-      $('picks-count').textContent = used + ' of ' + round.limit;
-      $('picks-count').setAttribute('aria-label', used + ' of ' + round.limit + ' picked');
-      $('picks').classList.toggle('full', used >= round.limit);
+      // Say how many there are to find (Moe), and show the picks as dots that fill.
+      $('picks-ask').textContent = 'Pick the ' + round.essentials + ' essentials' + (small.matches ? " this dish can't be without." : '');
+      var dots = $('picks-count');
+      dots.textContent = '';
+      for (var n = 0; n < round.limit; n++) { var dot = document.createElement('i'); if (n < used) dot.className = 'on'; dots.appendChild(dot); }
+      dots.setAttribute('aria-label', used + ' of ' + round.limit + ' picked');
     }
   }
 
@@ -448,7 +477,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       });
     }
     select.value = round.dish.id;
-    $('eyebrow').textContent = content.cuisine.name + (mode === 'pantry' ? '' : ' · Wok') + ' · stand-in';
+    $('eyebrow').textContent = content.cuisine.name + (mode === 'pantry' ? '' : ' \u00b7 Wok');
     $('brief').textContent = round.dish.brief || '';
     $('brief').hidden = !round.dish.brief;
     $('restart').disabled = round.entries.length === 0 && !round.method;
@@ -477,9 +506,16 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       return;
     }
     var ingredient = content.ingredients[id], e = entryFor(id), l = ladder(id), m = l.steps[e.step];
-    if (box.dataset.id !== id || !$('amount-slider')) {
-      box.dataset.id = id;
-      box.innerHTML =
+    var key = id + (small.matches ? '|small' : '');
+    box.classList.toggle('compact', small.matches);
+    if (box.dataset.id !== key || !$('amount-slider')) {
+      box.dataset.id = key;
+      box.innerHTML = small.matches ?
+        '<span class="name" id="stepper-name"></span>' +
+        '<div class="line"><button class="round-button" id="less" aria-label="Less">−</button>' +
+        '<input type="range" id="amount-slider" min="0" step="1" aria-label="Amount">' +
+        '<button class="round-button" id="more" aria-label="More">+</button>' +
+        '<span class="amount" id="amount"></span><button class="remove cross" id="remove" aria-label="Take out">\u00d7</button></div>' :
         '<div class="line"><span>' + look(ingredient)[0] + '</span><span class="name" id="stepper-name"></span>' +
         '<span class="amount" id="amount"></span><button class="remove" id="remove">Take out</button></div>' +
         '<div class="line"><button class="round-button" id="less" aria-label="Less">−</button>' +
@@ -540,6 +576,11 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     var prompt = servePrompt();
     $('serve').disabled = prompt !== null;
     $('serve').textContent = prompt || 'Serve it';
+    if (!prompt && stripNote()) {
+      var count = document.createElement('span'); count.className = 'count';
+      count.textContent = round.entries.length + ' of ' + round.limit;
+      $('serve').appendChild(count);
+    }
   }
   function renderSceneLabel() {
     var label = 'Wok, empty';
@@ -548,7 +589,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
         return (mode === 'kitchen' ? ladder(e.id).steps[e.step].label + ' ' : '') + chipName(content.ingredients[e.id]);
       }).join(', ');
     }
-    $('scene').setAttribute('aria-label', label);
+    $('stage').setAttribute('aria-label', label);
   }
 
   // ---------- Tap or drag a chip ----------
@@ -587,6 +628,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
       if (!drag || drag.id !== id) return;
       var d = drag; drag = null;
       clearTimeout(d.timer);
+      releaseAbout();
       button.classList.remove('dragging'); button.classList.remove('peek');
       $('ghost').hidden = true;
       $('scene').classList.remove('over');
@@ -600,6 +642,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
     // Keyboard and switch access: Enter or Space adds it.
     button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showAbout(id); add(id); } });
     button.addEventListener('focus', function () { showAbout(id); });
+    button.addEventListener('blur', releaseAbout);
     button.addEventListener('contextmenu', function (ev) { ev.preventDefault(); });
   }
 
@@ -997,6 +1040,8 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   });
   $('methods').addEventListener('pointerdown', function () { sound.unlock(); });
   $('serve').addEventListener('click', serve);
+  var onSize = function () { hideAbout(); renderAll(); };
+  if (small.addEventListener) small.addEventListener('change', onSize); else small.addListener(onSize);
   $('keep').addEventListener('click', function () {
     $('scrim').hidden = true;
     // Pantry has shown the answer, so "Try again" deals the dish afresh; Kitchen lets you keep adjusting.

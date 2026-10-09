@@ -53,8 +53,12 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
 
 .top { display: flex; align-items: center; gap: 8px; }
 .top .spacer { flex: 1; }
-.names { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
-.names .dish { flex: 0 1 auto; min-width: 0; margin: 0; white-space: nowrap; overflow: hidden; }
+/* The title sits beside the round's progress when both fit; a long dish name pushes the progress
+   to a line of its own rather than being cut off. */
+.names { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.names .title { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; row-gap: 1px; }
+.names .dish { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.names .vessel-switch { flex: none; }
 .eyebrow { flex: none; white-space: nowrap; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
 .dish {
   font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.2; color: var(--chili);
@@ -194,6 +198,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   .chip { height: 46px; }
   .stage { min-height: 72px; }
   .scene[data-mode="pantry"] .dots { display: none; }
+  .names .dish { font-size: 19px; }
   .scene[data-mode="kitchen"] .brief { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
 .serve:disabled { background: var(--surface-strong); color: var(--ink-soft); }
@@ -302,9 +307,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px s
   <!-- Layout B, "stage" (PB-025): the dish, its brief and the round's progress live in the wok's panel. -->
   <section class="scene" id="scene">
     <div class="names">
-      <h1 class="dish" id="dish-name"></h1>
-      <span class="eyebrow" id="eyebrow">Sichuan · stand-in</span>
-      <span class="spacer"></span>
+      <div class="title">
+        <h1 class="dish" id="dish-name"></h1>
+        <span class="eyebrow" id="eyebrow">Sichuan · stand-in</span>
+      </div>
       <button class="vessel-switch" id="vessel-switch" hidden></button>
     </div>
     <p class="brief" id="brief"></p>

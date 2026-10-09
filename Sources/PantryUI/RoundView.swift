@@ -133,25 +133,42 @@ struct RoundView: View {
     }
 
     private var titleRow: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text(round.dish.name)
-                .font(.system(.title3, design: .rounded).weight(.semibold))
-                .foregroundStyle(PanelInk.chili)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityIdentifier("dish-name")
-            Text("\(model.library.cuisine.name) · \(progressLabel)".uppercased())
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(PanelInk.soft)
-                .lineLimit(1)
-                .accessibilityLabel("\(model.library.cuisine.name), round \(progressLabel)")
-                .accessibilityIdentifier("round-progress")
+        HStack(alignment: .top, spacing: 8) {
+            // Side by side when both fit; a long dish name puts the progress on its own line
+            // rather than being cut off.
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    dishName.lineLimit(1)
+                    progressText
+                }
+                VStack(alignment: .leading, spacing: 1) {
+                    dishName.lineLimit(2).minimumScaleFactor(0.8)
+                    progressText
+                }
+            }
             Spacer(minLength: 0)
             if let vessel = round.vessel {
                 vesselSwitch(vessel)
             }
         }
+    }
+
+    private var dishName: some View {
+        Text(round.dish.name)
+            .font(.system(.title3, design: .rounded).weight(.semibold))
+            .foregroundStyle(PanelInk.chili)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier("dish-name")
+    }
+
+    private var progressText: some View {
+        Text("\(model.library.cuisine.name) · \(progressLabel)".uppercased())
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(PanelInk.soft)
+            .lineLimit(1)
+            .fixedSize()
+            .accessibilityLabel("\(model.library.cuisine.name), round \(progressLabel)")
+            .accessibilityIdentifier("round-progress")
     }
 
     // MARK: Vessel (PD-035)

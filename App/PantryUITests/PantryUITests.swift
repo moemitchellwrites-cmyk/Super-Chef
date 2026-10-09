@@ -107,7 +107,7 @@ final class PantryUITests: XCTestCase {
         XCTAssertTrue(note.waitForExistence(timeout: 3), "holding an ingredient showed no note")
         XCTAssertTrue(note.label.hasPrefix("Doubanjiang."), note.label)
         XCTAssertEqual(app.otherElements["wok"].label, "Wok, empty")
-        XCTAssertEqual(chip("doubanjiang").label, "Doubanjiang")
+        XCTAssertEqual(chip("doubanjiang").label, "Doubanjiang (Pixian chili bean paste)")
 
         // Adding something puts the amount back where the note was.
         chip("garlic").tap()

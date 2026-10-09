@@ -1,0 +1,35 @@
+Building for debugging...
+[0/5] Write sources
+[3/5] Copying sichuan
+[4/5] Write swift-version--79AA4F9932D1E87A.txt
+[6/9] Emitting module PantryScoring
+[7/9] Compiling PantryScoring ContentLibrary.swift
+[8/9] Compiling PantryScoring Models.swift
+[9/9] Compiling PantryScoring Scorer.swift
+[10/10] Compiling PantryScoring resource_bundle_accessor.swift
+[11/17] Compiling PantryGame PlaceholderSynth.swift
+[12/17] Compiling PantryGame RecipeText.swift
+[13/17] Compiling PantryGame Round.swift
+[14/20] Emitting module PantryGame
+[15/20] Compiling PantryGame AmountLadder.swift
+[16/20] Compiling PantryGame JudgeLine.swift
+[17/20] Compiling PantryGame PantryRound.swift
+[18/20] Compiling PantryGame SeededGenerator.swift
+[19/20] Compiling PantryGame Session.swift
+[20/20] Compiling PantryGame SoundCue.swift
+[21/31] Compiling PantryUI CardView.swift
+[22/31] Compiling PantryUI PantryRootView.swift
+[23/31] Compiling PantryUI PantryRoundView.swift
+[24/31] Compiling PantryUI PantryRoundViewModel.swift
+[25/31] Compiling PantryUI PantryScoreSheet.swift
+[26/31] Emitting module PantryUI
+[27/31] Compiling PantryUI RecipeView.swift
+[28/31] Compiling PantryUI RoundHeader.swift
+[29/31] Compiling PantryUI RoundView.swift
+[30/31] Compiling PantryUI RoundViewModel.swift
+[31/31] Compiling PantryUI ScoreSheet.swift
+[32/35] Compiling PantryUI SessionController.swift
+[33/35] Compiling PantryUI SessionSummaryView.swift
+[34/35] Compiling PantryUI SoundPlayer.swift
+[35/35] Compiling PantryUI WokScene.swift
+Build complete! (36.66s)

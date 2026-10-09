@@ -1,0 +1,285 @@
+[0/1] Planning build
+Building for debugging...
+[0/8] Copying Fixtures
+[0/8] Write sources
+[0/8] /Users/runner/work/Super-Chef/Super-Chef/.build/arm64-apple-macosx/debug/PantryPackageTests.derived/runner.swift
+[0/8] Write sources
+[5/8] Write swift-version--79AA4F9932D1E87A.txt
+[7/19] Emitting module PantryScoringTests
+[8/19] Compiling PantryGameTests JudgeLineTests.swift
+[9/19] Compiling PantryGameTests PantryRoundTests.swift
+[10/19] Compiling PantryScoringTests ScorerTests.swift
+[11/20] Compiling PantryGameTests RecipeTextTests.swift
+[12/20] Compiling PantryGameTests RoundTests.swift
+[13/20] Compiling PantryGameTests SessionTests.swift
+[14/20] Emitting module PantryGameTests
+[17/20] Compiling PantryGameTests ParityTests.swift
+[18/22] Compiling PantryScoringTests resource_bundle_accessor.swift
+[19/22] Compiling PantryGameTests SoundTests.swift
+[20/22] Compiling PantryGameTests StepperReachabilityTests.swift
+[21/24] Compiling PantryPackageTests runner.swift
+[22/24] Emitting module PantryPackageTests
+[22/24] Write Objects.LinkFileList
+[23/24] Linking PantryPackageTests
+Build complete! (9.73s)
+Test Suite 'All tests' started at 2026-10-09 15:39:35.164.
+Test Suite 'PantryPackageTests.xctest' started at 2026-10-09 15:39:35.165.
+Test Suite 'ContentTests' started at 2026-10-09 15:39:35.165.
+Test Case '-[PantryScoringTests.ContentTests testDecoysComeFromNeighbouringCuisines]' started.
+Test Case '-[PantryScoringTests.ContentTests testDecoysComeFromNeighbouringCuisines]' passed (0.009 seconds).
+Test Case '-[PantryScoringTests.ContentTests testEveryDishEndsOnACardUnderSixtyWords]' started.
+Test Case '-[PantryScoringTests.ContentTests testEveryDishEndsOnACardUnderSixtyWords]' passed (0.003 seconds).
+Test Case '-[PantryScoringTests.ContentTests testEveryDishHasABriefThatDescribesThePlateAndNotTheRecipe]' started.
+Test Case '-[PantryScoringTests.ContentTests testEveryDishHasABriefThatDescribesThePlateAndNotTheRecipe]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.ContentTests testEveryDishHasARecipeThatScoresAsAGoodAttempt]' started.
+Test Case '-[PantryScoringTests.ContentTests testEveryDishHasARecipeThatScoresAsAGoodAttempt]' passed (0.003 seconds).
+Test Case '-[PantryScoringTests.ContentTests testEveryDishHasItsOwnSignatureEnvelopeAndSources]' started.
+Test Case '-[PantryScoringTests.ContentTests testEveryDishHasItsOwnSignatureEnvelopeAndSources]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ContentTests testEveryIngredientSaysWhatItIsWithoutSayingWhereItBelongs]' started.
+Test Case '-[PantryScoringTests.ContentTests testEveryIngredientSaysWhatItIsWithoutSayingWhereItBelongs]' passed (0.006 seconds).
+Test Case '-[PantryScoringTests.ContentTests testMissingCuisineThrows]' started.
+Test Case '-[PantryScoringTests.ContentTests testMissingCuisineThrows]' passed (0.000 seconds).
+Test Case '-[PantryScoringTests.ContentTests testSichuanContentLoads]' started.
+Test Case '-[PantryScoringTests.ContentTests testSichuanContentLoads]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ContentTests testSichuanContentValidates]' started.
+Test Case '-[PantryScoringTests.ContentTests testSichuanContentValidates]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesABrokenProfile]' started.
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesABrokenProfile]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesALongCardAndAMissingOne]' started.
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesALongCardAndAMissingOne]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesAMissingLongOrNumericBrief]' started.
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesAMissingLongOrNumericBrief]' passed (0.003 seconds).
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesAMissingOrLongAboutLine]' started.
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesAMissingOrLongAboutLine]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesARecipeThatContradictsItsProfile]' started.
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesARecipeThatContradictsItsProfile]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesLabelsTooLongForAChip]' started.
+Test Case '-[PantryScoringTests.ContentTests testValidationCatchesLabelsTooLongForAChip]' passed (0.005 seconds).
+Test Suite 'ContentTests' passed at 2026-10-09 15:39:35.223.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.057 (0.058) seconds
+Test Suite 'GoldenTests' started at 2026-10-09 15:39:35.223.
+Test Case '-[PantryScoringTests.GoldenTests testEveryDishHasGoodOffCuisineAndNeighborGoldens]' started.
+Test Case '-[PantryScoringTests.GoldenTests testEveryDishHasGoodOffCuisineAndNeighborGoldens]' passed (0.011 seconds).
+Test Case '-[PantryScoringTests.GoldenTests testEveryGoldenScoresInsideItsRange]' started.
+Test Case '-[PantryScoringTests.GoldenTests testEveryGoldenScoresInsideItsRange]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.GoldenTests testGoodAttemptsHaveNoMisses]' started.
+Test Case '-[PantryScoringTests.GoldenTests testGoodAttemptsHaveNoMisses]' passed (0.003 seconds).
+Test Case '-[PantryScoringTests.GoldenTests testGoodAttemptsUseOnlyPaletteIngredients]' started.
+Test Case '-[PantryScoringTests.GoldenTests testGoodAttemptsUseOnlyPaletteIngredients]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.GoldenTests testNeighborScoresAboveOffCuisineForTheSameDish]' started.
+Test Case '-[PantryScoringTests.GoldenTests testNeighborScoresAboveOffCuisineForTheSameDish]' passed (0.004 seconds).
+Test Case '-[PantryScoringTests.GoldenTests testWrongAmountsScoreBelowGoodAndNameTheRatios]' started.
+Test Case '-[PantryScoringTests.GoldenTests testWrongAmountsScoreBelowGoodAndNameTheRatios]' passed (0.002 seconds).
+Test Suite 'GoldenTests' passed at 2026-10-09 15:39:35.251.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.027 (0.028) seconds
+Test Suite 'JudgeLineTests' started at 2026-10-09 15:39:35.251.
+Test Case '-[PantryGameTests.JudgeLineTests testAGoodDishIsToldSo]' started.
+Test Case '-[PantryGameTests.JudgeLineTests testAGoodDishIsToldSo]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.JudgeLineTests testAMissingEssentialIsNamed]' started.
+Test Case '-[PantryGameTests.JudgeLineTests testAMissingEssentialIsNamed]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.JudgeLineTests testEveryLineIsOneShortSentenceOrTwo]' started.
+Test Case '-[PantryGameTests.JudgeLineTests testEveryLineIsOneShortSentenceOrTwo]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.JudgeLineTests testRatioLabelsSplitIntoTheirTwoSides]' started.
+Test Case '-[PantryGameTests.JudgeLineTests testRatioLabelsSplitIntoTheirTwoSides]' passed (0.000 seconds).
+Test Case '-[PantryGameTests.JudgeLineTests testSomethingThatDoesNotBelongComesFirst]' started.
+Test Case '-[PantryGameTests.JudgeLineTests testSomethingThatDoesNotBelongComesFirst]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.JudgeLineTests testTheWrongPanAndTheWrongMethodAreNamedWithTheRightOne]' started.
+Test Case '-[PantryGameTests.JudgeLineTests testTheWrongPanAndTheWrongMethodAreNamedWithTheRightOne]' passed (0.006 seconds).
+Test Suite 'JudgeLineTests' passed at 2026-10-09 15:39:35.269.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.018 (0.018) seconds
+Test Suite 'PantryRoundTests' started at 2026-10-09 15:39:35.269.
+Test Case '-[PantryGameTests.PantryRoundTests testAllEssentialsPlusSomethingWrongIsNotClean]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testAllEssentialsPlusSomethingWrongIsNotClean]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testAPerfectPantryIsClean]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testAPerfectPantryIsClean]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testAThirdAromaticAndOptionalIngredientsBelongButFillNothing]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testAThirdAromaticAndOptionalIngredientsBelongButFillNothing]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testEveryDishCanBeServedCleanWithinItsLimit]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testEveryDishCanBeServedCleanWithinItsLimit]' passed (0.012 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testMapoTofuHasSixEssentials]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testMapoTofuHasSixEssentials]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testMissedEssentialsAreNamedByTheirLabel]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testMissedEssentialsAreNamedByTheirLabel]' passed (0.001 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testOffCuisineAndForbiddenPicksAreWrong]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testOffCuisineAndForbiddenPicksAreWrong]' passed (0.001 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testPaletteIsShuffledFromTheSeed]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testPaletteIsShuffledFromTheSeed]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testRepeatsAndUnknownPicksAreIgnored]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testRepeatsAndUnknownPicksAreIgnored]' passed (0.001 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testTheRoundSaysWhatItAsksAndHowFarAlongItIs]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testTheRoundSaysWhatItAsksAndHowFarAlongItIs]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.PantryRoundTests testToggleAddsRemovesAndStopsAtTheLimit]' started.
+Test Case '-[PantryGameTests.PantryRoundTests testToggleAddsRemovesAndStopsAtTheLimit]' passed (0.002 seconds).
+Test Suite 'PantryRoundTests' passed at 2026-10-09 15:39:35.297.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.028 (0.028) seconds
+Test Suite 'ParityTests' started at 2026-10-09 15:39:35.297.
+Test Case '-[PantryGameTests.ParityTests testPantryVerdictsMatchTheSharedResultsExactly]' started.
+Test Case '-[PantryGameTests.ParityTests testPantryVerdictsMatchTheSharedResultsExactly]' passed (0.011 seconds).
+Test Case '-[PantryGameTests.ParityTests testScoringMatchesTheSharedResultsExactly]' started.
+Test Case '-[PantryGameTests.ParityTests testScoringMatchesTheSharedResultsExactly]' passed (0.008 seconds).
+Test Suite 'ParityTests' passed at 2026-10-09 15:39:35.315.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.018 (0.018) seconds
+Test Suite 'RecipeTextTests' started at 2026-10-09 15:39:35.315.
+Test Case '-[PantryGameTests.RecipeTextTests testAmountsReadLikeARecipe]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testAmountsReadLikeARecipe]' passed (0.000 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testARecipeReadsInThePlayersMeasures]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testARecipeReadsInThePlayersMeasures]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testEachSystemSpeaksOnlyItsOwnUnits]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testEachSystemSpeaksOnlyItsOwnUnits]' passed (0.004 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeAmountIsAStepOnThatIngredientsLadder]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeAmountIsAStepOnThatIngredientsLadder]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeLineInTheContentFormatsWithoutADecimal]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeLineInTheContentFormatsWithoutADecimal]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeMarksExactlyTheDishEssentials]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeMarksExactlyTheDishEssentials]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeStillCooksWellInEitherSystem]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testEveryRecipeStillCooksWellInEitherSystem]' passed (0.005 seconds).
+Test Case '-[PantryGameTests.RecipeTextTests testLinesNameTheIngredientAfterTheAmount]' started.
+Test Case '-[PantryGameTests.RecipeTextTests testLinesNameTheIngredientAfterTheAmount]' passed (0.002 seconds).
+Test Suite 'RecipeTextTests' passed at 2026-10-09 15:39:35.335.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.019 (0.019) seconds
+Test Suite 'RoundTests' started at 2026-10-09 15:39:35.335.
+Test Case '-[PantryGameTests.RoundTests testAddingTwiceKeepsOneEntryAndItsAmount]' started.
+Test Case '-[PantryGameTests.RoundTests testAddingTwiceKeepsOneEntryAndItsAmount]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testAddStartsAtOneOfTheDefaultUnitAndSelects]' started.
+Test Case '-[PantryGameTests.RoundTests testAddStartsAtOneOfTheDefaultUnitAndSelects]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testARoundStartsWithABareBurnerAndTakesNothingUntilAVesselIsChosen]' started.
+Test Case '-[PantryGameTests.RoundTests testARoundStartsWithABareBurnerAndTakesNothingUntilAVesselIsChosen]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testAttemptCarriesLinesVesselAndMethod]' started.
+Test Case '-[PantryGameTests.RoundTests testAttemptCarriesLinesVesselAndMethod]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testAWrongMethodCostsTechniquePoints]' started.
+Test Case '-[PantryGameTests.RoundTests testAWrongMethodCostsTechniquePoints]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testCannotServeWithoutIngredientsOrWithoutAMethod]' started.
+Test Case '-[PantryGameTests.RoundTests testCannotServeWithoutIngredientsOrWithoutAMethod]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testChipNamesAreShortDistinctAndDontNameACuisine]' started.
+Test Case '-[PantryGameTests.RoundTests testChipNamesAreShortDistinctAndDontNameACuisine]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testClearEmptiesTheRound]' started.
+Test Case '-[PantryGameTests.RoundTests testClearEmptiesTheRound]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testIngredientsOffThePaletteAreRefused]' started.
+Test Case '-[PantryGameTests.RoundTests testIngredientsOffThePaletteAreRefused]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testMethodChoicesAreTheMethodsTheCuisineUses]' started.
+Test Case '-[PantryGameTests.RoundTests testMethodChoicesAreTheMethodsTheCuisineUses]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testPaletteOffersEveryProfileIngredientOnce]' started.
+Test Case '-[PantryGameTests.RoundTests testPaletteOffersEveryProfileIngredientOnce]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testPaletteOrderIsShuffledButRepeatableFromTheSeed]' started.
+Test Case '-[PantryGameTests.RoundTests testPaletteOrderIsShuffledButRepeatableFromTheSeed]' passed (0.005 seconds).
+Test Case '-[PantryGameTests.RoundTests testPieceCountGrowsWithTheAmount]' started.
+Test Case '-[PantryGameTests.RoundTests testPieceCountGrowsWithTheAmount]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testRemoveMovesSelectionToTheLastThingAdded]' started.
+Test Case '-[PantryGameTests.RoundTests testRemoveMovesSelectionToTheLastThingAdded]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testSelectIgnoresIngredientsNotInTheWok]' started.
+Test Case '-[PantryGameTests.RoundTests testSelectIgnoresIngredientsNotInTheWok]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testStartingOverClearsTheVesselToo]' started.
+Test Case '-[PantryGameTests.RoundTests testStartingOverClearsTheVesselToo]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testStepClampsAtBothEndsOfTheLadder]' started.
+Test Case '-[PantryGameTests.RoundTests testStepClampsAtBothEndsOfTheLadder]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.RoundTests testSwappingTheVesselKeepsWhatIsInIt]' started.
+Test Case '-[PantryGameTests.RoundTests testSwappingTheVesselKeepsWhatIsInIt]' passed (0.002 seconds).
+Test Suite 'RoundTests' passed at 2026-10-09 15:39:35.371.
+	 Executed 18 tests, with 0 failures (0 unexpected) in 0.035 (0.036) seconds
+Test Suite 'ScorerTests' started at 2026-10-09 15:39:35.371.
+Test Case '-[PantryScoringTests.ScorerTests testACleanDishIsNeverCapped]' started.
+Test Case '-[PantryScoringTests.ScorerTests testACleanDishIsNeverCapped]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testAddingAnOffCuisineIngredientNeverRaisesTheScore]' started.
+Test Case '-[PantryScoringTests.ScorerTests testAddingAnOffCuisineIngredientNeverRaisesTheScore]' passed (0.004 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testALowScoringDishWithAWrongIngredientIsNotCapped]' started.
+Test Case '-[PantryScoringTests.ScorerTests testALowScoringDishWithAWrongIngredientIsNotCapped]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testAnythingThatDoesNotBelongKeepsADishOutOfGood]' started.
+Test Case '-[PantryScoringTests.ScorerTests testAnythingThatDoesNotBelongKeepsADishOutOfGood]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testAPinchOfDecoyCostsLessThanACup]' started.
+Test Case '-[PantryScoringTests.ScorerTests testAPinchOfDecoyCostsLessThanACup]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testBandCreditIsFullInsideAndSymmetricOutside]' started.
+Test Case '-[PantryScoringTests.ScorerTests testBandCreditIsFullInsideAndSymmetricOutside]' passed (0.004 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testBreakdownRoundTripsThroughJSON]' started.
+Test Case '-[PantryScoringTests.ScorerTests testBreakdownRoundTripsThroughJSON]' passed (0.006 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testEmptyAttemptScoresLowAndListsEveryRequirement]' started.
+Test Case '-[PantryScoringTests.ScorerTests testEmptyAttemptScoresLowAndListsEveryRequirement]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testMildlyOverSaucingKeepsFullCoverage]' started.
+Test Case '-[PantryScoringTests.ScorerTests testMildlyOverSaucingKeepsFullCoverage]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testOverSaucingFlagsTheRatioAsHigh]' started.
+Test Case '-[PantryScoringTests.ScorerTests testOverSaucingFlagsTheRatioAsHigh]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testPatternIsStableAndCarriesTheMissCodes]' started.
+Test Case '-[PantryScoringTests.ScorerTests testPatternIsStableAndCarriesTheMissCodes]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testRemovingTheDefiningIngredientCostsMoreThanAGarnish]' started.
+Test Case '-[PantryScoringTests.ScorerTests testRemovingTheDefiningIngredientCostsMoreThanAGarnish]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testScoreIsInvariantToScalingEveryAmount]' started.
+Test Case '-[PantryScoringTests.ScorerTests testScoreIsInvariantToScalingEveryAmount]' passed (0.003 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testScoringIsDeterministic]' started.
+Test Case '-[PantryScoringTests.ScorerTests testScoringIsDeterministic]' passed (0.005 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testSplittingOneIngredientAcrossTwoLinesChangesNothing]' started.
+Test Case '-[PantryScoringTests.ScorerTests testSplittingOneIngredientAcrossTwoLinesChangesNothing]' passed (0.003 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testTheCeilingFallsAsTheWrongIngredientTakesOverTheDish]' started.
+Test Case '-[PantryScoringTests.ScorerTests testTheCeilingFallsAsTheWrongIngredientTakesOverTheDish]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testUnknownIngredientIsReportedNotFatal]' started.
+Test Case '-[PantryScoringTests.ScorerTests testUnknownIngredientIsReportedNotFatal]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testVolumeUnitOnWeightOnlyIngredientIsUnmeasurable]' started.
+Test Case '-[PantryScoringTests.ScorerTests testVolumeUnitOnWeightOnlyIngredientIsUnmeasurable]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testVolumeUnitsConvertThroughGramsPerTeaspoon]' started.
+Test Case '-[PantryScoringTests.ScorerTests testVolumeUnitsConvertThroughGramsPerTeaspoon]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testWithoutAMethodTheVesselCarriesAllTechniquePoints]' started.
+Test Case '-[PantryScoringTests.ScorerTests testWithoutAMethodTheVesselCarriesAllTechniquePoints]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testWrongMethodLosesOnlyTheMethodPoints]' started.
+Test Case '-[PantryScoringTests.ScorerTests testWrongMethodLosesOnlyTheMethodPoints]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testWrongVesselLosesTechniquePoints]' started.
+Test Case '-[PantryScoringTests.ScorerTests testWrongVesselLosesTechniquePoints]' passed (0.002 seconds).
+Test Case '-[PantryScoringTests.ScorerTests testZeroAmountLinesAreIgnored]' started.
+Test Case '-[PantryScoringTests.ScorerTests testZeroAmountLinesAreIgnored]' passed (0.002 seconds).
+Test Suite 'ScorerTests' passed at 2026-10-09 15:39:35.430.
+	 Executed 23 tests, with 0 failures (0 unexpected) in 0.058 (0.060) seconds
+Test Suite 'SessionTests' started at 2026-10-09 15:39:35.430.
+Test Case '-[PantryGameTests.SessionTests testAPantrySummaryCountsEssentialsAndNeverNamesAPerfectRoundToRevisit]' started.
+Test Case '-[PantryGameTests.SessionTests testAPantrySummaryCountsEssentialsAndNeverNamesAPerfectRoundToRevisit]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.SessionTests testASessionCanOpenOnANamedDish]' started.
+Test Case '-[PantryGameTests.SessionTests testASessionCanOpenOnANamedDish]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.SessionTests testASessionDealsFiveDifferentDishes]' started.
+Test Case '-[PantryGameTests.SessionTests testASessionDealsFiveDifferentDishes]' passed (0.005 seconds).
+Test Case '-[PantryGameTests.SessionTests testOnlyTheFirstServeOfARoundCounts]' started.
+Test Case '-[PantryGameTests.SessionTests testOnlyTheFirstServeOfARoundCounts]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.SessionTests testProgressFilesFinishedSessionsAndRemembersTheBest]' started.
+Test Case '-[PantryGameTests.SessionTests testProgressFilesFinishedSessionsAndRemembersTheBest]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.SessionTests testProgressSurvivesTheFileAndABrokenFileIsAnEmptyStart]' started.
+Test Case '-[PantryGameTests.SessionTests testProgressSurvivesTheFileAndABrokenFileIsAnEmptyStart]' passed (0.006 seconds).
+Test Case '-[PantryGameTests.SessionTests testRecordingFiveRoundsCompletesTheSession]' started.
+Test Case '-[PantryGameTests.SessionTests testRecordingFiveRoundsCompletesTheSession]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.SessionTests testTheNextSessionBringsTheOtherFiveDishes]' started.
+Test Case '-[PantryGameTests.SessionTests testTheNextSessionBringsTheOtherFiveDishes]' passed (0.002 seconds).
+Test Suite 'SessionTests' passed at 2026-10-09 15:39:35.455.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.024 (0.025) seconds
+Test Suite 'SoundTests' started at 2026-10-09 15:39:35.455.
+Test Case '-[PantryGameTests.SoundTests testEveryCueHasAVisualTwin]' started.
+Test Case '-[PantryGameTests.SoundTests testEveryCueHasAVisualTwin]' passed (0.000 seconds).
+Test Case '-[PantryGameTests.SoundTests testEveryIconInTheContentHasPlaceholderArt]' started.
+Test Case '-[PantryGameTests.SoundTests testEveryIconInTheContentHasPlaceholderArt]' passed (0.003 seconds).
+Test Case '-[PantryGameTests.SoundTests testEveryIngredientNamesACueTheGameKnows]' started.
+Test Case '-[PantryGameTests.SoundTests testEveryIngredientNamesACueTheGameKnows]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.SoundTests testPlaceholderSoundsAreDeterministicAndDistinct]' started.
+Test Case '-[PantryGameTests.SoundTests testPlaceholderSoundsAreDeterministicAndDistinct]' passed (0.105 seconds).
+Test Case '-[PantryGameTests.SoundTests testPlaceholderSoundsAreShortAudibleAndBounded]' started.
+Test Case '-[PantryGameTests.SoundTests testPlaceholderSoundsAreShortAudibleAndBounded]' passed (0.079 seconds).
+Test Case '-[PantryGameTests.SoundTests testSeededGeneratorRepeats]' started.
+Test Case '-[PantryGameTests.SoundTests testSeededGeneratorRepeats]' passed (0.001 seconds).
+Test Case '-[PantryGameTests.SoundTests testUnknownCueFallsBackToClatter]' started.
+Test Case '-[PantryGameTests.SoundTests testUnknownCueFallsBackToClatter]' passed (0.000 seconds).
+Test Suite 'SoundTests' passed at 2026-10-09 15:39:35.646.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.190 (0.191) seconds
+Test Suite 'StepperReachabilityTests' started at 2026-10-09 15:39:35.646.
+Test Case '-[PantryGameTests.StepperReachabilityTests testEveryGoodGoldenIsReachableOnTheStepper]' started.
+Test Case '-[PantryGameTests.StepperReachabilityTests testEveryGoodGoldenIsReachableOnTheStepper]' passed (0.013 seconds).
+Test Case '-[PantryGameTests.StepperReachabilityTests testLaddersAreStrictlyIncreasingByWeight]' started.
+Test Case '-[PantryGameTests.StepperReachabilityTests testLaddersAreStrictlyIncreasingByWeight]' passed (0.006 seconds).
+Test Case '-[PantryGameTests.StepperReachabilityTests testStartingAmountIsOneOfTheDefaultUnit]' started.
+Test Case '-[PantryGameTests.StepperReachabilityTests testStartingAmountIsOneOfTheDefaultUnit]' passed (0.002 seconds).
+Test Case '-[PantryGameTests.StepperReachabilityTests testTheWokAloneCostsAtMostTheVesselPoints]' started.
+Test Case '-[PantryGameTests.StepperReachabilityTests testTheWokAloneCostsAtMostTheVesselPoints]' passed (0.008 seconds).
+Test Case '-[PantryGameTests.StepperReachabilityTests testVolumeLadderUsesEveryUnitFromTheBrief]' started.
+Test Case '-[PantryGameTests.StepperReachabilityTests testVolumeLadderUsesEveryUnitFromTheBrief]' passed (0.000 seconds).
+Test Suite 'StepperReachabilityTests' passed at 2026-10-09 15:39:35.675.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.028 (0.029) seconds
+Test Suite 'PantryPackageTests.xctest' passed at 2026-10-09 15:39:35.675.
+	 Executed 109 tests, with 0 failures (0 unexpected) in 0.504 (0.510) seconds
+Test Suite 'All tests' passed at 2026-10-09 15:39:35.675.
+	 Executed 109 tests, with 0 failures (0 unexpected) in 0.504 (0.511) seconds
+◇ Test run started.
+↳ Testing Library Version: 124.4
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests passed after 0.001 seconds.

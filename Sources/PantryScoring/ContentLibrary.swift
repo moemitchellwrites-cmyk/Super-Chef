@@ -11,11 +11,18 @@ public struct ContentLibrary: Sendable {
     public let cuisine: Cuisine
     public let ingredients: [Ingredient]
     public let dishes: [DishProfile]
+    public let cards: [Card]
 
-    public init(cuisine: Cuisine, ingredients: [Ingredient], dishes: [DishProfile]) {
+    public init(cuisine: Cuisine, ingredients: [Ingredient], dishes: [DishProfile], cards: [Card] = []) {
         self.cuisine = cuisine
         self.ingredients = ingredients
         self.dishes = dishes
+        self.cards = cards
+    }
+
+    struct CardsFile: Codable {
+        var schemaVersion: Int
+        var cards: [Card]
     }
 
     struct IngredientsFile: Codable {
@@ -44,8 +51,21 @@ public struct ContentLibrary: Sendable {
         let cuisine = try decoder.decode(Cuisine.self, from: data("cuisine"))
         let ingredients = try decoder.decode(IngredientsFile.self, from: data("ingredients")).ingredients
         let dishes = try decoder.decode(DishesFile.self, from: data("dishes")).dishes
-        return ContentLibrary(cuisine: cuisine, ingredients: ingredients, dishes: dishes)
+        let cards = try decoder.decode(CardsFile.self, from: data("cards")).cards
+        return ContentLibrary(cuisine: cuisine, ingredients: ingredients, dishes: dishes, cards: cards)
     }
+
+    /// The longest label a palette chip can show on two lines.
+    public static let shortNameLimit = 22
+
+    /// The longest ingredient note: three short lines on a phone.
+    public static let aboutLimit = 110
+
+    /// The longest recipe step: about three lines on a phone.
+    public static let recipeStepLimit = 190
+
+    /// The longest dish brief: two lines under the dish name on a phone.
+    public static let briefLimit = 120
 
     public func dish(id: String) -> DishProfile? {
         dishes.first { $0.id == id }
@@ -54,6 +74,18 @@ public struct ContentLibrary: Sendable {
     public func ingredient(id: String) -> Ingredient? {
         ingredients.first { $0.id == id }
     }
+
+    public func card(id: String) -> Card? {
+        cards.first { $0.id == id }
+    }
+
+    /// The card a round of this dish ends on.
+    public func card(for dish: DishProfile) -> Card? {
+        card(id: dish.cardId)
+    }
+
+    /// A card must stay under this many words (brief: "under 60 words").
+    public static let cardWordLimit = 60
 
     public var scorer: Scorer {
         Scorer(cuisine: cuisine, ingredients: ingredients)
@@ -69,6 +101,24 @@ public struct ContentLibrary: Sendable {
     /// Returns one line per problem; empty means the content is sound.
     public func validate() -> [String] {
         var problems: [String] = []
+        if Set(cards.map(\.id)).count != cards.count {
+            problems.append("duplicate card ids")
+        }
+        for card in cards {
+            if card.wordCount >= ContentLibrary.cardWordLimit {
+                problems.append("\(card.id): \(card.wordCount) words, want under \(ContentLibrary.cardWordLimit)")
+            }
+            if card.title.isEmpty || card.rule.isEmpty || card.tryTonight.isEmpty {
+                problems.append("\(card.id): needs a title, a rule and something to try tonight")
+            }
+            let sentences = card.body.split(whereSeparator: { ".!?".contains($0) }).filter { !$0.allSatisfy(\.isWhitespace) }.count
+            if !(2...4).contains(sentences) {
+                problems.append("\(card.id): body has \(sentences) sentences, want two to four")
+            }
+            if !dishes.contains(where: { $0.cardId == card.id }) {
+                problems.append("\(card.id): no dish uses this card")
+            }
+        }
         let ingredientIds = Set(ingredients.map(\.id))
         let families = Set(ingredients.map(\.family))
         let offCuisine = Set(cuisine.offCuisineFamilies)
@@ -82,6 +132,18 @@ public struct ContentLibrary: Sendable {
             }
             if let perTeaspoon = ingredient.gramsPerTeaspoon, perTeaspoon <= 0 {
                 problems.append("\(ingredient.id): gramsPerTeaspoon must be positive")
+            }
+            if let shortName = ingredient.shortName, shortName.isEmpty || shortName.count > ContentLibrary.shortNameLimit {
+                problems.append("\(ingredient.id): shortName must be 1 to \(ContentLibrary.shortNameLimit) characters")
+            }
+            if ingredient.shortName == nil && ingredient.name.count > ContentLibrary.shortNameLimit {
+                problems.append("\(ingredient.id): name is over \(ContentLibrary.shortNameLimit) characters and has no shortName")
+            }
+            let about = ingredient.about ?? ""
+            if about.isEmpty {
+                problems.append("\(ingredient.id): no about line")
+            } else if about.count > ContentLibrary.aboutLimit {
+                problems.append("\(ingredient.id): about line is over \(ContentLibrary.aboutLimit) characters")
             }
             for axis in FlavorAxis.allCases where ingredient.potency[axis] < 0 {
                 problems.append("\(ingredient.id): negative potency on \(axis.rawValue)")
@@ -151,7 +213,35 @@ public struct ContentLibrary: Sendable {
                     }
                 }
             }
-            if dish.cardId.isEmpty { problems.append("\(tag): no cardId") }
+            let brief = dish.brief ?? ""
+            if brief.isEmpty {
+                problems.append("\(tag): no brief")
+            } else if brief.count > ContentLibrary.briefLimit {
+                problems.append("\(tag): brief is over \(ContentLibrary.briefLimit) characters")
+            }
+            if brief.contains(where: \.isNumber) { problems.append("\(tag): brief gives a number") }
+            if let recipe = dish.recipe {
+                if recipe.serves < 1 { problems.append("\(tag): recipe serves nobody") }
+                if !(3...7).contains(recipe.steps.count) { problems.append("\(tag): recipe has \(recipe.steps.count) steps, want 3 to 7") }
+                for step in recipe.steps where step.isEmpty || step.count > ContentLibrary.recipeStepLimit {
+                    problems.append("\(tag): a recipe step is empty or over \(ContentLibrary.recipeStepLimit) characters")
+                }
+                for line in recipe.lines where !dish.palette.contains(line.ingredientId) {
+                    problems.append("\(tag): recipe uses \(line.ingredientId), which is not on the palette")
+                }
+                // The recipe is the answer the game teaches toward, so it must be a good attempt at its own dish.
+                let breakdown = scorer.score(recipe.attempt(dishId: dish.id), against: dish)
+                if breakdown.total < 85 || !breakdown.misses.isEmpty {
+                    problems.append("\(tag): its own recipe scores \(breakdown.total) with misses \(breakdown.misses.map(\.code))")
+                }
+            } else {
+                problems.append("\(tag): no recipe")
+            }
+            if dish.cardId.isEmpty {
+                problems.append("\(tag): no cardId")
+            } else if card(id: dish.cardId) == nil {
+                problems.append("\(tag): card \(dish.cardId) is not in cards.json")
+            }
             if (dish.notes ?? "").isEmpty { problems.append("\(tag): no source notes") }
         }
         return problems

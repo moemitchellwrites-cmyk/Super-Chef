@@ -1,0 +1,4338 @@
+{
+ "schemaVersion": 1,
+ "scoring": [
+  {
+   "id": "mapo-tofu.good",
+   "dishId": "mapo-tofu",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's mapo tofu. Nothing to fix."
+   }
+  },
+  {
+   "id": "mapo-tofu.off",
+   "dishId": "mapo-tofu",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cream",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 60,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "black-pepper",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 17,
+    "coverage": 0,
+    "ratioFit": 4.3,
+    "signature": 9,
+    "technique": 4,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "missingRequired:Sichuan peppercorn",
+     "partialRequired:aromatics",
+     "missingRequired:chili heat",
+     "offCuisine:cream",
+     "offCuisine:parmesan",
+     "offCuisine:basil",
+     "offCuisine:butter",
+     "ratioUndefined:doubanjiang to tofu",
+     "ratioUndefined:Sichuan peppercorn to tofu",
+     "ratioLow:aromatics to tofu",
+     "ratioUndefined:liquid to tofu",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "wrongVessel:pan"
+    ],
+    "line": "The cream came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "mapo-tofu.neighbor",
+   "dishId": "mapo-tofu",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "duojiao",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 37,
+    "coverage": 0.6,
+    "ratioFit": 15,
+    "signature": 11.8,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:chili heat",
+     "offCuisine:duojiao",
+     "ratioUndefined:doubanjiang to tofu",
+     "ratioUndefined:Sichuan peppercorn to tofu",
+     "signatureLow:heat",
+     "signatureLow:numbing"
+    ],
+    "line": "The chopped salted chilies came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "mapo-tofu.overSauced",
+   "dishId": "mapo-tofu",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 225,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 40,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 77,
+    "coverage": 25.5,
+    "ratioFit": 30,
+    "signature": 11.9,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "wrongAmount:doubanjiang",
+     "ratioHigh:doubanjiang to tofu",
+     "signatureLow:numbing",
+     "signatureHigh:sweet"
+    ],
+    "line": "There's doubanjiang in it, but the amount is far off."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.good",
+   "dishId": "kung-pao-chicken",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 350,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 70,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dark-soy",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "water",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's kung pao chicken. Nothing to fix."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.off",
+   "dishId": "kung-pao-chicken",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 350,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "fish-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "coconut-milk",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ketchup",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 15,
+    "coverage": 0,
+    "ratioFit": 1.5,
+    "signature": 3,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:peanuts",
+     "partialRequired:aromatics",
+     "missingRequired:black vinegar",
+     "offCuisine:fish-sauce",
+     "offCuisine:lime",
+     "offCuisine:basil",
+     "offCuisine:coconut-milk",
+     "offCuisine:ketchup",
+     "ratioUndefined:peanuts to chicken",
+     "ratioUndefined:dried chilies to chicken",
+     "ratioUndefined:sugar to vinegar (the litchi balance)",
+     "ratioUndefined:Sichuan peppercorn to chicken",
+     "ratioLow:aromatics to chicken",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureHigh:acid",
+     "signatureHigh:umami",
+     "signatureHigh:sweet"
+    ],
+    "line": "The fish sauce came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.neighbor",
+   "dishId": "kung-pao-chicken",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 350,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 70,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 6,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "hoisin",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "water",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 49,
+    "coverage": 13.3,
+    "ratioFit": 17.9,
+    "signature": 7.8,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:black vinegar",
+     "offCuisine:hoisin",
+     "ratioLow:dried chilies to chicken",
+     "ratioUndefined:sugar to vinegar (the litchi balance)",
+     "ratioUndefined:Sichuan peppercorn to chicken",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureLow:acid",
+     "signatureHigh:sweet"
+    ],
+    "line": "The hoisin sauce came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.good",
+   "dishId": "yuxiang-eggplant",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "eggplant",
+     "amount": 500,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "pickled-chili",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 1.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's fish-fragrant eggplant. Nothing to fix."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.off",
+   "dishId": "yuxiang-eggplant",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "eggplant",
+     "amount": 500,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "tomato",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 26,
+    "coverage": 1.3,
+    "ratioFit": 9,
+    "signature": 11.5,
+    "technique": 4,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:pickled chili or bean paste",
+     "partialRequired:garlic, ginger and scallion",
+     "missingRequired:black vinegar",
+     "offCuisine:basil",
+     "offCuisine:parmesan",
+     "ratioLow:aromatics to eggplant",
+     "ratioUndefined:sugar to vinegar",
+     "ratioUndefined:pickled chili to eggplant",
+     "signatureLow:heat",
+     "signatureHigh:umami",
+     "signatureLow:sweet",
+     "wrongVessel:pan"
+    ],
+    "line": "The basil came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.neighbor",
+   "dishId": "yuxiang-eggplant",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "eggplant",
+     "amount": 500,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "white-fish",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 50,
+    "coverage": 5.9,
+    "ratioFit": 27,
+    "signature": 6.8,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:sugar",
+     "missingRequired:black vinegar",
+     "forbiddenForDish:white-fish",
+     "forbiddenForDish:sichuan-peppercorn-ground",
+     "ratioUndefined:sugar to vinegar",
+     "signatureHigh:numbing",
+     "signatureLow:acid",
+     "signatureHigh:umami",
+     "signatureLow:sweet"
+    ],
+    "line": "No white fish in fish-fragrant eggplant. Start by leaving that out."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.good",
+   "dishId": "dan-dan-noodles",
+   "vessel": "pot",
+   "method": "boil",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 120,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "yacai",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-oil",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's dan dan noodles. Nothing to fix."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.off",
+   "dishId": "dan-dan-noodles",
+   "vessel": "pot",
+   "method": "boil",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "miso",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "mirin",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 20,
+    "coverage": 0,
+    "ratioFit": 0,
+    "signature": 9.8,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:chili oil",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:ground pork",
+     "missingRequired:preserved vegetable",
+     "missingRequired:soy sauce",
+     "offCuisine:miso",
+     "offCuisine:mirin",
+     "offCuisine:butter",
+     "ratioUndefined:chili oil to noodles",
+     "ratioUndefined:pork to noodles",
+     "ratioUndefined:Sichuan peppercorn to noodles",
+     "ratioUndefined:soy sauce to noodles",
+     "signatureLow:heat",
+     "signatureLow:numbing"
+    ],
+    "line": "The miso came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.neighbor",
+   "dishId": "dan-dan-noodles",
+   "vessel": "pot",
+   "method": "boil",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cucumber",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "water",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 41,
+    "coverage": 12.5,
+    "ratioFit": 9,
+    "signature": 9.8,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:chili oil",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:ground pork",
+     "missingRequired:preserved vegetable",
+     "ratioUndefined:chili oil to noodles",
+     "ratioUndefined:pork to noodles",
+     "ratioUndefined:Sichuan peppercorn to noodles",
+     "signatureLow:heat",
+     "signatureLow:numbing"
+    ],
+    "line": "It isn't dan dan noodles without chili oil."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.good",
+   "dishId": "twice-cooked-pork",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "pork-belly",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sweet-bean-sauce",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "leek",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dark-soy",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's twice-cooked pork. Nothing to fix."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.off",
+   "dishId": "twice-cooked-pork",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "pork-belly",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "gochujang",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "mirin",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 16,
+    "coverage": 0,
+    "ratioFit": 0,
+    "signature": 12,
+    "technique": 4,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "missingRequired:leek or green garlic",
+     "missingRequired:sweet bean sauce",
+     "offCuisine:gochujang",
+     "offCuisine:mirin",
+     "ratioUndefined:doubanjiang to pork",
+     "ratioUndefined:leek to pork",
+     "ratioUndefined:sweet bean sauce to pork",
+     "signatureHigh:sweet",
+     "wrongVessel:pan"
+    ],
+    "line": "The gochujang came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.neighbor",
+   "dishId": "twice-cooked-pork",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "pork-belly",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "duojiao",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "leek",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 60,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 36,
+    "coverage": 0,
+    "ratioFit": 11.3,
+    "signature": 14.3,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "missingRequired:sweet bean sauce",
+     "offCuisine:duojiao",
+     "forbiddenForDish:cornstarch",
+     "forbiddenForDish:stock",
+     "ratioUndefined:doubanjiang to pork",
+     "ratioUndefined:sweet bean sauce to pork",
+     "signatureLow:sweet"
+    ],
+    "line": "The chopped salted chilies came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.good",
+   "dishId": "dry-fried-green-beans",
+   "vessel": "wok",
+   "method": "dry-fry",
+   "lines": [
+    {
+     "ingredientId": "green-beans",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "yacai",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 1.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 0.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 60,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's dry-fried green beans. Nothing to fix."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.off",
+   "dishId": "dry-fried-green-beans",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "green-beans",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "black-pepper",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 13,
+    "coverage": 0,
+    "ratioFit": 0,
+    "signature": 9.2,
+    "technique": 4,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:yacai",
+     "partialRequired:aromatics",
+     "offCuisine:butter",
+     "offCuisine:parmesan",
+     "offCuisine:lime",
+     "ratioUndefined:oil to beans",
+     "ratioUndefined:dried chilies to beans",
+     "ratioUndefined:Sichuan peppercorn to beans",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureHigh:acid",
+     "wrongVessel:pan"
+    ],
+    "line": "The butter came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.neighbor",
+   "dishId": "dry-fried-green-beans",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "green-beans",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 80,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "oyster-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 27,
+    "coverage": 0,
+    "ratioFit": 7.3,
+    "signature": 9.5,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:yacai",
+     "offCuisine:oyster-sauce",
+     "forbiddenForDish:stock",
+     "forbiddenForDish:cornstarch",
+     "ratioLow:oil to beans",
+     "ratioUndefined:dried chilies to beans",
+     "ratioUndefined:Sichuan peppercorn to beans",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureHigh:umami",
+     "signatureHigh:sweet"
+    ],
+    "line": "The oyster sauce came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "shuizhu-fish.good",
+   "dishId": "shuizhu-fish",
+   "vessel": "wok",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "white-fish",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "bean-sprouts",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 25,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 600,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "egg-white",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's fish in chili oil broth. Nothing to fix."
+   }
+  },
+  {
+   "id": "shuizhu-fish.off",
+   "dishId": "shuizhu-fish",
+   "vessel": "pot",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "white-fish",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "coconut-milk",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "lemongrass",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "fish-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "curry-powder",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 13,
+    "coverage": 0,
+    "ratioFit": 0,
+    "signature": 3,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:vegetable bed",
+     "partialRequired:aromatics",
+     "missingRequired:liquid",
+     "missingRequired:oil",
+     "offCuisine:coconut-milk",
+     "offCuisine:lemongrass",
+     "offCuisine:fish-sauce",
+     "offCuisine:lime",
+     "offCuisine:curry-powder",
+     "offCuisine:basil",
+     "ratioUndefined:doubanjiang to fish",
+     "ratioUndefined:dried chilies to fish",
+     "ratioUndefined:Sichuan peppercorn to fish",
+     "ratioUndefined:liquid to fish",
+     "ratioUndefined:oil to fish",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureHigh:acid",
+     "signatureHigh:sweet"
+    ],
+    "line": "The coconut milk came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "shuizhu-fish.neighbor",
+   "dishId": "shuizhu-fish",
+   "vessel": "pot",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "white-fish",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "napa-cabbage",
+     "amount": 200,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 600,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "white-pepper",
+     "amount": 0.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 42,
+    "coverage": 15,
+    "ratioFit": 7.5,
+    "signature": 9,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "wrongAmount:oil",
+     "ratioUndefined:doubanjiang to fish",
+     "ratioUndefined:dried chilies to fish",
+     "ratioUndefined:Sichuan peppercorn to fish",
+     "ratioLow:oil to fish",
+     "signatureLow:heat",
+     "signatureLow:numbing"
+    ],
+    "line": "It isn't fish in chili oil broth without doubanjiang."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.good",
+   "dishId": "kou-shui-chicken",
+   "vessel": "pot",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "chili-oil",
+     "amount": 4,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 1.5,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "black-vinegar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 12,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "peanuts",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's mouth-watering chicken. Nothing to fix."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.off",
+   "dishId": "kou-shui-chicken",
+   "vessel": "pot",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "fish-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lemongrass",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 27,
+    "coverage": 0,
+    "ratioFit": 9,
+    "signature": 7.9,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:chili oil",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:soy sauce",
+     "missingRequired:black vinegar",
+     "partialRequired:aromatics",
+     "offCuisine:fish-sauce",
+     "offCuisine:lime",
+     "offCuisine:lemongrass",
+     "offCuisine:basil",
+     "ratioUndefined:chili oil to chicken",
+     "ratioUndefined:vinegar to soy",
+     "ratioUndefined:Sichuan peppercorn to chicken",
+     "signatureLow:numbing",
+     "signatureHigh:acid",
+     "signatureHigh:umami",
+     "signatureHigh:sweet"
+    ],
+    "line": "The fish sauce came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.neighbor",
+   "dishId": "kou-shui-chicken",
+   "vessel": "pot",
+   "method": "poach",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "hoisin",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 12,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cucumber",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-oil",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 32,
+    "coverage": 8,
+    "ratioFit": 9,
+    "signature": 5.4,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:chili oil",
+     "missingRequired:Sichuan peppercorn",
+     "missingRequired:black vinegar",
+     "offCuisine:hoisin",
+     "ratioUndefined:chili oil to chicken",
+     "ratioUndefined:vinegar to soy",
+     "ratioUndefined:Sichuan peppercorn to chicken",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureLow:acid",
+     "signatureHigh:umami",
+     "signatureHigh:sweet"
+    ],
+    "line": "The hoisin sauce came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "laziji.good",
+   "dishId": "laziji",
+   "vessel": "wok",
+   "method": "deep-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "dried-chilies",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-whole",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-seeds",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's Chongqing chili chicken. Nothing to fix."
+   }
+  },
+  {
+   "id": "laziji.off",
+   "dishId": "laziji",
+   "vessel": "baking-dish",
+   "method": "bake",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "curry-powder",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ketchup",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "lime",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 30,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 3,
+    "coverage": 0,
+    "ratioFit": 0,
+    "signature": 3.3,
+    "technique": 0,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "partialRequired:aromatics",
+     "missingRequired:oil",
+     "offCuisine:curry-powder",
+     "offCuisine:ketchup",
+     "offCuisine:lime",
+     "offCuisine:butter",
+     "ratioUndefined:dried chilies to chicken",
+     "ratioUndefined:Sichuan peppercorn to chicken",
+     "ratioUndefined:oil to chicken",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureHigh:acid",
+     "signatureHigh:sweet",
+     "wrongMethod:bake",
+     "wrongVessel:baking-dish"
+    ],
+    "line": "The curry powder came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "laziji.neighbor",
+   "dishId": "laziji",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "chicken-thigh",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "gochujang",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 40,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "sesame-seeds",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 33,
+    "coverage": 3.4,
+    "ratioFit": 11.3,
+    "signature": 8.1,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:dried chilies",
+     "missingRequired:Sichuan peppercorn",
+     "offCuisine:gochujang",
+     "ratioUndefined:dried chilies to chicken",
+     "ratioUndefined:Sichuan peppercorn to chicken",
+     "signatureLow:heat",
+     "signatureLow:numbing",
+     "signatureHigh:umami",
+     "signatureHigh:sweet"
+    ],
+    "line": "The gochujang came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.good",
+   "dishId": "ants-climbing-a-tree",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "glass-noodles",
+     "amount": 120,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "dark-soy",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "shaoxing",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 0.5,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 100,
+    "coverage": 30,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [],
+    "line": "That's ants climbing a tree. Nothing to fix."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.off",
+   "dishId": "ants-climbing-a-tree",
+   "vessel": "pan",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "wheat-noodles",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cream",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "parmesan",
+     "amount": 50,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "butter",
+     "amount": 20,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "black-pepper",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "salt",
+     "amount": 1,
+     "unit": "tsp"
+    }
+   ],
+   "expect": {
+    "total": 17,
+    "coverage": 0,
+    "ratioFit": 0,
+    "signature": 12.9,
+    "technique": 4,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:glass noodles",
+     "missingRequired:doubanjiang",
+     "partialRequired:aromatics",
+     "missingRequired:liquid",
+     "forbiddenForDish:wheat-noodles",
+     "offCuisine:cream",
+     "offCuisine:parmesan",
+     "offCuisine:butter",
+     "ratioUndefined:pork to glass noodles",
+     "ratioUndefined:doubanjiang to glass noodles",
+     "ratioUndefined:liquid to glass noodles",
+     "signatureLow:heat",
+     "wrongVessel:pan"
+    ],
+    "line": "The cream came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.neighbor",
+   "dishId": "ants-climbing-a-tree",
+   "vessel": "wok",
+   "method": "stir-fry",
+   "lines": [
+    {
+     "ingredientId": "glass-noodles",
+     "amount": 120,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "oyster-sauce",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 10,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 8,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 15,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 300,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 1.5,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 56,
+    "coverage": 12,
+    "ratioFit": 22.5,
+    "signature": 11.7,
+    "technique": 10,
+    "cappedAt": null,
+    "misses": [
+     "missingRequired:doubanjiang",
+     "offCuisine:oyster-sauce",
+     "ratioUndefined:doubanjiang to glass noodles",
+     "signatureLow:heat",
+     "signatureHigh:sweet"
+    ],
+    "line": "The oyster sauce came from another kitchen. Start by leaving that out."
+   }
+  },
+  {
+   "id": "mapo-tofu.pinch-of-basil",
+   "dishId": "mapo-tofu",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "basil",
+     "amount": 5,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 77,
+    "coverage": 24.6,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": 77,
+    "misses": [
+     "offCuisine:basil"
+    ],
+    "line": "The basil came from another kitchen. Leave that out and this is close."
+   }
+  },
+  {
+   "id": "mapo-tofu.cup-of-cream",
+   "dishId": "mapo-tofu",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "cream",
+     "amount": 240,
+     "unit": "grams"
+    }
+   ],
+   "expect": {
+    "total": 50,
+    "coverage": 18,
+    "ratioFit": 45,
+    "signature": 14.6,
+    "technique": 10,
+    "cappedAt": 50,
+    "misses": [
+     "offCuisine:cream",
+     "signatureLow:heat",
+     "signatureLow:numbing"
+    ],
+    "line": "The cream came from another kitchen. Leave that out and this is close."
+   }
+  },
+  {
+   "id": "mapo-tofu.sesame-paste",
+   "dishId": "mapo-tofu",
+   "vessel": "wok",
+   "method": "braise",
+   "lines": [
+    {
+     "ingredientId": "firm-tofu",
+     "amount": 400,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "ground-pork",
+     "amount": 100,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "doubanjiang",
+     "amount": 2.5,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "douchi",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sichuan-peppercorn-ground",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "garlic",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "ginger",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "scallion",
+     "amount": 3,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "chili-flakes",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "light-soy",
+     "amount": 1,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "stock",
+     "amount": 150,
+     "unit": "grams"
+    },
+    {
+     "ingredientId": "cornstarch",
+     "amount": 2,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "neutral-oil",
+     "amount": 2,
+     "unit": "tbsp"
+    },
+    {
+     "ingredientId": "sugar",
+     "amount": 1,
+     "unit": "tsp"
+    },
+    {
+     "ingredientId": "sesame-paste",
+     "amount": 1,
+     "unit": "tbsp"
+    }
+   ],
+   "expect": {
+    "total": 73,
+    "coverage": 23.7,
+    "ratioFit": 45,
+    "signature": 15,
+    "technique": 10,
+    "cappedAt": 73,
+    "misses": [
+     "forbiddenForDish:sesame-paste"
+    ],
+    "line": "No sesame paste in mapo tofu. Leave that out and this is close."
+   }
+  }
+ ],
+ "pantry": [
+  {
+   "id": "mapo-tofu.first",
+   "dishId": "mapo-tofu",
+   "picks": [
+    "firm-tofu",
+    "ground-pork",
+    "doubanjiang",
+    "douchi",
+    "sichuan-peppercorn-ground",
+    "chili-flakes"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "firm-tofu",
+     "doubanjiang",
+     "sichuan-peppercorn-ground",
+     "chili-flakes"
+    ],
+    "missed": [
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "ground-pork",
+     "douchi"
+    ],
+    "wrong": [],
+    "essentials": 6,
+    "line": "4 of 6. Start with aromatics."
+   }
+  },
+  {
+   "id": "mapo-tofu.last",
+   "dishId": "mapo-tofu",
+   "picks": [
+    "basil",
+    "cream",
+    "oyster-sauce",
+    "duojiao",
+    "black-vinegar",
+    "sesame-paste"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [],
+    "missed": [
+     "tofu",
+     "doubanjiang",
+     "Sichuan peppercorn",
+     "aromatics",
+     "chili heat"
+    ],
+    "alsoBelongs": [],
+    "wrong": [
+     "basil",
+     "cream",
+     "oyster-sauce",
+     "duojiao",
+     "black-vinegar",
+     "sesame-paste"
+    ],
+    "essentials": 6,
+    "line": "No basil in mapo tofu. And it still needs tofu."
+   }
+  },
+  {
+   "id": "mapo-tofu.every",
+   "dishId": "mapo-tofu",
+   "picks": [
+    "firm-tofu",
+    "ground-pork",
+    "doubanjiang",
+    "douchi",
+    "sichuan-peppercorn-ground",
+    "chili-flakes",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "stock",
+    "cornstarch",
+    "neutral-oil",
+    "sugar",
+    "sesame-paste",
+    "black-vinegar",
+    "duojiao",
+    "oyster-sauce",
+    "cream",
+    "basil"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "firm-tofu",
+     "doubanjiang",
+     "sichuan-peppercorn-ground",
+     "chili-flakes",
+     "garlic",
+     "ginger"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "ground-pork",
+     "douchi",
+     "scallion",
+     "light-soy",
+     "stock",
+     "cornstarch",
+     "neutral-oil",
+     "sugar"
+    ],
+    "wrong": [
+     "sesame-paste",
+     "black-vinegar",
+     "duojiao",
+     "oyster-sauce",
+     "cream",
+     "basil"
+    ],
+    "essentials": 6,
+    "line": "No sesame paste in mapo tofu."
+   }
+  },
+  {
+   "id": "mapo-tofu.few",
+   "dishId": "mapo-tofu",
+   "picks": [
+    "firm-tofu",
+    "douchi",
+    "garlic",
+    "light-soy",
+    "neutral-oil",
+    "black-vinegar",
+    "cream"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "firm-tofu",
+     "garlic"
+    ],
+    "missed": [
+     "doubanjiang",
+     "Sichuan peppercorn",
+     "aromatics",
+     "chili heat"
+    ],
+    "alsoBelongs": [
+     "douchi",
+     "light-soy",
+     "neutral-oil"
+    ],
+    "wrong": [
+     "black-vinegar",
+     "cream"
+    ],
+    "essentials": 6,
+    "line": "No black vinegar in mapo tofu. And it still needs doubanjiang."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.first",
+   "dishId": "kung-pao-chicken",
+   "picks": [
+    "chicken-thigh",
+    "peanuts",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "scallion",
+    "garlic",
+    "ginger",
+    "light-soy"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "peanuts",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "scallion",
+     "garlic"
+    ],
+    "missed": [
+     "sugar",
+     "black vinegar"
+    ],
+    "alsoBelongs": [
+     "ginger",
+     "light-soy"
+    ],
+    "wrong": [],
+    "essentials": 8,
+    "line": "6 of 8. Start with sugar."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.last",
+   "dishId": "kung-pao-chicken",
+   "picks": [
+    "lime",
+    "ketchup",
+    "hoisin",
+    "sesame-paste",
+    "doubanjiang",
+    "neutral-oil",
+    "water",
+    "cornstarch"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [],
+    "missed": [
+     "chicken",
+     "dried chilies",
+     "Sichuan peppercorn",
+     "peanuts",
+     "aromatics",
+     "sugar",
+     "black vinegar"
+    ],
+    "alsoBelongs": [
+     "neutral-oil",
+     "water",
+     "cornstarch"
+    ],
+    "wrong": [
+     "lime",
+     "ketchup",
+     "hoisin",
+     "sesame-paste",
+     "doubanjiang"
+    ],
+    "essentials": 8,
+    "line": "No lime juice in kung pao chicken. And it still needs chicken."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.every",
+   "dishId": "kung-pao-chicken",
+   "picks": [
+    "chicken-thigh",
+    "peanuts",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "scallion",
+    "garlic",
+    "ginger",
+    "light-soy",
+    "dark-soy",
+    "black-vinegar",
+    "sugar",
+    "shaoxing",
+    "cornstarch",
+    "water",
+    "neutral-oil",
+    "doubanjiang",
+    "sesame-paste",
+    "hoisin",
+    "ketchup",
+    "lime"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "peanuts",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "scallion",
+     "garlic",
+     "black-vinegar",
+     "sugar"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "ginger",
+     "light-soy",
+     "dark-soy",
+     "shaoxing",
+     "cornstarch",
+     "water",
+     "neutral-oil"
+    ],
+    "wrong": [
+     "doubanjiang",
+     "sesame-paste",
+     "hoisin",
+     "ketchup",
+     "lime"
+    ],
+    "essentials": 8,
+    "line": "No doubanjiang in kung pao chicken."
+   }
+  },
+  {
+   "id": "kung-pao-chicken.few",
+   "dishId": "kung-pao-chicken",
+   "picks": [
+    "chicken-thigh",
+    "sichuan-peppercorn-whole",
+    "ginger",
+    "black-vinegar",
+    "cornstarch",
+    "doubanjiang",
+    "ketchup"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "sichuan-peppercorn-whole",
+     "ginger",
+     "black-vinegar"
+    ],
+    "missed": [
+     "dried chilies",
+     "peanuts",
+     "aromatics",
+     "sugar"
+    ],
+    "alsoBelongs": [
+     "cornstarch"
+    ],
+    "wrong": [
+     "doubanjiang",
+     "ketchup"
+    ],
+    "essentials": 8,
+    "line": "No doubanjiang in kung pao chicken. And it still needs dried chilies."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.first",
+   "dishId": "yuxiang-eggplant",
+   "picks": [
+    "eggplant",
+    "pickled-chili",
+    "doubanjiang",
+    "garlic",
+    "ginger",
+    "scallion",
+    "sugar"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [
+     "eggplant",
+     "pickled-chili",
+     "garlic",
+     "ginger",
+     "scallion",
+     "sugar"
+    ],
+    "missed": [
+     "black vinegar"
+    ],
+    "alsoBelongs": [
+     "doubanjiang"
+    ],
+    "wrong": [],
+    "essentials": 7,
+    "line": "One short: it needs black vinegar."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.last",
+   "dishId": "yuxiang-eggplant",
+   "picks": [
+    "parmesan",
+    "basil",
+    "fish-sauce",
+    "sesame-paste",
+    "sichuan-peppercorn-ground",
+    "white-fish",
+    "ground-pork"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [],
+    "missed": [
+     "eggplant",
+     "pickled chili or bean paste",
+     "garlic, ginger and scallion",
+     "sugar",
+     "black vinegar"
+    ],
+    "alsoBelongs": [
+     "ground-pork"
+    ],
+    "wrong": [
+     "parmesan",
+     "basil",
+     "fish-sauce",
+     "sesame-paste",
+     "sichuan-peppercorn-ground",
+     "white-fish"
+    ],
+    "essentials": 7,
+    "line": "No parmesan in fish-fragrant eggplant. And it still needs eggplant."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.every",
+   "dishId": "yuxiang-eggplant",
+   "picks": [
+    "eggplant",
+    "pickled-chili",
+    "doubanjiang",
+    "garlic",
+    "ginger",
+    "scallion",
+    "sugar",
+    "black-vinegar",
+    "light-soy",
+    "shaoxing",
+    "cornstarch",
+    "stock",
+    "neutral-oil",
+    "ground-pork",
+    "white-fish",
+    "sichuan-peppercorn-ground",
+    "sesame-paste",
+    "fish-sauce",
+    "basil",
+    "parmesan"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [
+     "eggplant",
+     "pickled-chili",
+     "garlic",
+     "ginger",
+     "scallion",
+     "sugar",
+     "black-vinegar"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "doubanjiang",
+     "light-soy",
+     "shaoxing",
+     "cornstarch",
+     "stock",
+     "neutral-oil",
+     "ground-pork"
+    ],
+    "wrong": [
+     "white-fish",
+     "sichuan-peppercorn-ground",
+     "sesame-paste",
+     "fish-sauce",
+     "basil",
+     "parmesan"
+    ],
+    "essentials": 7,
+    "line": "No white fish in fish-fragrant eggplant."
+   }
+  },
+  {
+   "id": "yuxiang-eggplant.few",
+   "dishId": "yuxiang-eggplant",
+   "picks": [
+    "eggplant",
+    "garlic",
+    "sugar",
+    "shaoxing",
+    "neutral-oil",
+    "sichuan-peppercorn-ground",
+    "basil"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [
+     "eggplant",
+     "garlic",
+     "sugar"
+    ],
+    "missed": [
+     "pickled chili or bean paste",
+     "garlic, ginger and scallion",
+     "black vinegar"
+    ],
+    "alsoBelongs": [
+     "shaoxing",
+     "neutral-oil"
+    ],
+    "wrong": [
+     "sichuan-peppercorn-ground",
+     "basil"
+    ],
+    "essentials": 7,
+    "line": "No ground Sichuan pepper in fish-fragrant eggplant. And it still needs pickled chili or bean paste."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.first",
+   "dishId": "dan-dan-noodles",
+   "picks": [
+    "wheat-noodles",
+    "ground-pork",
+    "yacai",
+    "chili-oil",
+    "sichuan-peppercorn-ground",
+    "light-soy",
+    "sesame-paste"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [
+     "wheat-noodles",
+     "ground-pork",
+     "yacai",
+     "chili-oil",
+     "sichuan-peppercorn-ground",
+     "light-soy"
+    ],
+    "missed": [
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "sesame-paste"
+    ],
+    "wrong": [],
+    "essentials": 7,
+    "line": "One short: it needs aromatics."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.last",
+   "dishId": "dan-dan-noodles",
+   "picks": [
+    "coconut-milk",
+    "fish-sauce",
+    "mirin",
+    "miso",
+    "glass-noodles",
+    "peanuts",
+    "neutral-oil"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [],
+    "missed": [
+     "noodles",
+     "chili oil",
+     "Sichuan peppercorn",
+     "ground pork",
+     "preserved vegetable",
+     "soy sauce",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "peanuts",
+     "neutral-oil"
+    ],
+    "wrong": [
+     "coconut-milk",
+     "fish-sauce",
+     "mirin",
+     "miso",
+     "glass-noodles"
+    ],
+    "essentials": 7,
+    "line": "No coconut milk in dan dan noodles. And it still needs noodles."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.every",
+   "dishId": "dan-dan-noodles",
+   "picks": [
+    "wheat-noodles",
+    "ground-pork",
+    "yacai",
+    "chili-oil",
+    "sichuan-peppercorn-ground",
+    "light-soy",
+    "sesame-paste",
+    "black-vinegar",
+    "sugar",
+    "garlic",
+    "scallion",
+    "stock",
+    "shaoxing",
+    "neutral-oil",
+    "peanuts",
+    "glass-noodles",
+    "miso",
+    "mirin",
+    "fish-sauce",
+    "coconut-milk"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [
+     "wheat-noodles",
+     "ground-pork",
+     "yacai",
+     "chili-oil",
+     "sichuan-peppercorn-ground",
+     "light-soy",
+     "garlic"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "sesame-paste",
+     "black-vinegar",
+     "sugar",
+     "scallion",
+     "stock",
+     "shaoxing",
+     "neutral-oil",
+     "peanuts"
+    ],
+    "wrong": [
+     "glass-noodles",
+     "miso",
+     "mirin",
+     "fish-sauce",
+     "coconut-milk"
+    ],
+    "essentials": 7,
+    "line": "No glass noodles in dan dan noodles."
+   }
+  },
+  {
+   "id": "dan-dan-noodles.few",
+   "dishId": "dan-dan-noodles",
+   "picks": [
+    "wheat-noodles",
+    "chili-oil",
+    "sesame-paste",
+    "garlic",
+    "shaoxing",
+    "glass-noodles",
+    "fish-sauce"
+   ],
+   "limit": 7,
+   "expect": {
+    "found": [
+     "wheat-noodles",
+     "chili-oil",
+     "garlic"
+    ],
+    "missed": [
+     "Sichuan peppercorn",
+     "ground pork",
+     "preserved vegetable",
+     "soy sauce"
+    ],
+    "alsoBelongs": [
+     "sesame-paste",
+     "shaoxing"
+    ],
+    "wrong": [
+     "glass-noodles",
+     "fish-sauce"
+    ],
+    "essentials": 7,
+    "line": "No glass noodles in dan dan noodles. And it still needs Sichuan peppercorn."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.first",
+   "dishId": "twice-cooked-pork",
+   "picks": [
+    "pork-belly",
+    "doubanjiang",
+    "sweet-bean-sauce",
+    "douchi",
+    "leek"
+   ],
+   "limit": 5,
+   "expect": {
+    "found": [
+     "pork-belly",
+     "doubanjiang",
+     "sweet-bean-sauce",
+     "leek"
+    ],
+    "missed": [
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "douchi"
+    ],
+    "wrong": [],
+    "essentials": 5,
+    "line": "One short: it needs aromatics."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.last",
+   "dishId": "twice-cooked-pork",
+   "picks": [
+    "butter",
+    "basil",
+    "black-vinegar",
+    "duojiao",
+    "gochujang"
+   ],
+   "limit": 5,
+   "expect": {
+    "found": [],
+    "missed": [
+     "pork belly",
+     "doubanjiang",
+     "leek or green garlic",
+     "sweet bean sauce",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "black-vinegar"
+    ],
+    "wrong": [
+     "butter",
+     "basil",
+     "duojiao",
+     "gochujang"
+    ],
+    "essentials": 5,
+    "line": "No butter in twice-cooked pork. And it still needs pork belly."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.every",
+   "dishId": "twice-cooked-pork",
+   "picks": [
+    "pork-belly",
+    "doubanjiang",
+    "sweet-bean-sauce",
+    "douchi",
+    "leek",
+    "ginger",
+    "dark-soy",
+    "sugar",
+    "shaoxing",
+    "neutral-oil",
+    "cornstarch",
+    "stock",
+    "sesame-paste",
+    "hoisin",
+    "oyster-sauce",
+    "gochujang",
+    "duojiao",
+    "black-vinegar",
+    "basil",
+    "butter"
+   ],
+   "limit": 5,
+   "expect": {
+    "found": [
+     "pork-belly",
+     "doubanjiang",
+     "sweet-bean-sauce",
+     "leek",
+     "ginger"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "douchi",
+     "dark-soy",
+     "sugar",
+     "shaoxing",
+     "neutral-oil",
+     "black-vinegar"
+    ],
+    "wrong": [
+     "cornstarch",
+     "stock",
+     "sesame-paste",
+     "hoisin",
+     "oyster-sauce",
+     "gochujang",
+     "duojiao",
+     "basil",
+     "butter"
+    ],
+    "essentials": 5,
+    "line": "No cornstarch in twice-cooked pork."
+   }
+  },
+  {
+   "id": "twice-cooked-pork.few",
+   "dishId": "twice-cooked-pork",
+   "picks": [
+    "pork-belly",
+    "douchi",
+    "dark-soy",
+    "neutral-oil",
+    "sesame-paste",
+    "gochujang",
+    "basil"
+   ],
+   "limit": 5,
+   "expect": {
+    "found": [
+     "pork-belly"
+    ],
+    "missed": [
+     "doubanjiang",
+     "leek or green garlic",
+     "sweet bean sauce",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "douchi",
+     "dark-soy",
+     "neutral-oil"
+    ],
+    "wrong": [
+     "sesame-paste",
+     "gochujang",
+     "basil"
+    ],
+    "essentials": 5,
+    "line": "No sesame paste in twice-cooked pork. And it still needs doubanjiang."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.first",
+   "dishId": "dry-fried-green-beans",
+   "picks": [
+    "green-beans",
+    "ground-pork",
+    "yacai",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "green-beans",
+     "yacai",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "garlic"
+    ],
+    "missed": [
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "ground-pork"
+    ],
+    "wrong": [],
+    "essentials": 6,
+    "line": "One short: it needs aromatics."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.last",
+   "dishId": "dry-fried-green-beans",
+   "picks": [
+    "parmesan",
+    "butter",
+    "fish-sauce",
+    "oyster-sauce",
+    "black-vinegar",
+    "cornstarch"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [],
+    "missed": [
+     "green beans",
+     "dried chilies",
+     "Sichuan peppercorn",
+     "yacai",
+     "aromatics"
+    ],
+    "alsoBelongs": [],
+    "wrong": [
+     "parmesan",
+     "butter",
+     "fish-sauce",
+     "oyster-sauce",
+     "black-vinegar",
+     "cornstarch"
+    ],
+    "essentials": 6,
+    "line": "No parmesan in dry-fried green beans. And it still needs green beans."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.every",
+   "dishId": "dry-fried-green-beans",
+   "picks": [
+    "green-beans",
+    "ground-pork",
+    "yacai",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "sugar",
+    "shaoxing",
+    "neutral-oil",
+    "salt",
+    "stock",
+    "cornstarch",
+    "black-vinegar",
+    "oyster-sauce",
+    "fish-sauce",
+    "butter",
+    "parmesan"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "green-beans",
+     "yacai",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "garlic",
+     "ginger"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "ground-pork",
+     "scallion",
+     "light-soy",
+     "sugar",
+     "shaoxing",
+     "neutral-oil",
+     "salt"
+    ],
+    "wrong": [
+     "stock",
+     "cornstarch",
+     "black-vinegar",
+     "oyster-sauce",
+     "fish-sauce",
+     "butter",
+     "parmesan"
+    ],
+    "essentials": 6,
+    "line": "No chicken stock in dry-fried green beans."
+   }
+  },
+  {
+   "id": "dry-fried-green-beans.few",
+   "dishId": "dry-fried-green-beans",
+   "picks": [
+    "green-beans",
+    "dried-chilies",
+    "ginger",
+    "sugar",
+    "salt",
+    "black-vinegar",
+    "butter"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "green-beans",
+     "dried-chilies",
+     "ginger"
+    ],
+    "missed": [
+     "Sichuan peppercorn",
+     "yacai",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "sugar",
+     "salt"
+    ],
+    "wrong": [
+     "black-vinegar",
+     "butter"
+    ],
+    "essentials": 6,
+    "line": "No black vinegar in dry-fried green beans. And it still needs Sichuan peppercorn."
+   }
+  },
+  {
+   "id": "shuizhu-fish.first",
+   "dishId": "shuizhu-fish",
+   "picks": [
+    "white-fish",
+    "bean-sprouts",
+    "doubanjiang",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "stock"
+   ],
+   "limit": 9,
+   "expect": {
+    "found": [
+     "white-fish",
+     "bean-sprouts",
+     "doubanjiang",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "garlic",
+     "ginger",
+     "stock"
+    ],
+    "missed": [
+     "oil"
+    ],
+    "alsoBelongs": [
+     "scallion"
+    ],
+    "wrong": [],
+    "essentials": 9,
+    "line": "One short: it needs oil."
+   }
+  },
+  {
+   "id": "shuizhu-fish.last",
+   "dishId": "shuizhu-fish",
+   "picks": [
+    "cream",
+    "lime",
+    "lemongrass",
+    "coconut-milk",
+    "sesame-paste",
+    "black-vinegar",
+    "salt",
+    "shaoxing",
+    "cornstarch"
+   ],
+   "limit": 9,
+   "expect": {
+    "found": [],
+    "missed": [
+     "fish",
+     "doubanjiang",
+     "dried chilies",
+     "Sichuan peppercorn",
+     "vegetable bed",
+     "aromatics",
+     "liquid",
+     "oil"
+    ],
+    "alsoBelongs": [
+     "salt",
+     "shaoxing",
+     "cornstarch"
+    ],
+    "wrong": [
+     "cream",
+     "lime",
+     "lemongrass",
+     "coconut-milk",
+     "sesame-paste",
+     "black-vinegar"
+    ],
+    "essentials": 9,
+    "line": "No cream in fish in chili oil broth. And it still needs fish."
+   }
+  },
+  {
+   "id": "shuizhu-fish.every",
+   "dishId": "shuizhu-fish",
+   "picks": [
+    "white-fish",
+    "bean-sprouts",
+    "doubanjiang",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "stock",
+    "neutral-oil",
+    "egg-white",
+    "cornstarch",
+    "shaoxing",
+    "salt",
+    "black-vinegar",
+    "sesame-paste",
+    "coconut-milk",
+    "lemongrass",
+    "lime",
+    "cream"
+   ],
+   "limit": 9,
+   "expect": {
+    "found": [
+     "white-fish",
+     "bean-sprouts",
+     "doubanjiang",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "garlic",
+     "ginger",
+     "stock",
+     "neutral-oil"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "scallion",
+     "egg-white",
+     "cornstarch",
+     "shaoxing",
+     "salt"
+    ],
+    "wrong": [
+     "black-vinegar",
+     "sesame-paste",
+     "coconut-milk",
+     "lemongrass",
+     "lime",
+     "cream"
+    ],
+    "essentials": 9,
+    "line": "No black vinegar in fish in chili oil broth."
+   }
+  },
+  {
+   "id": "shuizhu-fish.few",
+   "dishId": "shuizhu-fish",
+   "picks": [
+    "white-fish",
+    "dried-chilies",
+    "ginger",
+    "neutral-oil",
+    "shaoxing",
+    "sesame-paste",
+    "lime"
+   ],
+   "limit": 9,
+   "expect": {
+    "found": [
+     "white-fish",
+     "dried-chilies",
+     "ginger",
+     "neutral-oil"
+    ],
+    "missed": [
+     "doubanjiang",
+     "Sichuan peppercorn",
+     "vegetable bed",
+     "aromatics",
+     "liquid"
+    ],
+    "alsoBelongs": [
+     "shaoxing"
+    ],
+    "wrong": [
+     "sesame-paste",
+     "lime"
+    ],
+    "essentials": 9,
+    "line": "No sesame paste in fish in chili oil broth. And it still needs doubanjiang."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.first",
+   "dishId": "kou-shui-chicken",
+   "picks": [
+    "chicken-thigh",
+    "chili-oil",
+    "sichuan-peppercorn-ground",
+    "light-soy",
+    "black-vinegar",
+    "sugar",
+    "garlic",
+    "ginger"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "chili-oil",
+     "sichuan-peppercorn-ground",
+     "light-soy",
+     "black-vinegar",
+     "sugar",
+     "garlic",
+     "ginger"
+    ],
+    "missed": [],
+    "alsoBelongs": [],
+    "wrong": [],
+    "essentials": 8,
+    "line": "All 8 essentials, and nothing that doesn't belong."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.last",
+   "dishId": "kou-shui-chicken",
+   "picks": [
+    "miso",
+    "mirin",
+    "coconut-milk",
+    "lime",
+    "fish-sauce",
+    "cornstarch",
+    "doubanjiang",
+    "cilantro"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [],
+    "missed": [
+     "chicken",
+     "chili oil",
+     "Sichuan peppercorn",
+     "soy sauce",
+     "black vinegar",
+     "sugar",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "cilantro"
+    ],
+    "wrong": [
+     "miso",
+     "mirin",
+     "coconut-milk",
+     "lime",
+     "fish-sauce",
+     "cornstarch",
+     "doubanjiang"
+    ],
+    "essentials": 8,
+    "line": "No miso in mouth-watering chicken. And it still needs chicken."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.every",
+   "dishId": "kou-shui-chicken",
+   "picks": [
+    "chicken-thigh",
+    "chili-oil",
+    "sichuan-peppercorn-ground",
+    "light-soy",
+    "black-vinegar",
+    "sugar",
+    "garlic",
+    "ginger",
+    "scallion",
+    "sesame-oil",
+    "peanuts",
+    "sesame-seeds",
+    "cilantro",
+    "doubanjiang",
+    "cornstarch",
+    "fish-sauce",
+    "lime",
+    "coconut-milk",
+    "mirin",
+    "miso"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "chili-oil",
+     "sichuan-peppercorn-ground",
+     "light-soy",
+     "black-vinegar",
+     "sugar",
+     "garlic",
+     "ginger"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "scallion",
+     "sesame-oil",
+     "peanuts",
+     "sesame-seeds",
+     "cilantro"
+    ],
+    "wrong": [
+     "doubanjiang",
+     "cornstarch",
+     "fish-sauce",
+     "lime",
+     "coconut-milk",
+     "mirin",
+     "miso"
+    ],
+    "essentials": 8,
+    "line": "No doubanjiang in mouth-watering chicken."
+   }
+  },
+  {
+   "id": "kou-shui-chicken.few",
+   "dishId": "kou-shui-chicken",
+   "picks": [
+    "chicken-thigh",
+    "light-soy",
+    "garlic",
+    "sesame-oil",
+    "cilantro",
+    "fish-sauce",
+    "mirin"
+   ],
+   "limit": 8,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "light-soy",
+     "garlic"
+    ],
+    "missed": [
+     "chili oil",
+     "Sichuan peppercorn",
+     "black vinegar",
+     "sugar",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "sesame-oil",
+     "cilantro"
+    ],
+    "wrong": [
+     "fish-sauce",
+     "mirin"
+    ],
+    "essentials": 8,
+    "line": "No fish sauce in mouth-watering chicken. And it still needs chili oil."
+   }
+  },
+  {
+   "id": "laziji.first",
+   "dishId": "laziji",
+   "picks": [
+    "chicken-thigh",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "garlic",
+     "ginger"
+    ],
+    "missed": [
+     "oil"
+    ],
+    "alsoBelongs": [
+     "scallion"
+    ],
+    "wrong": [],
+    "essentials": 6,
+    "line": "One short: it needs oil."
+   }
+  },
+  {
+   "id": "laziji.last",
+   "dishId": "laziji",
+   "picks": [
+    "lime",
+    "ketchup",
+    "curry-powder",
+    "gochujang",
+    "chili-oil",
+    "black-vinegar"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [],
+    "missed": [
+     "chicken",
+     "dried chilies",
+     "Sichuan peppercorn",
+     "aromatics",
+     "oil"
+    ],
+    "alsoBelongs": [
+     "chili-oil"
+    ],
+    "wrong": [
+     "lime",
+     "ketchup",
+     "curry-powder",
+     "gochujang",
+     "black-vinegar"
+    ],
+    "essentials": 6,
+    "line": "No lime juice in Chongqing chili chicken. And it still needs chicken."
+   }
+  },
+  {
+   "id": "laziji.every",
+   "dishId": "laziji",
+   "picks": [
+    "chicken-thigh",
+    "dried-chilies",
+    "sichuan-peppercorn-whole",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "shaoxing",
+    "salt",
+    "sugar",
+    "neutral-oil",
+    "sesame-seeds",
+    "cornstarch",
+    "stock",
+    "black-vinegar",
+    "chili-oil",
+    "gochujang",
+    "curry-powder",
+    "ketchup",
+    "lime"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "dried-chilies",
+     "sichuan-peppercorn-whole",
+     "garlic",
+     "ginger",
+     "neutral-oil"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "scallion",
+     "light-soy",
+     "shaoxing",
+     "salt",
+     "sugar",
+     "sesame-seeds",
+     "cornstarch",
+     "chili-oil"
+    ],
+    "wrong": [
+     "stock",
+     "black-vinegar",
+     "gochujang",
+     "curry-powder",
+     "ketchup",
+     "lime"
+    ],
+    "essentials": 6,
+    "line": "No chicken stock in Chongqing chili chicken."
+   }
+  },
+  {
+   "id": "laziji.few",
+   "dishId": "laziji",
+   "picks": [
+    "chicken-thigh",
+    "garlic",
+    "light-soy",
+    "sugar",
+    "cornstarch",
+    "chili-oil",
+    "ketchup"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "chicken-thigh",
+     "garlic"
+    ],
+    "missed": [
+     "dried chilies",
+     "Sichuan peppercorn",
+     "aromatics",
+     "oil"
+    ],
+    "alsoBelongs": [
+     "light-soy",
+     "sugar",
+     "cornstarch",
+     "chili-oil"
+    ],
+    "wrong": [
+     "ketchup"
+    ],
+    "essentials": 6,
+    "line": "No ketchup in Chongqing chili chicken. And it still needs dried chilies."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.first",
+   "dishId": "ants-climbing-a-tree",
+   "picks": [
+    "glass-noodles",
+    "ground-pork",
+    "doubanjiang",
+    "garlic",
+    "ginger",
+    "scallion"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "glass-noodles",
+     "ground-pork",
+     "doubanjiang",
+     "garlic",
+     "ginger"
+    ],
+    "missed": [
+     "liquid"
+    ],
+    "alsoBelongs": [
+     "scallion"
+    ],
+    "wrong": [],
+    "essentials": 6,
+    "line": "One short: it needs liquid."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.last",
+   "dishId": "ants-climbing-a-tree",
+   "picks": [
+    "cream",
+    "fish-sauce",
+    "hoisin",
+    "oyster-sauce",
+    "black-vinegar",
+    "firm-tofu"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [],
+    "missed": [
+     "glass noodles",
+     "ground pork",
+     "doubanjiang",
+     "aromatics",
+     "liquid"
+    ],
+    "alsoBelongs": [],
+    "wrong": [
+     "cream",
+     "fish-sauce",
+     "hoisin",
+     "oyster-sauce",
+     "black-vinegar",
+     "firm-tofu"
+    ],
+    "essentials": 6,
+    "line": "No cream in ants climbing a tree. And it still needs glass noodles."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.every",
+   "dishId": "ants-climbing-a-tree",
+   "picks": [
+    "glass-noodles",
+    "ground-pork",
+    "doubanjiang",
+    "garlic",
+    "ginger",
+    "scallion",
+    "light-soy",
+    "dark-soy",
+    "shaoxing",
+    "stock",
+    "neutral-oil",
+    "chili-flakes",
+    "sugar",
+    "wheat-noodles",
+    "firm-tofu",
+    "black-vinegar",
+    "oyster-sauce",
+    "hoisin",
+    "fish-sauce",
+    "cream"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "glass-noodles",
+     "ground-pork",
+     "doubanjiang",
+     "garlic",
+     "ginger",
+     "stock"
+    ],
+    "missed": [],
+    "alsoBelongs": [
+     "scallion",
+     "light-soy",
+     "dark-soy",
+     "shaoxing",
+     "neutral-oil",
+     "chili-flakes",
+     "sugar"
+    ],
+    "wrong": [
+     "wheat-noodles",
+     "firm-tofu",
+     "black-vinegar",
+     "oyster-sauce",
+     "hoisin",
+     "fish-sauce",
+     "cream"
+    ],
+    "essentials": 6,
+    "line": "No wheat noodles in ants climbing a tree."
+   }
+  },
+  {
+   "id": "ants-climbing-a-tree.few",
+   "dishId": "ants-climbing-a-tree",
+   "picks": [
+    "glass-noodles",
+    "garlic",
+    "light-soy",
+    "stock",
+    "sugar",
+    "black-vinegar",
+    "fish-sauce"
+   ],
+   "limit": 6,
+   "expect": {
+    "found": [
+     "glass-noodles",
+     "garlic",
+     "stock"
+    ],
+    "missed": [
+     "ground pork",
+     "doubanjiang",
+     "aromatics"
+    ],
+    "alsoBelongs": [
+     "light-soy",
+     "sugar"
+    ],
+    "wrong": [
+     "black-vinegar",
+     "fish-sauce"
+    ],
+    "essentials": 6,
+    "line": "No black vinegar in ants climbing a tree. And it still needs ground pork."
+   }
+  }
+ ]
+}

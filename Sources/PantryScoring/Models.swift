@@ -166,6 +166,12 @@ public struct Cuisine: Codable, Equatable, Sendable {
 public struct Ingredient: Codable, Equatable, Identifiable, Sendable {
     public var id: String
     public var name: String
+    /// A label short enough for a palette chip, when `name` isn't. Like `name`, it must
+    /// not say which cuisine the ingredient belongs to: that is the player's job.
+    public var shortName: String?
+    /// What it tastes like and what it does in the pan, for a player who has never met it (PD-028).
+    /// Never a cuisine, a region or a dish: where it belongs is the player's question.
+    public var about: String?
     /// Profiles refer to families, not ingredients, so substitutes score alike
     /// (firm and silken tofu are both `tofu`).
     public var family: String
@@ -177,9 +183,12 @@ public struct Ingredient: Codable, Equatable, Identifiable, Sendable {
     public var icon: String
 
     public init(id: String, name: String, family: String, defaultUnit: AmountUnit, gramsPerTeaspoon: Double? = nil,
-                potency: FlavorVector = FlavorVector(), soundCue: String = "clatter", icon: String = "generic") {
+                potency: FlavorVector = FlavorVector(), soundCue: String = "clatter", icon: String = "generic",
+                shortName: String? = nil, about: String? = nil) {
         self.id = id
         self.name = name
+        self.shortName = shortName
+        self.about = about
         self.family = family
         self.defaultUnit = defaultUnit
         self.gramsPerTeaspoon = gramsPerTeaspoon
@@ -250,10 +259,38 @@ public struct RatioBand: Codable, Equatable, Sendable {
     }
 }
 
+/// One real way to cook a dish, shown after the score (PD-029). Its amounts are also a
+/// known-good attempt: content validation scores the recipe against its own profile.
+public struct Recipe: Codable, Equatable, Sendable {
+    public var serves: Int
+    public var vessel: Vessel
+    public var method: CookingMethod
+    public var lines: [Attempt.Line]
+    /// The process, in order. Short, plain sentences.
+    public var steps: [String]
+
+    public init(serves: Int, vessel: Vessel, method: CookingMethod, lines: [Attempt.Line], steps: [String]) {
+        self.serves = serves
+        self.vessel = vessel
+        self.method = method
+        self.lines = lines
+        self.steps = steps
+    }
+
+    /// The recipe as an attempt at `dishId`, so the scorer can judge it.
+    public func attempt(dishId: String) -> Attempt {
+        Attempt(dishId: dishId, lines: lines, vessel: vessel, method: method)
+    }
+}
+
 public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public var id: String
     public var cuisineId: String
     public var name: String
+    /// One line shown before cooking, for a player who has never eaten the dish (PD-024).
+    /// It describes the plate: texture, look, how it should taste. It never names a
+    /// seasoning, an amount or a cooking method; working those out is the round.
+    public var brief: String?
     public var vessels: [Vessel]
     public var methods: [CookingMethod]
     public var required: [Requirement]
@@ -266,14 +303,19 @@ public struct DishProfile: Codable, Equatable, Identifiable, Sendable {
     public var signature: SignatureEnvelope?
     /// The 12 to 20 ingredient ids offered in a round, real and decoy mixed.
     public var palette: [String]
+    /// Shown on the score sheet once the round is served; never before.
+    public var recipe: Recipe?
     public var cardId: String
     /// Internal: reference sources and authoring notes. Never shown to players.
     public var notes: String?
 
     public init(id: String, cuisineId: String, name: String, vessels: [Vessel], methods: [CookingMethod],
                 required: [Requirement], optional: [String] = [], forbidden: [String] = [], ratios: [RatioBand] = [],
-                signature: SignatureEnvelope? = nil, palette: [String] = [], cardId: String, notes: String? = nil) {
+                signature: SignatureEnvelope? = nil, palette: [String] = [], cardId: String, notes: String? = nil,
+                brief: String? = nil, recipe: Recipe? = nil) {
         self.id = id
+        self.brief = brief
+        self.recipe = recipe
         self.cuisineId = cuisineId
         self.name = name
         self.vessels = vessels
@@ -319,6 +361,31 @@ public struct Attempt: Codable, Equatable, Sendable {
     }
 }
 
+/// The one lesson a round ends on (brief: "one educational card"). Short enough to read standing up.
+public struct Card: Codable, Equatable, Identifiable, Sendable {
+    public var id: String
+    public var title: String
+    /// Two to four sentences.
+    public var body: String
+    /// One rule or ratio, stated plainly.
+    public var rule: String
+    /// One thing to try at the stove.
+    public var tryTonight: String
+
+    public init(id: String, title: String, body: String, rule: String, tryTonight: String) {
+        self.id = id
+        self.title = title
+        self.body = body
+        self.rule = rule
+        self.tryTonight = tryTonight
+    }
+
+    /// Every word on the card. The brief holds a card under sixty.
+    public var wordCount: Int {
+        [title, body, rule, tryTonight].reduce(0) { $0 + $1.split(whereSeparator: \.isWhitespace).count }
+    }
+}
+
 /// One specific thing that cost points. The judge (canned or LLM) turns these into a sentence.
 public struct Miss: Codable, Equatable, Hashable, Sendable {
     public enum Kind: String, Codable, CaseIterable, Sendable {
@@ -343,22 +410,26 @@ public struct Miss: Codable, Equatable, Hashable, Sendable {
 }
 
 public struct ScoreBreakdown: Codable, Equatable, Sendable {
-    /// Out of 40: required families present, forbidden ones absent.
+    /// Out of `ScoreWeights.coverage`: required families present, forbidden ones absent.
     public var coverage: Double
-    /// Out of 35: key ratios inside their bands, with partial credit for near misses.
+    /// Out of `ScoreWeights.ratioFit`: key ratios inside their bands, with partial credit for near misses.
     public var ratioFit: Double
     /// Out of 15: heat, numbing, acid, umami and sweetness inside the dish's envelope.
     public var signature: Double
     /// Out of 10: vessel and method.
     public var technique: Double
-    /// Out of 100, rounded from the unrounded parts.
+    /// Out of 100, rounded from the unrounded parts, then held to `cappedAt` when that is set.
     public var total: Int
+    /// Set when something in the dish didn't belong and the ceiling lowered the total (PD-027).
+    /// The four parts then add up to more than `total`.
+    public var cappedAt: Int?
     /// The attempt's measured flavour levels, 0 to 5 per axis. For the judge.
     public var levels: FlavorVector
     public var misses: [Miss]
 
     public init(coverage: Double, ratioFit: Double, signature: Double, technique: Double, total: Int,
-                levels: FlavorVector, misses: [Miss]) {
+                levels: FlavorVector, misses: [Miss], cappedAt: Int? = nil) {
+        self.cappedAt = cappedAt
         self.coverage = coverage
         self.ratioFit = ratioFit
         self.signature = signature

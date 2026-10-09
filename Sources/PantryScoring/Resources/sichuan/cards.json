@@ -1,0 +1,75 @@
+{
+ "schemaVersion": 1,
+ "cards": [
+  {
+   "id": "card-mapo-tofu",
+   "title": "Fry the paste first",
+   "body": "Doubanjiang tastes raw until it meets hot oil. Fry it alone until the oil runs red, then build the sauce on that.",
+   "rule": "Paste before liquid, every time.",
+   "tryTonight": "Fry a spoonful of any chili paste before the stock goes in."
+  },
+  {
+   "id": "card-kung-pao-chicken",
+   "title": "The litchi balance",
+   "body": "Kung pao is sweet and sour before it is hot. Sugar and black vinegar pull against each other, and the scorched chilies sit on top.",
+   "rule": "Sugar and vinegar in about equal measure.",
+   "tryTonight": "Taste the sauce before it hits the wok: sweet and sour should arrive together."
+  },
+  {
+   "id": "card-yuxiang-eggplant",
+   "title": "No fish in fish-fragrant",
+   "body": "The name is the seasoning once used for fish: pickled chili, garlic, ginger, scallion, sugar and vinegar. All three aromatics go in, and plenty of them.",
+   "rule": "Garlic, ginger and scallion, all three.",
+   "tryTonight": "Use the same six on pork slivers or tofu."
+  },
+  {
+   "id": "card-dan-dan-noodles",
+   "title": "Dress the bowl, not the pot",
+   "body": "The sauce is built in the bottom of the bowl: chili oil, soy and ground peppercorn. Hot noodles go on top and are tossed at the table.",
+   "rule": "Sauce in the bowl first, noodles second.",
+   "tryTonight": "Stir chili oil and soy in a bowl, then drop plain noodles on it."
+  },
+  {
+   "id": "card-twice-cooked-pork",
+   "title": "Cook it twice",
+   "body": "The belly is simmered whole, cooled and sliced, then fried until the slices curl and give up their fat. Only then does the bean paste go in.",
+   "rule": "Boil first, fry second, no added liquid.",
+   "tryTonight": "Fry leftover boiled or roast pork until the edges curl."
+  },
+  {
+   "id": "card-dry-fried-green-beans",
+   "title": "Dry means no water",
+   "body": "The beans fry in oil until they wrinkle and blister. Nothing wet goes in, so the flavour concentrates and the seasonings cling.",
+   "rule": "Blister first, season after.",
+   "tryTonight": "Fry green beans in a little oil until wrinkled before adding anything else."
+  },
+  {
+   "id": "card-shuizhu-fish",
+   "title": "The oil comes last",
+   "body": "The fish poaches gently in a bean-paste broth. Then chilies and peppercorn are piled on top and smoking oil is poured over them. That is where the aroma comes from.",
+   "rule": "Poach below, sizzle on top.",
+   "tryTonight": "Pour a spoonful of very hot oil over chili flakes on any soup."
+  },
+  {
+   "id": "card-kou-shui-chicken",
+   "title": "A cold dish, a loud dressing",
+   "body": "The chicken is poached and cooled, never fried. All the force is in the dressing: chili oil, soy, black vinegar, a little sugar and ground peppercorn.",
+   "rule": "Cook the chicken plain; season the sauce.",
+   "tryTonight": "Spoon chili oil, soy and vinegar over cold leftover chicken."
+  },
+  {
+   "id": "card-laziji",
+   "title": "Hunt for the chicken",
+   "body": "The chicken is fried crisp and buried in dried chilies. They perfume the oil and are mostly left on the plate.",
+   "rule": "Chilies for fragrance, not for eating.",
+   "tryTonight": "Toast a few whole dried chilies in the oil before you fry anything."
+  },
+  {
+   "id": "card-ants-climbing-a-tree",
+   "title": "Let the noodles drink",
+   "body": "Glass noodles soak up whatever they sit in. Braise them in the seasoned liquid until it is nearly gone and the pork clings like ants on twigs.",
+   "rule": "Cook until the liquid is absorbed, not drained.",
+   "tryTonight": "Finish any noodle in its sauce instead of in water."
+  }
+ ]
+}

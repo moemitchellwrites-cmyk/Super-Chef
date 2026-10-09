@@ -101,3 +101,293 @@ decisions table (`brief.md`, 2026-10-06, all Moe) stands as PD-000.
 - Made by: Moe (on Claude's proposal)
 - Status: accepted
 - Decision: `definition-of-done.md` as proposed is the bar. Nothing is complete until it meets it.
+
+## PD-012: The palette is SwiftUI, the wok is SpriteKit; tap or drag to add
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The brief gives SpriteKit "drag, drop, and particle effects in the pan" and also says "tap to add". The backlog item says drag-and-drop. Ingredient names run to two lines, and a palette drawn in SpriteKit is invisible to VoiceOver and to UI tests.
+- Decision: The palette, stepper, method chips and serve button are SwiftUI. The wok, the pile of ingredients and every visual twin are one SpriteKit scene. A chip is tapped to add it, or dragged: SwiftUI tracks the drag, lights the wok's rim while the chip is over it, and hands the drop point to the scene. Both gestures stay.
+- Rationale: Tap is the one-thumb, 60-to-120-second path; drag is the toy. Text, layout and accessibility are SwiftUI's strengths; physics and particles are SpriteKit's.
+- Consequences: A drop outside the wok does nothing. The scene has no touch handling of its own.
+
+## PD-013: One amount ladder per ingredient; the player never picks a unit
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (the units shown to US players stay open under PB-100)
+- Context: The brief offers "a dial or stepper" in pinch, tsp, tbsp, cup and 100 g. A unit picker plus a number is two controls per ingredient, twelve or more times a round.
+- Decision: Volume ingredients share one 21-step ladder that climbs pinch, ¼ tsp ... 1 tbsp ... ¼ cup ... 4 cups. Weight-only ingredients step 5 g to 1 kg in 22 steps. A new ingredient starts at one of its default unit (1 tsp, 1 tbsp, 1 cup) or 100 g, which is never tuned to the dish. The control is minus, plus and a slider over the same steps.
+- Rationale: Steps are roughly geometric because the scorer compares ratios in log space (PD-004), so each tap is a similar move in score terms. `StepperReachabilityTests` rebuilds every good golden on the ladder: all ten still score 100.
+- Consequences: Amounts between steps can't be entered. If the chef's red pen produces a profile that needs a finer step, that test fails and names it.
+
+## PD-014: Placeholder sounds are synthesised in code
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (replaced by Moe's recordings in PB-011)
+- Context: The brief suggests public-domain or licensed libraries for the MVP.
+- Decision: `PlaceholderSynth` generates the five cues (sizzle, boil, splash, clatter, flame) as samples at launch. No audio files in the repository.
+- Rationale: Nothing to license, attribute or audit, nothing binary to review, and the cues are deterministic so they can be tested. They are placeholders either way; time spent choosing library sounds is time not spent on the recordings that ship.
+- Consequences: They sound like placeholders. PB-011 swaps the buffers for files without touching the cue names.
+
+## PD-015: A cooking method is required before serving
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (amends the UX half of PD-007; the scorer still accepts an attempt without a method)
+- Context: PD-007 scores the vessel alone (10 points) when no method is given, and vessel 6 plus method 4 when one is. With one vessel on screen, a player who skips the method tap gets all 10 for free and one who guesses risks 4.
+- Decision: The serve button stays disabled, and says "Choose how to cook it", until a method is picked. The round offers every method some dish in the cuisine uses (six for Sichuan), so wrong ones are always on the table.
+- Rationale: The method is one of the most teachable things about a cuisine (PD-007); it shouldn't be optional homework.
+
+## PD-016: The audio session is ambient
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Decision: `AVAudioSession` category `.ambient`. The game obeys the silent switch and plays over the player's own music or podcast instead of stopping it. There is also a mute button on the round screen.
+- Rationale: It is a commute game. Killing someone's podcast on launch is how a game gets deleted. Every cue has a visual twin, so silence costs nothing.
+
+## PD-017: The app is a thin shell around the package
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted (the bundle identifier needs Moe)
+- Decision: Three package targets: `PantryScoring` (engine and content), `PantryGame` (the round as plain values: ladder, round state, cues, synth; no UI frameworks) and `PantryUI` (SwiftUI, SpriteKit, AVAudioEngine). `App/Pantry.xcodeproj` holds one Swift file and the asset catalog and links `PantryUI`. iPhone only, portrait only, iOS 17.
+- Rationale: Rules that live in `PantryGame` are tested by `swift test` and can be compiled in the cloud session. Adding a source file never touches the hand-written project file.
+- Consequences: The bundle identifier is `ai.skasiehi.pantry`, a placeholder. Moe names the real one and the Apple team before TestFlight (PB-006).
+
+## PD-018: CI builds the app, plays a scripted round and publishes what it saw
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The cloud session can't run Xcode or a simulator, and can't download workflow logs or artifacts.
+- Decision: One CI job: `swift build`, `swift test`, an iOS Simulator build of the app, then `scripts/ci-screenshots.sh` launches it on an iPhone 16 and an iPhone SE, plays a scripted round (`-pantryDemo`) and screenshots it. The last step force-pushes that run's logs and screenshots to the `ci-output` branch. App work goes through pull requests.
+- Rationale: A green build says the code compiles. A screenshot says the screen fits an SE and the round plays. The branch is the only channel the cloud session can read.
+- Consequences: `ci-output` is rewritten every run and holds nothing else. The workflow has `contents: write` for that push. The demo script ships in the app, muted and inert without its launch argument.
+
+## PD-019: PB-002 ships one vessel; the vessel choice is PB-008
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The backlog scopes PB-002 to "one wok". Mouth-watering chicken is a pot dish, so in the wok it tops out at 94.
+- Decision: Keep the scope. `Round.vessel` exists and defaults to the wok; choosing a vessel (wok or pot, with the flame click the brief asks for) is PB-008, ahead of the session loop.
+- Rationale: The scene had to be proven with one vessel first. A test pins the list of dishes the wok shortchanges to exactly that one.
+
+## PD-020: The palette order is shuffled per round
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Decision: `Round` shuffles the profile's palette with a seeded generator. The app seeds randomly; tests and the CI demo fix the seed.
+- Rationale: Profiles list real ingredients first and decoys last. Shown in that order, the bottom row of the palette is the answer key.
+
+## PD-021: Ingredients carry a short name, and no label says where an ingredient is from
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: The first simulator screenshots showed palette chips breaking words ("Cornstarc-h") and truncating ("Fermente-d black..."). One decoy was labelled "Hunan chopped salted chilies (duojiao)".
+- Decision: `Ingredient.shortName` (optional) is what a chip shows; validation requires it whenever `name` is over 22 characters. Twenty-two ingredients have one. Duojiao's name drops "Hunan". A test fails if any label names a cuisine or country.
+- Rationale: A chip has room for two short lines. Telling Sichuan from Hunan is the lesson (brief, "Decoy design"), so the label can't do it for the player.
+- Consequences: The field is optional and additive, so `schemaVersion` stays 1. Closes PB-105.
+
+## PD-022: UI tests drive the real screen on CI
+- Date: 2026-10-07
+- Made by: Claude
+- Status: accepted
+- Context: Drag-and-drop is PB-002's headline, and the cloud session can't touch a phone.
+- Decision: `App/PantryUITests` runs on an iPhone 16 simulator in CI: drag a chip into the wok, drop one outside it, tap to add, step the amount, switch between ingredients, pick a method, serve, take an ingredient out.
+- Rationale: It proves the gestures work. It can't say whether they feel good; that stays with Moe.
+- Outcome (2026-10-07): on its first run it caught that no drop ever landed: drags were tracked, but the wok's frame never reached the drag handler. Fixed the same day. The build had been green and the screenshots looked right.
+
+## PD-023: A browser stand-in so Moe can play a round from his phone
+- Date: 2026-10-07
+- Made by: Moe, on Claude's offer (new scope, accepted knowingly)
+- Status: accepted
+- Context: The iOS app needs Xcode 15 and a Mac that can run it. Moe's Mac wasn't reachable and may be too old; the new laptop is weeks out. Without a way to play, PB-002 can't be reviewed.
+- Decision: `web/` holds a one-page stand-in: a JavaScript port of the scorer and the stepper (`web/engine.js`), the same bundled Sichuan content inlined at build time (`scripts/build-web-standin.py`), tap or drag into a canvas wok, the method tap, synthesised cues with visual twins. Published as a private Claude artifact, "Pantry Stand-in".
+- Rationale: It answers two of the review questions today: does a round fit 60 to 120 seconds, and do the scores feel fair. The score sheet shows how long the round took, which the app never will (no timers).
+- Consequences: It is not the product. Drag feel, sound and the wok are approximations, and it must never be mistaken for a web version (the brief is native iOS only). The Swift engine stays the source of truth: `web/test-engine.cjs` runs the port against the same goldens on CI, so the two can't drift silently. Delete `web/` once the app is on TestFlight.
+
+## PD-024: Every dish opens with a one-line brief that describes the plate, not the recipe
+- Date: 2026-10-07
+- Made by: Moe raised the gap playing the stand-in; Claude proposed the rule; Moe accepted it
+- Status: accepted
+- Context: A player who has never eaten mapo tofu has nothing to aim at, so the score reads as arbitrary.
+- Decision: `DishProfile.brief`, one line of at most 120 characters, shown under the dish name before cooking in the app and the stand-in. It describes texture, look and how the dish should taste, and may name what the dish's own name names (or its main body in plain words). It never names a seasoning, an amount, a vessel or a method. Validation requires it and rejects digits; a test rejects seasoning and method words.
+- Rationale: The brief gives the target ("hot, numbing and deeply savoury"); finding what delivers it is still the round.
+- Consequences: Ten briefs written by Claude, for chef review with the profiles (PB-013). The field is optional in the schema and required by validation, so `schemaVersion` stays 1. Closes PB-009. The brief costs the wok a little height on small phones (PB-108).
+
+## PD-025: Two modes: Pantry (ingredients only) and Kitchen (the full round)
+- Date: 2026-10-07
+- Made by: Moe raised it (amounts are a lot to ask of a beginner, and recipes disagree on them); Claude argued for two modes over three levels; Moe: "two is probably fine"
+- Status: accepted (direction; not built)
+- Context: The round built in PB-002 asks for ingredients, amounts and a method at once. Moe's worry after playing: choosing amounts is tricky for a first-timer, especially when cookbooks differ.
+- Decision: Two modes, working names Moe can change.
+  - **Pantry**: pick what belongs. No amounts, no method, about thirty seconds a round. The score is a count, not a percentage: how many of the dish's ingredients you found, out of how many there are, plus a plain list of what you missed and what you added that doesn't belong.
+  - **Kitchen**: the full round as built, with amounts and a method, scored out of 100.
+- Rationale: The modes ask different questions (recognition, then proportion and technique), which is a truer split than easy, medium and hard. A count is a score the player can act on: "7 of 10" says three things are missing and the sheet names them. An 81 is a verdict, and a verdict that feels wrong (PB-023) teaches nothing. The scorer already separates ingredients, ratios, flavour and technique, so Pantry is a new round type and score sheet, not a new engine.
+- Amended 2026-10-07 (Moe, after playing): the pick limit is the essentials plus three, not plus two.
+- Amended again 2026-10-07 (Moe, with Claude agreeing): the pick limit is exactly the number of essentials. Spare picks made the count mean two things and put two numbers side by side ("find the 6" next to "0 of 9 picks"). Cost, accepted: a good but inessential pick now uses a slot an essential needed, so "not wrong, just not essential" has to be said clearly, and a third aromatic costs a slot. Taking a pick out stays free.
+- Consequences: Pantry is PB-015. It must not be brute-forceable by adding every chip: cap how many can go in, since lives are ruled out (brief: no lives). PB-023 (Kitchen scores too forgiving) is not solved by this; it stays open and comes before the judge line. The vessel choice (PB-008) belongs to Kitchen only.
+
+## PD-026: Progression is two brigade ladders, earned by consistency
+- Date: 2026-10-07
+- Made by: Moe (titles for consistent scores; build them on the traditional brigade; a separate ladder per mode); Claude (shape, rungs, ordering)
+- Status: accepted (direction; not built)
+- Decision: A title is earned by holding a level across the last five rounds, not by one good dish. Each mode has its own ladder, named from the kitchen brigade:
+  - Pantry: commis, chef de partie, sous chef.
+  - Kitchen: the same rungs and one more, chef de cuisine.
+  - Executive chef is held back until there is more than one cuisine.
+  - Three or four rungs per ladder, no more: a title only means something if it is rare.
+- Rationale: A rolling five rewards knowing the food over getting lucky, and gives a reason to keep playing once every dish has been seen. Separate ladders keep a title honest about what the player knows: finding ten of ten ingredients is not the same skill as holding 90 on proportions.
+- Consequences: Thresholds are open (Moe's examples: 80 over five for the first rung, 90 for the next). A title, once earned, is kept: taking one away would be streak shaming, which the brief rules out (Claude's call; say so if you disagree). What each rung should mean is a question for the chef reviewer. Built as PB-016, after the judge line (PB-003) and the scoring fix (PB-023): a badge on a score nobody trusts is decoration.
+
+## PD-027: Kitchen scoring: ratios carry more, and anything that doesn't belong sets a ceiling
+- Date: 2026-10-07
+- Made by: Claude (Moe asked to test "the scoring fix" in the stand-in; his verdict on how it feels is pending)
+- Status: accepted, pending Moe's play. Supersedes the point split in the brief and PD-008's 3x threshold.
+- Context: PB-023. Two rounds scored as near-good with real mistakes in them: a mapo tofu with 25 g of basil and no chili (88), and 100 g of tofu drowned in seasoning with all four ratios too high (81). A cup of cream in an otherwise perfect mapo tofu scored about 85. A score that says "good" to those teaches nothing.
+- Decision: three changes.
+  1. **Point split 30/45/15/10** (was 40/35/15/10): ten points move from ingredients to ratios. Pantry mode now asks what belongs; Kitchen is about proportion.
+  2. **Ratio credit reaches zero at 2.5x off** (was 3x). "Present, but wrong amount" (PD-008) follows the same threshold.
+  3. **A ceiling for things that don't belong.** Any off-cuisine or forbidden-for-the-dish ingredient caps the total: at 79 for a trace, falling in a straight line to 50 when such ingredients are a fifth of the dish by weight. `ScoreBreakdown.cappedAt` is set when the ceiling is what lowered the total, and the sheet says so, because the four parts then add up to more.
+- Rationale: "Good" starts at 85, so the rule is one a player can hold in their head: nothing that doesn't belong, and the proportions right. The penalties inside the ingredients part (PD-005) stay as they were; the ceiling does what they could not without pushing neighbour-cuisine attempts to zero. Considered and dropped: a large flat penalty for the first wrong ingredient (it put one neighbour attempt below its off-cuisine twin), and taking penalties off the total (neighbour attempts fell to single digits).
+- Consequences: basil mapo 88 to 74; drowned tofu 81 to 72; a pinch of basil in a perfect mapo 95 to 78; a cup of cream in it to 50. Every golden stays in its range and none moved more than 5 points; all good attempts still score 100. Still forgiving, on purpose left for Moe's ear and the chef: a perfect mapo without any chili scores 96 (chili heat is weighted 1 of 10), and five times the doubanjiang with ten times the sugar scores 77.
+- Amended 2026-10-07 (Moe, after playing: 74 for the basil mapo was "still a little kind, but close"): the ceiling now reaches 50 at a tenth of the dish, not a fifth. Basil mapo 74 to 69; a little basil in a perfect mapo 78 to 77; a tablespoon of sesame paste in it 76 to 73. No golden moved.
+- Also: the Swift engine and the stand-in's JavaScript port are now held to one file of exact results (`Tests/PantryScoringTests/Fixtures/parity.json`: 34 scored attempts, 40 Pantry verdicts), asserted by `ParityTests` and by `web/test-engine.cjs`.
+
+## PD-028: Every ingredient says what it tastes like and what it does
+- Date: 2026-10-07
+- Made by: Moe (players won't know doubanjiang; suggested a pop-up on first selecting an ingredient); Claude (the rule, and a strip in place of a pop-up)
+- Status: accepted; the strip-not-pop-up call is Claude's and open to Moe's objection
+- Decision: `Ingredient.about`, one line of at most 110 characters for all 65 ingredients: taste, texture and what it does in the pan ("Fermented broad bean and chili paste. Salty, deep and hot. Fried in oil first, until the oil turns red."). It never names a cuisine, a country or a dish. Required by validation; a test rejects cuisine words and dish names.
+- How it shows: touching a chip puts its note in a strip above the palette at once. Holding the chip still reads the note without adding it; a quick tap or a drag adds as before.
+- Rationale: A pop-up on first touch would sit between the finger and the wok, in a round meant to take thirty seconds, and it would stop being available after the first time, which is when a learner needs it again. The strip costs nothing to ignore and is there on every touch. Decoys get the same plain treatment as everything else, so the note never marks one out.
+- Consequences: Notes are Claude's writing and go to the chef with the profiles (PB-013). The strip costs height: on a short phone the round screen now scrolls, with the wok pinned (PB-108). In the stand-in now; the app shows it when the Pantry screen is built (PB-015).
+
+## PD-029: The score sheet ends with a real recipe
+- Date: 2026-10-07
+- Made by: Moe (the sheet should list an actual recipe with amounts and process after the scoring explanation); Claude (shape, and two objections recorded below)
+- Status: accepted for the stand-in; **two questions open for Moe before it goes into the app**
+- Decision: `DishProfile.recipe`: serves, vessel, method, amounts and three to seven steps. Shown on the score sheet after the verdict, in both modes, never before serving. Ten recipes written by Claude. Each recipe's amounts are the dish's known-good reference attempt, and content validation scores every recipe against its own profile: a recipe that the game would not call good fails the build.
+- Rationale: The verdict says what was off; the recipe shows what right looks like, with the process the round can't teach. Tying the recipe to the scorer means the game never teaches one thing and scores another.
+- Objections (Claude, once, for the record):
+  1. **This is most of "Cook It Tonight", which the brief makes the first paid feature** ($3.99 a month): "turn any attempt into a real recipe with quantities, steps, and a shopping list". A reference recipe free on every score sheet leaves the paid feature with the shopping list, scaling and export. That may be the right trade (the free recipe is the proof people cook what the game taught), but it is a pricing decision and Moe's to make.
+  2. **It works against "one judge line, one card, per round"** and the under-60-word card in the brief. A recipe is 150 to 200 words. In the stand-in it sits at the end of a scrolling sheet with the buttons pinned, so it costs nothing to skip; whether it replaces the card (PB-004) or sits beside it is open.
+- Consequences: Recipes go to the chef with everything else (PB-013); they are the most checkable thing in the content. `RecipeText` formats amounts ("2½ tbsp") and is tested. Not yet on the app's score sheet.
+
+## PD-030: The recipe is free to see; keeping and using it is Cook It Tonight
+- Date: 2026-10-07
+- Made by: Moe, on Claude's proposal
+- Status: accepted. Settles the first open question in PD-029. Moe wants to revisit whether seeing the recipe stays free; it stays free for now.
+- Decision: Free: the recipe appears on the score sheet after a round. Paid (Cook It Tonight): save it to a recipe list, shopping list, scale the servings, export.
+- Rationale: The free recipe proves the game teaches real cooking. The paid step is keeping and using what was learned.
+- Consequences: A screenshot gets a free player the recipe, so the saved list has to be worth more than a screenshot: the shopping list and scaling carry that. Saving is PB-019. Still open from PD-029: whether the recipe replaces the 60-word card or sits beside it.
+
+## PD-031: The round screen is layout B, with layout C for Pantry on small phones
+- Date: 2026-10-07
+- Made by: Moe, from three options Claude put on the "Pantry Round Screen" design canvas (PB-025). Claude recommended B; the small-phone exception is Moe's and Claude agrees with it.
+- Status: accepted. Spec for the app's Pantry screen (PB-015) and for the Kitchen screen when it is next touched. The stand-in follows it.
+- Decision:
+  - **Both modes, every size:** the mode switch sits in the header row with start-over and sound. The dish name, cuisine and brief live inside the wok's panel. Four-column palette, serve button at the bottom, nothing scrolls on a 375 × 667 screen.
+  - **Pantry, regular phones (B):** "Pick the N essentials" with N dots that fill, inside the panel. The ingredient note is a dark callout floating over the bottom of the panel while a chip is touched and for a moment after.
+  - **Pantry, small phones (C):** the ask is a full sentence in the panel, the count rides on the serve button ("Serve it · 3 of 6"), and the ingredient note is a fixed strip between the panel and the palette.
+  - **Kitchen, every size (B):** the amount stepper sits in the bottom of the panel and the six methods are one row of 44-point buttons. On small phones the brief is one line and the stepper is one row with a × for take-out.
+- Rationale: A (today's stack) is 133 points too tall on a small phone and spends four rows before the wok. B puts what the round is about next to the wok. On a small phone the panel is short, so B's floating note covers the wok just as the player is looking at it; C's strip doesn't.
+- Consequences: Two placements for the note and the count, switched on screen height (the stand-in uses 700 points). The small-phone stepper's × has no words, which goes against "say Take out in words" from PB-015: it keeps the accessibility label and is the one exception, for width. Placeholder art only; art direction stays with PB-011.
+
+## PD-032: The recipe is one tap from the score sheet; the card keeps its place
+- Date: 2026-10-07
+- Made by: Moe, from three options Claude drew on the design canvas. Claude recommended this one.
+- Status: accepted. Settles the last open question in PD-029 and unblocks PB-017.
+- Decision: The score sheet is the score, the judge line, the card, then a "See the recipe" button above the two action buttons. The recipe opens on its own page. It does not replace the card and is not printed on the sheet.
+- Rationale: Keeps "one judge line, one card, per round" and a sheet that fits one screen; the lesson is seen first. The recipe stays free (PD-030) but is a deliberate tap, which leaves a clean line to draw if free viewing is revisited. Printing it under the card buries the card; folding the lesson into the recipe gives away what the paid tracks are built on.
+- Consequences: The stand-in and the app's Kitchen score sheet follow it now. The card's slot stays empty until PB-004. In Pantry mode the recipe is where "not essential" gets explained, so the button must stay prominent there.
+
+## PD-033: A recipe reads in the measures the Kitchen stepper offers
+- Date: 2026-10-07
+- Made by: Moe (he saw the recipe and the stepper disagree); Claude chose the fix.
+- Status: accepted. Regional units are separate work (PB-026).
+- Decision: Every recipe amount is exactly a step on that ingredient's stepper ladder, in the same unit. Thirty-six lines were rewritten (garlic, ginger, scallion, stock and oil had been in grams while the stepper offers spoons and cups; a few weights sat between steps). A test fails the build if a recipe amount can't be dialled.
+- Rationale: The recipe is the answer to the round. If it says "10 g garlic" and the stepper only offers "2 tsp", the player can't act on what they just learned.
+- Consequences: Amounts moved by a rounding step at most; every recipe still scores as a good attempt (PD-029 check). The goldens keep their sourced gram figures. What the measures should be in each country is PB-026.
+
+## PD-034: The app opens in Pantry mode; each mode keeps its own wok
+- Date: 2026-10-08
+- Made by: Claude
+- Status: accepted, for Moe's review when he can run the app.
+- Decision: The app opens in Pantry mode, as the stand-in does. A switch in the header changes mode. Each mode has its own round and wok, so switching back finds it as it was left; choosing a different dish in one mode carries to the other when you switch. Sound on or off is shared. Both screens in the app follow PD-031.
+- Rationale: Pantry is the easier way in (PD-025's progression). Throwing away a half-built Kitchen round because the player peeked at Pantry would punish curiosity.
+- Consequences: Two SpriteKit scenes are alive at once; if that costs battery or memory on a phone, share one. `-pantryMode kitchen` opens in Kitchen (the Kitchen UI tests use it). The session loop (PB-005) will decide which mode a session deals; this is the interim.
+
+## PD-035: A Kitchen round starts with a bare burner; the player chooses wok or pot
+- Date: 2026-10-08
+- Made by: Claude (PB-008, from the brief: the player "picks a cooking vessel")
+- Status: accepted, for Moe's review in the stand-in.
+- Decision: A Kitchen round opens with an empty burner and two buttons, Wok and Pot. Nothing can be added until one is chosen; it lands with a clatter. A small switch beside the dish name swaps it at any time and keeps what is in it. Start over clears the vessel too. Pantry mode always shows the wok and asks nothing.
+- Rationale: The vessel is worth 6 of the 100 points. Starting every round in a wok gave those points away on nine dishes of ten and taught nothing about the tenth. Making it the first act costs one tap and reads naturally: you can't cook without a pan.
+- Alternatives: default to the wok with a switch (no decision, no learning); offer every vessel in the model (only wok and pot are used by this cuisine).
+- Consequences: Mouth-watering chicken can now reach 100. `Round.vessel` is optional and `Round.add` can answer `.needsVessel`. The scene draws a pot. Showing the right vessel in Pantry would leak a Kitchen answer, so Pantry keeps the wok for every dish, including the pot dish; if that reads as wrong, Pantry should show a neutral bowl. In the stand-in the Kitchen ingredient note now shows only when a chip is held, because at a touch it covered the vessel.
+
+## PD-036: The judge's one line is canned, and names one thing
+- Date: 2026-10-08
+- Made by: Claude (PB-003)
+- Status: accepted, for Moe's review in the stand-in.
+- Decision: Every verdict carries one sentence, built from the score with no model call. It names the single thing most worth fixing, in this order: something from another cuisine, something wrong for the dish, a missing essential, the wrong pan, the wrong method, then amounts and flavour balance. A clean dish is told so. Pantry gets its own line from its own verdict. The raw miss codes leave the app's score sheet.
+- Rationale: The brief promises one judge line per round. One named fix is something a player can act on next round; a list isn't. Canned lines are free, instant, offline and testable, and they are the fallback when the AI judge (later) can't be reached.
+- Consequences: The sentences live in `JudgeLine` (Swift) and `engine.js`, and every golden's line is pinned in the parity file, so the two can't drift. The wrong-pan and wrong-method lines name what the recipe uses. Lines are worded to read the same for singular and plural ingredient names ("The chopped salted chilies came from another kitchen"). The voice is plain; whether the judge has a persona is the brief's open question and not decided here.
+
+Addendum to PD-035 (Moe, 2026-10-08): the wok stays in Pantry mode. It is a neutral container for the essentials; revisit only if players carry it over as the Kitchen answer.
+
+## PD-037: Ten cards, one per dish, written to the brief's format
+- Date: 2026-10-08
+- Made by: Claude (PB-004)
+- Status: accepted as a draft for the chef's review (PB-013); Moe to read them in the stand-in.
+- Decision: Each dish has one card: a title, two or three sentences, one rule, one "try this tonight". Every card is under sixty words, enforced by content validation. The card shows on the score sheet in both modes, after the verdict and before the way to the recipe (PD-032). Rules are stated as relations ("sugar and vinegar in about equal measure", "paste before liquid") and never in grams or cups.
+- Rationale: A rule without units survives the US and metric split (PB-026) and is what a cook remembers at the stove. One card per dish is the MVP in the brief; a card chosen by what the player fumbled is the richer version and needs more cards than ten.
+- Consequences: The same card shows every time a dish is played, win or lose. That will wear thin within a session of repeats; the session loop (PB-005) deals five different dishes, which hides it for now. Card history and "earned" cards are not built. The cards are the most quotable content in the game and the first thing the chef should red-pen.
+
+## PD-038: Tracks are the purchase; no monthly plan at launch
+- Date: 2026-10-08
+- Made by: Claude, on Moe's instruction to make the calls and report them ("make the choices for what's best moving forward"). Supersedes the pricing table in the brief until Moe says otherwise.
+- Status: accepted. Nothing built depends on it yet (the MVP has no purchases), so it is cheap to reverse.
+- Decision:
+  - **Free:** random dishes, the score, the judge's line, the card, and seeing the recipe (unchanged, PD-030).
+  - **A cuisine track, $9.99 once:** its lessons, and the "Cook It Tonight" tools for that cuisine's recipes (save, shopping list, scaling, export). The tools are not sold separately and there is no $3.99 monthly plan.
+  - **A recurring plan** is revisited only when there is a recurring reason to pay: three or more cuisines and new dishes arriving on a schedule, sold as a pass to all of them.
+  - **Grocery hand-off** (PB-024) is a convenience budgeted at zero revenue, built only after Instacart confirms its developer programme is open.
+  - **No paid acquisition** until measured net revenue per install passes $1.
+  - **The judge stays canned for free players** through the MVP (closes PB-032).
+- Rationale: the market and money review (`reports/Pantry market and money review.md`). The monthly plan sold what recipe managers sell once for $4.99 to $24.99, and low-priced monthly plans keep about one subscriber in ten for a year; a base-case subscriber nets about $10 in year one against $8.49 for one track sale. Folding the tools into the track makes the track worth more and leaves one thing to buy. Paid installs cost $2.91 to $4.63 against about $0.27 earned.
+- Consequences: Revenue is capped per player at $9.99 times the cuisines owned, so growth depends on shipping cuisines and on reach. PB-019 (save a recipe) becomes part of the track. The number that matters most, how many players buy a track, has no benchmark and has to be measured in the first few thousand installs.
+
+## PD-039: A session is five dealt dishes in one mode; the first serve of a round counts
+- Date: 2026-10-08
+- Made by: Claude (PB-005)
+- Status: accepted, for Moe's review in the stand-in.
+- Decision:
+  - A session is five different dishes in one mode, dealt up front. Each mode has its own session. The next session brings the other five dishes.
+  - The dish is dealt, not chosen: the dish menu is gone. The panel shows "Sichuan · 2 of 5".
+  - The score sheet's forward button is "Next dish", and "Finish" on the fifth round, which opens the summary: one number (Kitchen: the average; Pantry: essentials found of all there were), one plain line, the five dishes with the best one and one "worth another go" marked, that dish's card, and "New session".
+  - **The first serve of a round is the one the session keeps.** After it the player has seen the verdict, so serving the same dish again is practice. The sheet says so when the second result differs.
+  - No timer, nothing lost by stopping: a session waits where it was left, including on the summary.
+- Rationale: The brief's session ("3 to 5 rounds, then a summary") and its MVP question. Dealing the dishes is what makes it a session and not a menu. Counting the first serve keeps the summary honest without forbidding a second go, which is where the learning is.
+- Alternatives: count the last serve (a Pantry player would read the answer off the sheet and serve it back); forbid a second serve (shames curiosity).
+- Consequences: A player can no longer pick a dish to practise; that returns with tracks or a practice mode if it is missed. The summary line has three wide bands on purpose. Brigade titles (PB-016) can now be built on session records.
+
+## PD-040: Progress is one JSON file, not SwiftData, for the MVP
+- Date: 2026-10-08
+- Made by: Claude (PB-005). A departure from the brief's stack table.
+- Status: accepted for the MVP.
+- Decision: `GameProgress` (sessions in play, finished sessions) is a Codable value written to `Application Support/Pantry/progress.json` by `ProgressFile`. A missing or unreadable file is an empty start.
+- Rationale: The MVP stores a few kilobytes with no queries. A Codable file is testable on Linux with the rest of the rules, where SwiftData is not, and this project can only compile Apple-only code on CI. SwiftData earns its place when purchases, card history and saved recipes arrive.
+- Consequences: Moving to SwiftData later means a one-time import of this file. Nothing leaves the phone either way.
+
+## PD-041: Measures follow the phone's region: US reads ounces and cups, everyone else grams and millilitres
+- Date: 2026-10-08
+- Made by: Moe raised it ("grams is hard for people to picture in the US"); Claude designed it (PB-026).
+- Status: accepted, for Moe's review in the stand-in (which follows the browser's region).
+- Decision:
+  - **US:** spoons and cups for volume; ounces and pounds for weight, from ¼ oz to 2 lb. A new weight ingredient starts at 4 oz.
+  - **Everywhere else:** spoons for small amounts, then millilitres (60 ml to 1 L); grams for weight. A new weight ingredient starts at 100 g.
+  - There is no setting. The app reads the phone's region; `-pantryMeasures us|metric` overrides it for tests.
+  - One system at a time across the stepper, the chips, the wok's description and the recipe. A recipe line is shown as the nearest step of that ingredient's stepper in the player's system, so what you read is always something you can dial.
+  - Scoring doesn't change and never sees the system: every step is handed to the scorer as grams or as the same spoon and cup amounts as before.
+- Rationale: A player should picture the amount without converting. Metric keeps spoons because no kitchen scale weighs half a teaspoon of ground pepper, and metric recipes use spoons too.
+- Consequences: An ounce step is not a gram step, so a US round and a metric round of the same dish can differ by a rounding step; tests hold every good golden and every recipe at 85 or better in both systems. Content stays stored once, in grams and cups. The cards have no units (PD-037), so they needed nothing. The UK gets metric, though some UK cooks think in ounces.
+

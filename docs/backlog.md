@@ -1,19 +1,40 @@
 # Pantry: Backlog
 
 ## Next session: open with this
-1. PB-001 is done (CI green, PD-008 amendment in). Moe accepted PD-002, PD-007, PD-008 and the definition of done on 2026-10-07.
-2. PB-007 is done: this repository (Super-Chef) holds the game with its history; Studio-Companion keeps only a pointer. Start cooking-game sessions here.
-3. Then PB-002, the vessel scene, with the method tap (PD-007).
+1. PB-002 is built and in review (pull request #1): CI is green: it plays a scripted round on an iPhone 16 and an iPhone SE simulator, and UI tests drag, tap, step and serve. It is **not done** until Moe has played a round on a phone: see "PB-002: what's left" below.
+2. Needed from Moe: play it. From a phone today: the browser stand-in (PD-023, the "Pantry Stand-in" artifact) for round length and scoring feel. For drag, sound and the wok: Xcode 15 or newer, open `App/Pantry.xcodeproj`, run on an iPhone or a simulator. Then say what feels wrong. Name the bundle identifier and Apple team (PD-017).
+3. In Moe's hands now, in the stand-in: Pantry mode (PB-015, rules built and tested; app screen not built) and the Kitchen scoring fix (PD-027, closes PB-023 if it feels right). Needed from Moe: play both and say what feels wrong.
+4. Built and CI-green, not yet seen by Moe in the real app: the Pantry screen and the Kitchen screen on layout B (PD-031), the mode switch (PD-034), the recipe behind a button (PD-032). Then, PB-008 (vessel choice), PB-003 (canned judge line).
+5. The real app can't run on either of Moe's current Macs (Mac Pro on Catalina; MacBook Pro Early 2015 tops out at macOS 12, Xcode 14.2, iOS 16). It waits for the new laptop, or for TestFlight from CI, which needs an Apple Developer account (PB-006). The stand-in is the review tool until then.
+
+### PB-002: what's left
+- [ ] Moe plays a round on a real phone: drag and tap both feel right, a round fits 60 to 120 seconds one-handed, the sounds are tolerable as placeholders. Nothing in CI can judge these.
+- [ ] Moe's review of PD-012 to PD-022 (all Claude's calls).
 
 Ordered by priority. New requests go to the **Parking lot** unless Moe trades out existing scope.
 
 Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## MVP (brief, build order)
-- [ ] PB-002: Vessel scene: one wok, drag-and-drop ingredients, amount stepper, a one-tap cooking method (PD-007), placeholder sounds. Ugly is fine.
-- [ ] PB-003: Canned judge line from the score breakdown (`ScoreBreakdown.misses` and `pattern`). No LLM yet.
-- [ ] PB-004: Ten cards, one per dish, shown on submit. Card ids are already in the profiles.
-- [ ] PB-005: Session loop: five rounds, summary screen, local progress (SwiftData).
+- [ ] PB-002: Vessel scene: one wok, drag-and-drop ingredients, amount stepper, a one-tap cooking method (PD-007), placeholder sounds. Ugly is fine. **Built 2026-10-07, in review (PR #1); awaiting Moe's hands on a phone.**
+- [x] PB-025: Round-screen layout: Moe picked B, with C for Pantry on small phones (PD-031, 2026-10-07). The stand-in follows it; the boards stay on the "Pantry Round Screen" design canvas as the spec for the app screens.
+- [x] PB-027: Market and money review (Moe asked, 2026-10-08): done, in `reports/Pantry market and money review.md` with its source notes under `research_notes/`. Planning number: about $0.27 net per install in the base case, so about 3,700 installs a month per $1,000; tracks carry it; paid acquisition doesn't pay back. The decisions it raises are PB-029 to PB-032.
+- [x] PB-029: The shape of "Cook It Tonight": decided, PD-038 (Claude, on Moe's instruction, 2026-10-08). The tools come with a cuisine track; no monthly plan at launch.
+- [ ] PB-030: Test organic reach (decided to do it, PD-038 discussion): once the session loop is in Moe's hands, Claude drafts a short post and a share-ready stand-in link for the Chinese-cooking video and forum audience; Moe posts it under his name and we count who asks for the app. Installs, not conversion, are the binding constraint.
+- [ ] PB-031: Admin that is cheap now and costly later: enrol in Apple's Small Business Program before the first sale (15% instead of 30%; not automatic); ask Instacart whether Developer Platform applications are open before designing PB-024 around it. Needs Moe's Apple account.
+- [x] PB-032: The judge stays canned for free players through the MVP (PD-038).
+- [ ] PB-026: Measures by region (PD-041): US reads ounces, pounds, spoons and cups; everyone else grams, millilitres and spoons; the phone's region decides. **Built 2026-10-08 in the rules (both systems tested against every golden and recipe), the app (UI-tested in US measures) and the stand-in. Awaiting CI and Moe.**
+- [ ] PB-015: Pantry mode (PD-025): an ingredients-only round, about thirty seconds, no amounts or method. Scored as a count ("4 of 6 essentials found"), with what was missed, what doesn't belong and what belongs but isn't essential named. Picks are limited to exactly the number of essentials (Moe's call after playing with two and three spare), so it can't be brute-forced and one number means one thing. **Rules built and tested and playable in the stand-in. The app screen is built to PD-031 (2026-10-08): essentials count and dots, ingredient note (floating on regular phones, a strip on small ones), hold to read, × on picked chips, drag onto the panel, the verdict sheet with "Not wrong, just not essential" explained, and the recipe one tap away with essentials marked. UI tests cover it and CI is green (2026-10-08), with screenshots of both modes on an iPhone 16 and an iPhone SE. Hold-to-read has no test. Awaiting Moe on a phone. The Kitchen screen is on layout B too (stepper inside the panel, six methods in one row, "Take out" in words; a cross on small phones).**
+- [ ] PB-008: Vessel choice (PD-035): a Kitchen round starts with a bare burner; the player picks wok or pot, and can swap. **Built 2026-10-08 in the rules (tested), the app (UI-tested) and the stand-in. Awaiting CI and Moe.**
+- [ ] PB-028: Ingredient notes in the app's Kitchen screen: hold a chip to read what it is, as the stand-in does (PD-028, PD-035). The app has notes in Pantry only. **Built 2026-10-09: hold a chip and the note takes the stepper's place for six seconds or until a tap; a VoiceOver action reads it too. UI tests for holding in both modes, CI green 2026-10-09. Awaiting Moe on a phone.**
+- [ ] PB-003: The judge's one line (PD-036): canned from the verdict, names one thing to fix, in both modes. **Built 2026-10-08 in the rules (every golden's line pinned), both score sheets in the app and the stand-in. Awaiting CI and Moe.** The AI judge is later.
+- [ ] PB-016: Brigade ladders (PD-026): a title earned by holding a level over the last five rounds, one ladder per mode (Pantry: commis, chef de partie, sous chef; Kitchen adds chef de cuisine). Titles are kept once earned. Thresholds and what each rung means are open; ask the chef. After PB-003 and PB-023.
+- [ ] PB-017: Recipe on the app's score sheet (PD-029, PD-032): a "See the recipe" button on the sheet opens the recipe on its own page, essentials marked. **Built on both sheets, UI-tested, CI green (2026-10-08). Awaiting Moe on a phone.**
+- [ ] PB-019: Save a recipe for later (Moe, 2026-10-07): a "Save" on the score sheet's recipe and a saved-recipes list. Paid, as the first piece of Cook It Tonight (PD-030). Needs local persistence (SwiftData, arrives with PB-005). Not built; not in the stand-in.
+- [ ] PB-024: Ordering hand-off from the shopping list (Moe, 2026-10-07; for after Cook It Tonight exists). Claude's first read, to be redone properly before any outreach: (1) Instacart Developer Platform first: it turns a recipe's ingredient list into a shoppable page the player opens, it pays through an affiliate programme, and it needs no account in our app; (2) a specialist for what supermarkets don't stock (doubanjiang, yacai, Sichuan pepper): Weee! has an affiliate programme, The Mala Market sells the real things and has wholesale but no affiliate programme we could find, so that one is a relationship to build, and a natural one alongside the chef; (3) retailer-direct APIs (Kroger, Walmart) later, if ever. Hand-off by link only: no accounts, and nothing about the player leaves the app (brief, Privacy). "Personalised" has to mean what the player chose on their own phone, not a profile we hold.
+- [ ] PB-018: Several classic versions per dish in Kitchen mode (Moe's question, 2026-10-07). Shape agreed by Moe 2026-10-07 (versions are feedback, never the score): the score stays grammar-based (brief, decision one); each dish carries two to four named reference recipes, each validated to score as good, and the sheet says which one the player's dish sits closest to and what separates them. Needs real, sourced versions, so it follows the chef review (PB-013).
+- [ ] PB-004: Ten cards, one per dish (PD-037): written, validated under sixty words, and shown on both score sheets in the app and the stand-in. **Built 2026-10-08. Awaiting CI, Moe's read, and the chef (PB-013).** Later: more than one card per dish, chosen by what the player fumbled; card history.
+- [ ] PB-005: Session loop (PD-039, PD-040): five dealt dishes per mode, the first serve counts, a summary, progress kept in one file. **Built and CI-green 2026-10-08, with a UI test that plays five rounds to the summary; in the stand-in. Moe played five rounds in the stand-in 2026-10-09: "It was all good." Still awaiting Moe on a phone for the app itself.**
 - [ ] PB-006: TestFlight to 20 people; measure session completion, day-two return, lowest-scoring dishes.
 
 ## After MVP (brief, step 7)
@@ -25,6 +46,7 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 
 ## Engine follow-ups
 - [ ] PB-021: Free-cook scoring (lessons 37 to 40): score an attempt against the cuisine with no dish named. Needs a cuisine-level profile.
+- [ ] PB-023: **Fix in for Moe's test (PD-027); close when he says it feels right.** Should an off-cuisine ingredient cap the score? The CI demo round is a sound mapo tofu with 25 g of basil and no chili, and it scores 88, above the "good" line. Needs Moe's ear and then the chef's (found building PB-002). Second case, from the stand-in: 100 g of tofu with every seasoning at its starting amount is "too much" on all four ratios and still scores 81.
 - [ ] PB-022: A second cuisine's content to prove the schema isn't Sichuan-shaped (Japanese home cooking: 1:1:1 soy, mirin, sake is a clean ratio test).
 
 ## Parking lot
@@ -33,9 +55,14 @@ Item format: `- [ ] PB-NNN: <title>: <outcome>`
 - [ ] PB-102: Which chef first, and through whom.
 - [ ] PB-103: Cook It Tonight on-device from the profile, or via the backend.
 - [ ] PB-104: Name for the game.
+- [ ] PB-106: Accessibility pass on the round screen: Dynamic Type (the palette uses fixed sizes to fit twenty chips), Reduce Motion, a VoiceOver walk-through. Labels and actions are in; nobody has listened to it yet.
+- [ ] PB-108: Small phones. On an iPhone SE the layout fits but the wok shrinks to about half the screen's width. Decide whether that is good enough or the round screen needs a compact layout.
+- [ ] PB-107: A sizzle bed that loops under the one-shots once the burner is lit (brief: "a sizzle loop plus one-shot adds"). Belongs with the real sound (PB-011).
 - Declined for MVP (brief): accounts, social, leaderboards, multiplayer, recipe import, user-generated dishes, Android.
 
 ## Done
+- [x] PB-009: A one-line dish brief before cooking (2026-10-07, PD-024; built and tested, in the app and the stand-in; rides in the PB-002 pull request).
+- [x] PB-105: Short ingredient names that fit a chip and don't name the ingredient's home (2026-10-07, PD-021; found and fixed inside PB-002).
 - [x] PB-007: Split into its own repository with history (2026-10-07): Moe created `moemitchellwrites-cmyk/Super-Chef`; history pushed, own CI green, own CLAUDE.md, pointer left in Studio-Companion.
 - [x] PB-001: Scoring module with golden tests (2026-10-07; CI green; chef review of profiles and potencies stays open under PB-013).
 - [x] PB-020: PD-008 amendment: half coverage credit for a present-but-grossly-off family (2026-10-07).

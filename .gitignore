@@ -7,3 +7,8 @@ DerivedData/
 .env
 *.key
 .DS_Store
+
+# Xcode and CI working files
+xcuserdata/
+/build/
+/ci-out/

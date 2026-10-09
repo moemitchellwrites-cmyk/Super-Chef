@@ -105,6 +105,51 @@ final class ScorerTests: XCTestCase {
         XCTAssertLessThan(pinchScore, 100)
     }
 
+    // MARK: the ceiling for things that don't belong (PD-027)
+
+    func testAnythingThatDoesNotBelongKeepsADishOutOfGood() {
+        // Off-cuisine (basil) and forbidden for this dish (sesame paste): even a trace in an
+        // otherwise perfect mapo tofu holds it under 85.
+        for (id, amount, unit) in [("basil", 5.0, AmountUnit.grams), ("sesame-paste", 1.0, AmountUnit.pinch)] {
+            var attempt = goodMapo
+            attempt.lines.append(line(id, amount, unit))
+            let breakdown = library.scorer.score(attempt, against: mapo)
+            XCTAssertEqual(breakdown.cappedAt, breakdown.total, id)
+            XCTAssertLessThan(breakdown.total, 85, id)
+            XCTAssertGreaterThanOrEqual(breakdown.total, 75, "\(id): a trace shouldn't cost much more than 'good'")
+            XCTAssertGreaterThan(breakdown.coverage + breakdown.ratioFit + breakdown.signature + breakdown.technique,
+                                 Double(breakdown.total), "\(id): the parts add up to more than a capped total")
+        }
+    }
+
+    func testTheCeilingFallsAsTheWrongIngredientTakesOverTheDish() {
+        var totals: [Int] = []
+        for grams in [5.0, 50, 100, 250, 1000] {
+            var attempt = goodMapo
+            attempt.lines.append(line("cream", grams, .grams))
+            totals.append(library.scorer.score(attempt, against: mapo).total)
+        }
+        XCTAssertEqual(totals, totals.sorted(by: >), "\(totals)")
+        XCTAssertGreaterThan(totals[0], totals[3])
+        XCTAssertLessThanOrEqual(totals[3], Int(ScoreWeights.wrongIngredientLowCeiling), "a cup of cream is a different dish")
+    }
+
+    func testACleanDishIsNeverCapped() {
+        XCTAssertNil(library.scorer.score(goodMapo, against: mapo).cappedAt)
+        var thin = goodMapo
+        thin.lines.removeAll { $0.ingredientId == "doubanjiang" }
+        let breakdown = library.scorer.score(thin, against: mapo)
+        XCTAssertNil(breakdown.cappedAt, "missing things lower the parts; only wrong things set a ceiling")
+        XCTAssertLessThan(breakdown.total, 85)
+    }
+
+    func testALowScoringDishWithAWrongIngredientIsNotCapped() {
+        let attempt = Attempt(dishId: "mapo-tofu", lines: [line("firm-tofu", 400), line("cream", 240)], vessel: .wok, method: .braise)
+        let breakdown = library.scorer.score(attempt, against: mapo)
+        XCTAssertNil(breakdown.cappedAt, "the ceiling only shows when it is what lowered the total")
+        XCTAssertLessThan(breakdown.total, Int(ScoreWeights.wrongIngredientLowCeiling))
+    }
+
     func testRemovingTheDefiningIngredientCostsMoreThanAGarnish() {
         var noPaste = goodMapo
         noPaste.lines.removeAll { $0.ingredientId == "doubanjiang" }
@@ -178,7 +223,7 @@ final class ScorerTests: XCTestCase {
         let below = Scorer.bandCredit(ratio: 0.04, low: 0.08, high: 0.12)
         let above = Scorer.bandCredit(ratio: 0.24, low: 0.08, high: 0.12)
         XCTAssertEqual(below, above, accuracy: 1e-9)
-        XCTAssertEqual(below, 1 - log(2) / log(3), accuracy: 1e-9)
+        XCTAssertEqual(below, 1 - log(2) / log(ScoreWeights.ratioZeroAtFactor), accuracy: 1e-9)
         XCTAssertEqual(Scorer.bandCredit(ratio: 0.36, low: 0.08, high: 0.12), 0, accuracy: 1e-9)
         XCTAssertEqual(Scorer.bandCredit(ratio: 1, low: 0.08, high: 0.12), 0)
         XCTAssertEqual(Scorer.bandCredit(ratio: 0, low: 0.08, high: 0.12), 0)
@@ -194,9 +239,10 @@ final class ScorerTests: XCTestCase {
         let breakdown = library.scorer.score(attempt, against: mapo)
         XCTAssertTrue(breakdown.misses.contains(Miss(.ratioHigh, "doubanjiang to tofu")))
         XCTAssertLessThan(breakdown.ratioFit, ScoreWeights.ratioFit)
-        // 4x the paste is more than 3x past the band: present, but wrong amount (PD-008).
+        // 4x the paste is past the point where ratio credit hits zero: present, but wrong amount (PD-008).
         XCTAssertTrue(breakdown.misses.contains(Miss(.wrongAmount, "doubanjiang")))
-        XCTAssertEqual(breakdown.coverage, 34, accuracy: 0.01, "doubanjiang carries 3 of 10 coverage weights; half of that is 6 points")
+        XCTAssertEqual(breakdown.coverage, ScoreWeights.coverage * 8.5 / 10, accuracy: 0.01,
+                       "doubanjiang carries 3 of 10 coverage weights and keeps half of them")
     }
 
     func testMildlyOverSaucingKeepsFullCoverage() {

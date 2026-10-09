@@ -101,6 +101,20 @@ final class PantryUITests: XCTestCase {
         XCTAssertEqual(amount.label, "1 cup")
     }
 
+    func testHoldingAChipReadsWhatItIsWithoutAddingIt() {
+        chip("doubanjiang").press(forDuration: 0.8)
+        let note = app.staticTexts["note"]
+        XCTAssertTrue(note.waitForExistence(timeout: 3), "holding an ingredient showed no note")
+        XCTAssertTrue(note.label.hasPrefix("Doubanjiang."), note.label)
+        XCTAssertEqual(app.otherElements["wok"].label, "Wok, empty")
+        XCTAssertEqual(chip("doubanjiang").label, "Doubanjiang")
+
+        // Adding something puts the amount back where the note was.
+        chip("garlic").tap()
+        XCTAssertTrue(amount.waitForExistence(timeout: 5))
+        XCTAssertFalse(note.exists)
+    }
+
     func testTakingAnIngredientOutEmptiesTheWok() {
         chip("garlic").tap()
         XCTAssertTrue(amount.waitForExistence(timeout: 5))
@@ -167,6 +181,14 @@ final class PantryModeUITests: XCTestCase {
 
         app.buttons["see-recipe"].tap()
         XCTAssertTrue(app.staticTexts["recipe-title"].waitForExistence(timeout: 5), "the recipe didn't open")
+    }
+
+    func testHoldingAChipReadsWhatItIsWithoutPickingIt() {
+        chip("doubanjiang").press(forDuration: 0.8)
+        let note = app.staticTexts["note"]
+        XCTAssertTrue(note.waitForExistence(timeout: 3), "holding an ingredient showed no note")
+        XCTAssertTrue(note.label.hasPrefix("Doubanjiang."), note.label)
+        XCTAssertEqual(picks.label, "0 of 6 picked")
     }
 
     func testDraggingAChipOntoThePanelPicksIt() {

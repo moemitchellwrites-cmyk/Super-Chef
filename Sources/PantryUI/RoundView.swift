@@ -19,6 +19,8 @@ struct RoundView: View {
     private let onToggleMute: () -> Void
     @State private var drag: Drag?
     @State private var wokFrame: CGRect = .zero
+    @State private var noteId: String?
+    @State private var noteToken = 0
 
     private static let space = "round"
 
@@ -61,7 +63,10 @@ struct RoundView: View {
                 mode: $mode,
                 canStartOver: round.vessel != nil || !round.entries.isEmpty || round.method != nil,
                 isMuted: model.isMuted,
-                onStartOver: { model.startOver() },
+                onStartOver: {
+                    noteId = nil
+                    model.startOver()
+                },
                 onToggleMute: onToggleMute
             )
             panel(compact: compact)
@@ -275,7 +280,19 @@ struct RoundView: View {
     /// one on a small one, where take-out is a cross (the one place it has no words, for width).
     private func stepperBar(compact: Bool) -> some View {
         Group {
-            if let id = round.selectedId, let ingredient = round.ingredient(id), let ladder = round.ladder(for: id),
+            if let noted = noteId.flatMap({ round.ingredient($0) }) {
+                // Hold a chip to read what it is (PD-028). The note borrows the stepper's place,
+                // so it never covers the wok or the vessel choice, and leaves on a tap.
+                Text("\(Text(noted.chipName + ".").bold()) \(noted.about ?? "")")
+                    .font(.footnote)
+                    .foregroundStyle(PanelInk.ink)
+                    .lineLimit(compact ? 3 : 4)
+                    .minimumScaleFactor(0.8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
+                    .onTapGesture { noteId = nil }
+                    .accessibilityIdentifier("note")
+            } else if let id = round.selectedId, let ingredient = round.ingredient(id), let ladder = round.ladder(for: id),
                let entry = round.entry(for: id) {
                 let measure = ladder.measure(at: entry.stepIndex)
                 if compact {
@@ -404,11 +421,20 @@ struct RoundView: View {
                 )
                 .opacity(drag?.ingredientId == ingredient.id ? 0.35 : 1)
                 .onTapGesture {
+                    noteId = nil
                     model.add(ingredient.id)
+                }
+                .onLongPressGesture(minimumDuration: 0.4) {
+                    // Hold to read without adding.
+                    showNote(ingredient.id)
+                }
+                .accessibilityAction(named: "Read what it is") {
+                    showNote(ingredient.id)
                 }
                 .gesture(
                     DragGesture(minimumDistance: 10, coordinateSpace: .named(Self.space))
                         .onChanged { value in
+                            noteId = nil
                             // Hold the ghost a little above the finger so the thumb doesn't cover it.
                             drag = Drag(ingredientId: ingredient.id,
                                         location: CGPoint(x: value.location.x, y: value.location.y - 36))
@@ -421,6 +447,19 @@ struct RoundView: View {
                             drag = nil
                         }
                 )
+            }
+        }
+    }
+
+    /// Shows what an ingredient is, for long enough to read twenty words; any tap ends it sooner.
+    private func showNote(_ id: String) {
+        noteId = id
+        noteToken += 1
+        let token = noteToken
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(6))
+            if noteToken == token {
+                noteId = nil
             }
         }
     }

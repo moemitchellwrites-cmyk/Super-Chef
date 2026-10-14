@@ -23,13 +23,19 @@ so you get better at real cooking.
 
 ## Build order (from the brief)
 
-1. Scoring module with golden tests. **Built 2026-10-07**, awaiting CI and Moe's review.
-2. Vessel scene: one wok, drag-and-drop, amount stepper, placeholder sounds.
+1. Scoring module with golden tests. **Done 2026-10-07.**
+2. Vessel scene: one wok, drag-and-drop, amount stepper, method tap, placeholder sounds. **Built 2026-10-07**, in review; needs Moe's hands on a phone.
 3. Canned judge line from the score breakdown.
 4. Ten cards.
 5. Five-round session and summary.
 6. TestFlight.
 7. LLM judge, art and real sound, StoreKit, first paid track.
+
+## Direction set in review (2026-10-07)
+
+- Two modes (PD-025): **Pantry**, ingredients only, scored as a count; **Kitchen**, the full round, scored out of 100.
+- Progression (PD-026): two brigade ladders, one per mode, earned over the last five rounds.
+- Every dish opens with a one-line brief of the plate (PD-024).
 
 ## Where it lives
 

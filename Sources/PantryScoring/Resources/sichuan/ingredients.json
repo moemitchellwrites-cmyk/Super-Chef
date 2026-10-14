@@ -4,6 +4,7 @@
   {
    "id": "firm-tofu",
    "name": "Firm tofu",
+   "about": "Pressed soybean curd that holds its shape. Mild and milky; soaks up whatever sauce it sits in.",
    "family": "tofu",
    "defaultUnit": "grams",
    "potency": {},
@@ -13,6 +14,7 @@
   {
    "id": "silken-tofu",
    "name": "Silken tofu",
+   "about": "Unpressed soybean curd, soft as custard. Mild; breaks easily, so it is slid in gently.",
    "family": "tofu",
    "defaultUnit": "grams",
    "potency": {},
@@ -22,6 +24,7 @@
   {
    "id": "ground-pork",
    "name": "Ground pork",
+   "about": "Minced pork. Fried until crumbly and browned, it gives a sauce savoury depth and texture.",
    "family": "groundPork",
    "defaultUnit": "grams",
    "potency": {},
@@ -31,6 +34,7 @@
   {
    "id": "pork-belly",
    "name": "Pork belly",
+   "about": "Fatty, layered cut of pork. Rich and sweet; the fat renders and the edges crisp in a hot pan.",
    "family": "porkBelly",
    "defaultUnit": "grams",
    "potency": {},
@@ -40,6 +44,7 @@
   {
    "id": "chicken-thigh",
    "name": "Chicken thigh",
+   "about": "Dark, juicy chicken meat. Stays tender through hard frying or gentle poaching.",
    "family": "chicken",
    "defaultUnit": "grams",
    "potency": {},
@@ -49,6 +54,8 @@
   {
    "id": "white-fish",
    "name": "White fish fillet",
+   "shortName": "White fish",
+   "about": "Mild, flaky fish fillet. Delicate; cooked briefly so the slices stay silky.",
    "family": "fish",
    "defaultUnit": "grams",
    "potency": {},
@@ -58,6 +65,8 @@
   {
    "id": "doubanjiang",
    "name": "Doubanjiang (Pixian chili bean paste)",
+   "shortName": "Doubanjiang",
+   "about": "Fermented broad bean and chili paste. Salty, deep and hot. Fried in oil first, until the oil turns red.",
    "family": "doubanjiang",
    "defaultUnit": "tbsp",
    "potency": {
@@ -71,6 +80,8 @@
   {
    "id": "douchi",
    "name": "Fermented black beans (douchi)",
+   "shortName": "Fermented black beans",
+   "about": "Small black soybeans, salted and fermented. Pungent, salty and savoury; a spoonful goes a long way.",
    "family": "douchi",
    "defaultUnit": "tbsp",
    "potency": {
@@ -83,6 +94,8 @@
   {
    "id": "sichuan-peppercorn-whole",
    "name": "Sichuan peppercorns, whole",
+   "shortName": "Whole Sichuan pepper",
+   "about": "Dried husks of a small citrus-family berry. Lemony, and they make the lips tingle and go numb.",
    "family": "sichuanPeppercorn",
    "defaultUnit": "tsp",
    "potency": {
@@ -95,6 +108,8 @@
   {
    "id": "sichuan-peppercorn-ground",
    "name": "Sichuan peppercorn, ground",
+   "shortName": "Ground Sichuan pepper",
+   "about": "The numbing, lemony husks, toasted and ground. Sprinkled on at the end so the tingle stays fresh.",
    "family": "sichuanPeppercorn",
    "defaultUnit": "tsp",
    "potency": {
@@ -107,6 +122,8 @@
   {
    "id": "dried-chilies",
    "name": "Dried red chilies, whole",
+   "shortName": "Dried chilies",
+   "about": "Whole dried red chilies. Toasted in oil until dark, for smoky fragrance more than raw fire.",
    "family": "driedChili",
    "defaultUnit": "grams",
    "potency": {
@@ -118,6 +135,7 @@
   {
    "id": "chili-flakes",
    "name": "Chili flakes",
+   "about": "Coarsely ground dried chilies. Direct heat and red colour, stirred into oil or a sauce.",
    "family": "driedChili",
    "defaultUnit": "tsp",
    "potency": {
@@ -130,6 +148,8 @@
   {
    "id": "chili-oil",
    "name": "Chili oil (hong you)",
+   "shortName": "Chili oil",
+   "about": "Oil infused with ground chilies, red and fragrant. Adds heat, colour and gloss, often as a dressing.",
    "family": "chiliOil",
    "defaultUnit": "tbsp",
    "potency": {
@@ -142,6 +162,8 @@
   {
    "id": "pickled-chili",
    "name": "Pickled red chilies (pao la jiao)",
+   "shortName": "Pickled chilies",
+   "about": "Red chilies fermented in brine. Hot, sour and fruity; chopped and fried to start a sauce.",
    "family": "paojiao",
    "defaultUnit": "tbsp",
    "potency": {
@@ -155,6 +177,8 @@
   {
    "id": "garlic",
    "name": "Garlic, minced",
+   "shortName": "Garlic",
+   "about": "Minced garlic. Sharp when raw, sweet and nutty once fried. An aromatic that starts a dish.",
    "family": "garlic",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -165,6 +189,8 @@
   {
    "id": "ginger",
    "name": "Ginger, minced",
+   "shortName": "Ginger",
+   "about": "Minced fresh ginger. Warm, bright and peppery; fried briefly with the other aromatics.",
    "family": "ginger",
    "defaultUnit": "tsp",
    "potency": {},
@@ -175,6 +201,8 @@
   {
    "id": "scallion",
    "name": "Scallion, chopped",
+   "shortName": "Scallion",
+   "about": "Chopped green onion. A mild onion bite; whites fried at the start, greens scattered at the end.",
    "family": "scallion",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -185,6 +213,8 @@
   {
    "id": "leek",
    "name": "Leek or green garlic, sliced",
+   "shortName": "Leek",
+   "about": "Sliced leek or green garlic shoots. Sweet and mildly oniony; tossed in near the end to stay bright.",
    "family": "leek",
    "defaultUnit": "grams",
    "potency": {},
@@ -194,6 +224,7 @@
   {
    "id": "light-soy",
    "name": "Light soy sauce",
+   "about": "Thin, salty soy sauce. The everyday seasoning for salt and savouriness.",
    "family": "soySauce",
    "defaultUnit": "tbsp",
    "potency": {
@@ -206,6 +237,7 @@
   {
    "id": "dark-soy",
    "name": "Dark soy sauce",
+   "about": "Thick, aged soy sauce. Less salty and slightly sweet; used in small amounts for deep colour.",
    "family": "soySauce",
    "defaultUnit": "tsp",
    "potency": {
@@ -219,6 +251,8 @@
   {
    "id": "black-vinegar",
    "name": "Chinkiang black vinegar",
+   "shortName": "Black vinegar",
+   "about": "Dark, aged rice vinegar. Malty, mellow and sour, with a little sweetness.",
    "family": "blackVinegar",
    "defaultUnit": "tbsp",
    "potency": {
@@ -231,6 +265,7 @@
   {
    "id": "shaoxing",
    "name": "Shaoxing wine",
+   "about": "Amber rice wine. Nutty and dry; a splash takes the raw edge off meat and fish.",
    "family": "shaoxing",
    "defaultUnit": "tbsp",
    "potency": {
@@ -243,6 +278,7 @@
   {
    "id": "sugar",
    "name": "Sugar",
+   "about": "White sugar. Sweetens, and in small amounts rounds off salt, sourness and heat.",
    "family": "sugar",
    "defaultUnit": "tsp",
    "potency": {
@@ -255,6 +291,7 @@
   {
    "id": "salt",
    "name": "Salt",
+   "about": "Plain salt. Seasons, and draws water out of vegetables.",
    "family": "salt",
    "defaultUnit": "tsp",
    "potency": {},
@@ -265,6 +302,7 @@
   {
    "id": "cornstarch",
    "name": "Cornstarch",
+   "about": "Fine starch. Stirred in with water to thicken a sauce to a gloss, or dusted on meat to keep it tender.",
    "family": "starch",
    "defaultUnit": "tsp",
    "potency": {},
@@ -275,6 +313,7 @@
   {
    "id": "neutral-oil",
    "name": "Neutral oil",
+   "about": "Flavourless cooking oil. Carries heat and takes on the flavour of whatever is fried in it.",
    "family": "oil",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -285,6 +324,8 @@
   {
    "id": "sesame-oil",
    "name": "Toasted sesame oil",
+   "shortName": "Sesame oil",
+   "about": "Oil pressed from toasted sesame seeds. Strong and nutty; a few drops at the end, not for frying.",
    "family": "sesameOil",
    "defaultUnit": "tsp",
    "potency": {},
@@ -295,6 +336,8 @@
   {
    "id": "sesame-paste",
    "name": "Chinese sesame paste",
+   "shortName": "Sesame paste",
+   "about": "Paste of toasted sesame seeds. Thick, nutty and a little bitter; loosened into dressings and sauces.",
    "family": "sesamePaste",
    "defaultUnit": "tbsp",
    "potency": {
@@ -307,6 +350,8 @@
   {
    "id": "sesame-seeds",
    "name": "Toasted sesame seeds",
+   "shortName": "Sesame seeds",
+   "about": "Toasted sesame seeds. A nutty crunch, scattered on at the end.",
    "family": "sesameSeed",
    "defaultUnit": "tbsp",
    "potency": {},
@@ -317,6 +362,8 @@
   {
    "id": "peanuts",
    "name": "Roasted peanuts",
+   "shortName": "Peanuts",
+   "about": "Roasted peanuts. Crunch and a toasty sweetness, added last so they stay crisp.",
    "family": "peanut",
    "defaultUnit": "grams",
    "potency": {},
@@ -326,6 +373,7 @@
   {
    "id": "stock",
    "name": "Chicken stock",
+   "about": "Light chicken broth. The liquid for braises and soups; savoury without being heavy.",
    "family": "stock",
    "defaultUnit": "cup",
    "potency": {
@@ -338,6 +386,7 @@
   {
    "id": "water",
    "name": "Water",
+   "about": "Plain water. Loosens a sauce or carries a braise without adding flavour.",
    "family": "water",
    "defaultUnit": "cup",
    "potency": {},
@@ -348,6 +397,8 @@
   {
    "id": "yacai",
    "name": "Yacai (Yibin preserved mustard)",
+   "shortName": "Yacai pickled greens",
+   "about": "Mustard greens, salted, dried and fermented. Salty, sweet and deeply savoury; fried in small amounts.",
    "family": "yacai",
    "defaultUnit": "tbsp",
    "potency": {
@@ -360,6 +411,8 @@
   {
    "id": "sweet-bean-sauce",
    "name": "Sweet bean sauce (tianmianjiang)",
+   "shortName": "Sweet bean sauce",
+   "about": "Thick fermented wheat and soybean sauce. Dark, salty-sweet and mellow.",
    "family": "tianmianjiang",
    "defaultUnit": "tbsp",
    "potency": {
@@ -373,6 +426,7 @@
   {
    "id": "eggplant",
    "name": "Eggplant",
+   "about": "Long eggplant. Spongy when raw, silky once cooked; it drinks up oil and sauce.",
    "family": "eggplant",
    "defaultUnit": "grams",
    "potency": {},
@@ -382,6 +436,7 @@
   {
    "id": "green-beans",
    "name": "Green beans",
+   "about": "Fresh green beans. Fried hard, they wrinkle, blister and turn sweet.",
    "family": "greenBeans",
    "defaultUnit": "grams",
    "potency": {},
@@ -391,6 +446,8 @@
   {
    "id": "wheat-noodles",
    "name": "Fresh wheat noodles",
+   "shortName": "Wheat noodles",
+   "about": "Fresh wheat noodles. Springy and plain; boiled, then dressed.",
    "family": "noodles",
    "defaultUnit": "grams",
    "potency": {},
@@ -400,6 +457,8 @@
   {
    "id": "glass-noodles",
    "name": "Glass noodles (dry)",
+   "shortName": "Glass noodles",
+   "about": "Dried noodles made from bean starch. Clear and slippery once soaked; they absorb sauce.",
    "family": "glassNoodles",
    "defaultUnit": "grams",
    "potency": {},
@@ -409,6 +468,7 @@
   {
    "id": "cucumber",
    "name": "Cucumber",
+   "about": "Fresh cucumber. Cool, crisp and watery; usually served raw or smashed.",
    "family": "cucumber",
    "defaultUnit": "grams",
    "potency": {},
@@ -418,6 +478,7 @@
   {
    "id": "bean-sprouts",
    "name": "Bean sprouts",
+   "about": "Sprouted mung beans. Crisp and juicy; barely cooked, often as a bed under something richer.",
    "family": "beanSprout",
    "defaultUnit": "grams",
    "potency": {},
@@ -427,6 +488,7 @@
   {
    "id": "napa-cabbage",
    "name": "Napa cabbage",
+   "about": "Pale, tender cabbage. Sweet and juicy; wilts quickly in broth.",
    "family": "cabbage",
    "defaultUnit": "grams",
    "potency": {},
@@ -436,6 +498,7 @@
   {
    "id": "celery",
    "name": "Celery",
+   "about": "Celery stalks. Crisp, with a fresh, slightly bitter bite.",
    "family": "celery",
    "defaultUnit": "grams",
    "potency": {},
@@ -445,6 +508,7 @@
   {
    "id": "egg-white",
    "name": "Egg white",
+   "about": "Egg white. Coats sliced meat or fish so it stays silky when cooked.",
    "family": "eggWhite",
    "defaultUnit": "grams",
    "potency": {},
@@ -454,6 +518,7 @@
   {
    "id": "white-pepper",
    "name": "White pepper",
+   "about": "Ground white pepper. A sharp, earthy heat that hits the nose more than the tongue.",
    "family": "whitePepper",
    "defaultUnit": "tsp",
    "potency": {
@@ -466,6 +531,7 @@
   {
    "id": "cilantro",
    "name": "Cilantro",
+   "about": "Fresh coriander leaves. Bright and citrusy; a garnish added at the end.",
    "family": "cilantro",
    "defaultUnit": "grams",
    "potency": {},
@@ -475,6 +541,7 @@
   {
    "id": "rice-vinegar",
    "name": "Rice vinegar",
+   "about": "Clear rice vinegar. A light, clean sourness.",
    "family": "riceVinegar",
    "defaultUnit": "tbsp",
    "potency": {
@@ -487,6 +554,7 @@
   {
    "id": "tomato",
    "name": "Tomato",
+   "about": "Fresh tomato. Sweet, sour and juicy; cooks down into a soft sauce.",
    "family": "tomato",
    "defaultUnit": "grams",
    "potency": {
@@ -499,6 +567,7 @@
   {
    "id": "cumin",
    "name": "Cumin",
+   "about": "Ground cumin seed. Warm, earthy and strong; common with grilled and fried meat.",
    "family": "cumin",
    "defaultUnit": "tsp",
    "potency": {},
@@ -509,6 +578,7 @@
   {
    "id": "black-pepper",
    "name": "Black pepper",
+   "about": "Ground black pepper. A woody, sharp heat.",
    "family": "blackPepper",
    "defaultUnit": "tsp",
    "potency": {
@@ -520,7 +590,9 @@
   },
   {
    "id": "duojiao",
-   "name": "Hunan chopped salted chilies (duojiao)",
+   "name": "Chopped salted chilies (duojiao)",
+   "shortName": "Chopped salted chilies",
+   "about": "Fresh red chilies, chopped and salted until they ferment. Bright, sour, salty and hot.",
    "family": "duojiao",
    "defaultUnit": "tbsp",
    "potency": {
@@ -535,6 +607,7 @@
   {
    "id": "oyster-sauce",
    "name": "Oyster sauce",
+   "about": "Thick sauce made from oyster extract. Sweet, salty and briny; adds gloss and savouriness.",
    "family": "oysterSauce",
    "defaultUnit": "tbsp",
    "potency": {
@@ -548,6 +621,7 @@
   {
    "id": "hoisin",
    "name": "Hoisin sauce",
+   "about": "Thick, dark sauce of fermented soybean, sugar and spice. Sweet and salty, like a barbecue glaze.",
    "family": "hoisin",
    "defaultUnit": "tbsp",
    "potency": {
@@ -561,6 +635,7 @@
   {
    "id": "fish-sauce",
    "name": "Fish sauce",
+   "about": "Thin amber liquid from salted, fermented fish. Very salty and pungent; savoury depth by the drop.",
    "family": "fishSauce",
    "defaultUnit": "tbsp",
    "potency": {
@@ -573,6 +648,7 @@
   {
    "id": "lime",
    "name": "Lime juice",
+   "about": "Fresh lime juice. A sharp, fragrant sourness, added at the end.",
    "family": "lime",
    "defaultUnit": "tbsp",
    "potency": {
@@ -585,6 +661,7 @@
   {
    "id": "coconut-milk",
    "name": "Coconut milk",
+   "about": "Milk pressed from coconut flesh. Rich, sweet and creamy; the base of many curries and soups.",
    "family": "coconutMilk",
    "defaultUnit": "cup",
    "potency": {
@@ -597,6 +674,7 @@
   {
    "id": "lemongrass",
    "name": "Lemongrass",
+   "about": "Tough, lemon-scented stalk. Bruised or sliced to perfume broths and pastes.",
    "family": "lemongrass",
    "defaultUnit": "grams",
    "potency": {},
@@ -606,6 +684,7 @@
   {
    "id": "basil",
    "name": "Basil",
+   "about": "Fresh basil leaves. Sweet, peppery and aniseed-scented; torn in at the end.",
    "family": "basil",
    "defaultUnit": "grams",
    "potency": {},
@@ -615,6 +694,7 @@
   {
    "id": "cream",
    "name": "Cream",
+   "about": "Dairy cream. Rich and mild; softens heat and thickens a sauce.",
    "family": "cream",
    "defaultUnit": "cup",
    "potency": {},
@@ -625,6 +705,7 @@
   {
    "id": "butter",
    "name": "Butter",
+   "about": "Dairy butter. Rich and sweet; browns and turns nutty in a hot pan.",
    "family": "butter",
    "defaultUnit": "grams",
    "potency": {},
@@ -634,6 +715,7 @@
   {
    "id": "parmesan",
    "name": "Parmesan",
+   "about": "Hard aged cheese. Salty, nutty and savoury; grated over a finished dish.",
    "family": "cheese",
    "defaultUnit": "grams",
    "potency": {
@@ -645,6 +727,7 @@
   {
    "id": "mirin",
    "name": "Mirin",
+   "about": "Sweet rice wine. Syrupy and mild; gives sauces sweetness and shine.",
    "family": "mirin",
    "defaultUnit": "tbsp",
    "potency": {
@@ -657,6 +740,7 @@
   {
    "id": "miso",
    "name": "Miso",
+   "about": "Paste of fermented soybeans and grain. Salty, earthy and savoury; dissolved into soups and glazes.",
    "family": "miso",
    "defaultUnit": "tbsp",
    "potency": {
@@ -669,6 +753,7 @@
   {
    "id": "gochujang",
    "name": "Gochujang",
+   "about": "Thick red paste of chili, fermented soybean and sticky rice. Hot, sweet and savoury.",
    "family": "gochujang",
    "defaultUnit": "tbsp",
    "potency": {
@@ -683,6 +768,7 @@
   {
    "id": "curry-powder",
    "name": "Curry powder",
+   "about": "Blend of ground spices, yellow with turmeric. Warm and earthy.",
    "family": "curryPowder",
    "defaultUnit": "tsp",
    "potency": {
@@ -695,6 +781,7 @@
   {
    "id": "ketchup",
    "name": "Ketchup",
+   "about": "Sweet and sour tomato sauce, smooth and thick.",
    "family": "ketchup",
    "defaultUnit": "tbsp",
    "potency": {

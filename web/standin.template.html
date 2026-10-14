@@ -1,0 +1,1298 @@
+<title>Pantry Stand-in</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one thumb, one column. Wok on top, then method, amount, palette, serve; the score rises as a sheet. */
+:root {
+  --bg: #f1f4ee;
+  --surface: #e3e8df;
+  --surface-strong: #d3dacf;
+  --ink: #1c2420;
+  --ink-soft: #5b6860;
+  --chili: #d9481f;
+  --chili-ink: #ffffff;
+  --chili-wash: #f9ddd0;
+  --amount: #b23a14;
+  --scene: #fff1cf;
+  --iron: #24282d;
+  --iron-inside: #4a4f57;
+  --burner: #7b7f86;
+  --good: #2f7d4f;
+  --scrim: rgba(20, 26, 22, 0.45);
+  --display: "Fredoka", "Avenir Next Rounded", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131815; --surface: #202823; --surface-strong: #2c3630; --ink: #e8eee9; --ink-soft: #9aa89f;
+    --chili: #f0633a; --chili-ink: #1a0d07; --chili-wash: #43231a; --amount: #ff9d7a; --scene: #2b2620;
+    --iron: #0c0e10; --iron-inside: #3a3f46; --burner: #5d6168; --good: #5fc08a; --scrim: rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131815; --surface: #202823; --surface-strong: #2c3630; --ink: #e8eee9; --ink-soft: #9aa89f;
+  --chili: #f0633a; --chili-ink: #1a0d07; --chili-wash: #43231a; --amount: #ff9d7a; --scene: #2b2620;
+  --iron: #0c0e10; --iron-inside: #3a3f46; --burner: #5d6168; --good: #5fc08a; --scrim: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body);
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid var(--chili); outline-offset: 2px; }
+
+.app {
+  box-sizing: border-box; max-width: 460px; min-height: 100%; margin: 0 auto;
+  padding-inline: 16px; padding-block: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.top { display: flex; align-items: center; gap: 8px; }
+.top .spacer { flex: 1; }
+/* The title sits beside the round's progress when both fit; a long dish name pushes the progress
+   to a line of its own rather than being cut off. */
+.names { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.names .title { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; row-gap: 1px; }
+.names .dish { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.names .vessel-switch { flex: none; }
+.eyebrow { flex: none; white-space: nowrap; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.dish {
+  font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.2; color: var(--chili);
+  background: transparent; border: 0; padding: 0; max-width: 100%; text-overflow: ellipsis;
+}
+.brief { margin: 0; font-size: 13px; line-height: 1.35; color: var(--ink-soft); -webkit-user-select: text; user-select: text; }
+.icon-button {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--surface);
+  display: grid; place-items: center; font-size: 18px; flex: none;
+}
+.icon-button:disabled { opacity: 0.4; }
+/* Sound: a plain speaker. Its waves are chili-coloured and kick outward whenever a cue plays. */
+.sound { color: var(--ink); }
+.sound .wave { stroke: var(--chili); transform-origin: 12px 12px; }
+.sound .slash { stroke: var(--ink-soft); display: none; }
+.sound[aria-pressed="true"] { color: var(--ink-soft); }
+.sound[aria-pressed="true"] .wave { display: none; }
+.sound[aria-pressed="true"] .slash { display: inline; }
+@keyframes wave-kick { 0% { transform: scale(1); opacity: 1; } 40% { transform: scale(1.28); opacity: 0.55; } 100% { transform: scale(1); opacity: 1; } }
+.sound.playing .w1 { animation: wave-kick 0.32s ease-out; }
+.sound.playing .w2 { animation: wave-kick 0.32s ease-out 0.07s; }
+@media (prefers-reduced-motion: reduce) { .sound.playing .wave { animation: none; } }
+/* A tip that names an icon button: on hover and keyboard focus, and on a press-and-hold where there is no hover. */
+.tipped { position: relative; flex: none; display: inline-flex; }
+.tip {
+  position: absolute; top: calc(100% + 8px); right: -48px; z-index: 20; width: max-content; max-width: 220px;
+  background: var(--ink); color: var(--bg); font-size: 12px; font-weight: 600; line-height: 1.3;
+  padding: 7px 10px; border-radius: 9px; pointer-events: none; opacity: 0; transform: translateY(-4px);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.tip::before { content: ""; position: absolute; bottom: 100%; right: 62px; border: 6px solid transparent; border-bottom-color: var(--ink); }
+.tipped.show .tip, .tipped:focus-within .tip { opacity: 1; transform: none; }
+@media (hover: hover) { .tipped:hover .tip { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
+
+.scene {
+  position: relative; flex: 1 0 auto; box-sizing: border-box;
+  background: var(--scene); border-radius: 18px; padding: 12px 14px 10px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.stage { position: relative; flex: 1; min-height: 96px; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.scene.over { box-shadow: inset 0 0 0 3px var(--chili); }
+.names .spacer { flex: 1; }
+.vessel-switch {
+  flex: none; height: 30px; padding: 0 10px; border-radius: 15px; background: var(--bg); color: var(--chili);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.vessel-choice { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.vessel-choice button {
+  width: 96px; height: 44px; border-radius: 12px; background: var(--chili); color: var(--chili-ink);
+  font-family: var(--display); font-weight: 600; font-size: 17px;
+}
+.vessel-choice.nudge { animation: nudge 0.25s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .vessel-choice.nudge { animation: none; } }
+
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface); border-radius: 12px; padding: 4px; width: 184px; box-sizing: border-box; flex: none; }
+.mode { height: 36px; border-radius: 9px; font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--ink-soft); }
+.mode[aria-pressed="true"] { background: var(--bg); color: var(--ink); font-weight: 600; }
+.picks { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 2px; }
+.picks .ask { font-size: 13px; font-weight: 700; min-width: 0; }
+.dots { display: flex; gap: 5px; flex: none; }
+.dots i { width: 16px; height: 16px; box-sizing: border-box; border-radius: 50%; border: 2px solid var(--ink-soft); }
+.dots i.on { background: var(--chili); border-color: var(--chili); }
+@keyframes nudge { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.picks.nudge { animation: nudge 0.25s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .picks.nudge { animation: none; } }
+.methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 4px; }
+.method {
+  height: 44px; border-radius: 12px; background: var(--surface);
+  font-size: 12px; font-weight: 600;
+}
+.method[aria-pressed="true"] { background: var(--chili); color: var(--chili-ink); }
+
+.stepper {
+  background: var(--bg); border-radius: 14px; padding: 6px 8px; box-sizing: border-box; flex: none;
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
+}
+.stepper .hint { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 4px 0; }
+.stepper .line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.stepper .name { flex: 1; min-width: 0; font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stepper .amount { font-family: var(--display); font-weight: 600; font-size: 18px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.round-button {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--chili); color: var(--chili-ink);
+  font-size: 22px; font-weight: 700; line-height: 1; flex: none; display: grid; place-items: center;
+}
+.round-button:disabled { opacity: 0.35; }
+.remove { height: 30px; padding: 0 10px; border-radius: 15px; flex: none; font-size: 12px; font-weight: 700; background: var(--bg); color: var(--amount); }
+.stepper input[type="range"] { flex: 1; min-width: 0; accent-color: var(--chili); height: 28px; margin: 0; }
+
+/* The ingredient note floats over the bottom of the wok while a chip is touched, and for a moment after. */
+.about {
+  position: absolute; left: 0; right: 0; bottom: 2px; z-index: 6; box-sizing: border-box; padding: 8px 12px;
+  border-radius: 12px; background: var(--ink); color: var(--bg); font-size: 12.5px; line-height: 1.35;
+  box-shadow: 0 6px 16px var(--scrim); pointer-events: none;
+}
+.about b { font-weight: 700; }
+.chip.peek { border-color: var(--chili); }
+.palette { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.chip {
+  height: 50px; border-radius: 10px; background: var(--surface); padding: 2px 6px; box-sizing: border-box;
+  text-align: left; display: flex; flex-direction: column; justify-content: center; min-width: 0;
+  border: 2px solid transparent; touch-action: none;
+}
+.chip .label { font-size: 11px; font-weight: 500; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; flex: none; }
+.chip.in .label { -webkit-line-clamp: 2; }
+.chip .amt { font-size: 11px; font-weight: 700; color: var(--amount); line-height: 1.25; white-space: nowrap; flex: none; }
+.chip { position: relative; }
+.chip.in { background: var(--chili-wash); }
+/* Pantry: a picked chip wears the mark that takes it back out. */
+.chip.removable::after {
+  content: "\00d7"; position: absolute; top: 3px; right: 4px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--chili); color: var(--chili-ink); font-size: 13px; font-weight: 700; line-height: 16px; text-align: center;
+}
+.chip.removable .label { padding-right: 14px; }
+.chip.selected { border-color: var(--chili); }
+.chip.dragging { opacity: 0.35; }
+
+.serve {
+  height: 50px; border-radius: 14px; background: var(--chili); color: var(--chili-ink);
+  font-family: var(--display); font-weight: 600; font-size: 18px; flex: none;
+}
+/* Small phones (PD-031): Pantry takes layout C, with the note as a fixed strip under the wok and the count
+   on the serve button; Kitchen keeps layout B with a one-line brief and a one-row stepper. */
+.about.strip {
+  position: static; height: 50px; flex: none; padding: 2px 10px; border-radius: 10px; box-shadow: none;
+  background: var(--surface); color: var(--ink); font-size: 11.5px; line-height: 1.3; display: flex; align-items: center; overflow: hidden;
+}
+.about.strip.idle { color: var(--ink-soft); }
+.serve .count { margin-left: 12px; padding: 2px 10px; border-radius: 12px; background: var(--scrim); font-weight: 500; }
+.stepper.compact { padding: 3px 6px 4px; gap: 0; border-radius: 12px; }
+.stepper.compact .name { font-size: 11px; line-height: 1.2; padding-left: 4px; flex: none; }
+.stepper.compact .line { gap: 6px; }
+.stepper.compact .amount { font-size: 16px; width: 62px; text-align: right; flex: none; }
+.remove.cross { width: 44px; height: 44px; padding: 0; border-radius: 50%; display: grid; place-items: center; font-size: 20px; }
+@media (max-height: 700px) {
+  .chip { height: 46px; }
+  .stage { min-height: 72px; }
+  .scene[data-mode="pantry"] .dots { display: none; }
+  .names .dish { font-size: 19px; }
+  .scene[data-mode="kitchen"] .brief { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+.serve:disabled { background: var(--surface-strong); color: var(--ink-soft); }
+.note { margin: 0; text-align: center; font-size: 11px; color: var(--ink-soft); line-height: 1.35; }
+
+.ghost {
+  position: fixed; left: 0; top: 0; font-size: 44px; pointer-events: none; z-index: 30;
+  transform: translate(-50%, -50%); filter: drop-shadow(0 3px 4px var(--scrim));
+}
+
+.scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 40; display: flex; align-items: flex-end; justify-content: center; }
+.sheet {
+  box-sizing: border-box; width: 100%; max-width: 460px; max-height: 88%; overflow-y: auto;
+  background: var(--bg); border-radius: 22px 22px 0 0;
+  padding-inline: 20px; padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sheet h2 { margin: 0; text-align: center; font-family: var(--display); font-weight: 500; font-size: 16px; color: var(--ink-soft); }
+.total { text-align: center; font-family: var(--display); font-weight: 700; font-size: 76px; line-height: 0.95; }
+.total small { display: block; font-size: 13px; font-weight: 500; color: var(--ink-soft); margin-top: 4px; }
+.parts { display: flex; flex-direction: column; gap: 8px; }
+.part { display: grid; grid-template-columns: 92px 1fr 70px; align-items: center; gap: 10px; font-size: 14px; }
+.part .bar { height: 6px; border-radius: 3px; background: var(--surface-strong); overflow: hidden; }
+.part .bar i { display: block; height: 100%; background: var(--chili); border-radius: 3px; }
+.part .num { text-align: right; font-variant-numeric: tabular-nums; }
+.misses { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.misses-title { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.clean { color: var(--good); font-weight: 600; font-size: 14px; }
+.card { background: var(--scene); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.card-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.card h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 20px; line-height: 1.2; color: var(--chili); }
+.card p { margin: 0; font-size: 14px; line-height: 1.4; }
+.card .card-rule { font-weight: 700; }
+.card .card-try { font-size: 13px; color: var(--ink-soft); }
+.misses-fold summary { cursor: pointer; padding: 6px 0; }
+.verdict { display: flex; flex-direction: column; gap: 12px; }
+.summary-total { font-size: 60px; }
+.summary-caption { margin: 0; text-align: center; font-size: 14px; color: var(--ink-soft); }
+.summary-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.summary-rows li { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+.summary-rows span { display: flex; flex-direction: column; font-weight: 500; }
+.summary-rows small { font-size: 12px; font-weight: 600; color: var(--chili); }
+.summary-rows b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.summary-for { margin: 0 0 6px; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.sheet .actions.single { grid-template-columns: 1fr; }
+.judge { margin: 0; text-align: center; font-family: var(--display); font-weight: 500; font-size: 18px; line-height: 1.3; }
+.capped { font-size: 13px; line-height: 1.35; background: var(--chili-wash); border-radius: 10px; padding: 8px 10px; }
+.groups { display: flex; flex-direction: column; gap: 10px; }
+.group .misses-title { margin-bottom: 2px; }
+.group p { margin: 0; font-size: 14px; line-height: 1.4; }
+.tags { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 5px; }
+.tags li { font-size: 13px; line-height: 1.25; padding: 4px 9px; border-radius: 11px; background: var(--surface); }
+.group.bad .tags li { background: var(--chili-wash); }
+.group.bad .misses-title { color: var(--amount); }
+.group.good .misses-title { color: var(--good); }
+.group.fine .misses-title { color: var(--ink); }
+.group .aside { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.took { font-size: 12px; color: var(--ink-soft); text-align: center; }
+.recipe { border-top: 1.5px solid var(--surface-strong); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; -webkit-user-select: text; user-select: text; }
+.recipe h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 18px; }
+.recipe-meta { margin: 0; font-size: 12px; color: var(--ink-soft); }
+.recipe-lines { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; font-size: 13px; line-height: 1.35; }
+.recipe-lines li { min-width: 0; padding-left: 12px; position: relative; }
+.recipe-lines li.core::before, .recipe-key .dot { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--chili); }
+.recipe-lines li.core::before { position: absolute; left: 0; top: 0.5em; }
+.recipe-key { margin: 0; font-size: 12px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+.recipe-key .dot { display: inline-block; flex: none; }
+.recipe-lines b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.recipe-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.45; }
+@media (max-width: 340px) { .recipe-lines { grid-template-columns: 1fr; } }
+/* The buttons stay in reach however long the sheet gets. */
+.see-recipe { width: 100%; height: 48px; flex: none; border-radius: 14px; border: 2px solid var(--chili); color: var(--chili); font-family: var(--display); font-weight: 600; font-size: 16px; }
+.sheet .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: sticky; bottom: calc(-18px - env(safe-area-inset-bottom, 0px)); background: var(--bg); padding-block: 10px calc(18px + env(safe-area-inset-bottom, 0px)); margin-bottom: calc(-18px - env(safe-area-inset-bottom, 0px)); }
+.sheet .actions button { height: 48px; border-radius: 14px; font-family: var(--display); font-weight: 600; font-size: 16px; }
+.secondary { background: var(--surface); }
+.primary { background: var(--chili); color: var(--chili-ink); }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<main class="app" id="app">
+  <header class="top">
+    <div class="modes" role="group" aria-label="Mode">
+      <button class="mode" id="mode-pantry" aria-pressed="true">Pantry</button>
+      <button class="mode" id="mode-kitchen" aria-pressed="false">Kitchen</button>
+    </div>
+    <span class="spacer"></span>
+    <span class="tipped">
+      <button class="icon-button" id="restart" aria-label="Start over" aria-describedby="restart-tip" disabled>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12a7 7 0 1 0 2.2-5.1"></path><path d="M4 4.5v4h4"></path>
+        </svg>
+      </button>
+      <span class="tip" id="restart-tip" role="tooltip">Start over: clears the round</span>
+    </span>
+    <button class="icon-button sound" id="mute" aria-label="Turn sound off" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path class="cone" d="M4 9.5h3l4.5-4v13l-4.5-4H4z" fill="currentColor" stroke="currentColor" stroke-width="1.5"></path>
+        <path class="wave w1" d="M15 9.2a4 4 0 0 1 0 5.6" stroke-width="2"></path>
+        <path class="wave w2" d="M17.8 6.5a8 8 0 0 1 0 11" stroke-width="2"></path>
+        <path class="slash" d="M15.5 9.5l5 5m0-5l-5 5" stroke-width="2"></path>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Layout B, "stage" (PB-025): the dish, its brief and the round's progress live in the wok's panel. -->
+  <section class="scene" id="scene">
+    <div class="names">
+      <div class="title">
+        <h1 class="dish" id="dish-name"></h1>
+        <span class="eyebrow" id="eyebrow">Sichuan · stand-in</span>
+      </div>
+      <button class="vessel-switch" id="vessel-switch" hidden></button>
+    </div>
+    <p class="brief" id="brief"></p>
+    <div class="picks" id="picks" hidden><span class="ask" id="picks-ask"></span><span class="dots" id="picks-count" role="img"></span></div>
+    <div class="stage" id="stage" role="img" aria-label="Wok, empty">
+      <canvas id="canvas"></canvas>
+      <!-- A Kitchen round starts with a bare burner (PD-035). -->
+      <div class="vessel-choice" id="vessel-choice" hidden>
+        <button id="vessel-wok" aria-label="Cook it in a wok">Wok</button>
+        <button id="vessel-pot" aria-label="Cook it in a pot">Pot</button>
+      </div>
+      <div class="about" id="about" aria-live="polite" hidden><span id="about-text"></span></div>
+    </div>
+    <div class="stepper" id="stepper"></div>
+  </section>
+
+  <div class="methods" id="methods"></div>
+  <div id="app-note-slot" style="display: contents"></div>
+
+  <div class="palette" id="palette"></div>
+
+  <button class="serve" id="serve" disabled>Add something to the wok</button>
+</main>
+
+<div class="ghost" id="ghost" hidden></div>
+<div class="scrim" id="scrim" hidden>
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-dish">
+   <div class="verdict" id="verdict">
+    <h2 id="sheet-dish"></h2>
+    <div class="total" id="total"></div>
+    <p class="judge" id="judge-line"></p>
+    <div class="capped" id="capped" hidden></div>
+    <div class="parts" id="parts"></div>
+    <div id="misses-wrap"></div>
+    <section class="card" id="card" hidden aria-labelledby="card-title">
+      <div class="card-eyebrow">Card</div>
+      <h3 id="card-title"></h3>
+      <p id="card-body"></p>
+      <p class="card-rule" id="card-rule"></p>
+      <p class="card-try"><b>Try this tonight:</b> <span id="card-try"></span></p>
+    </section>
+    <button class="see-recipe" id="see-recipe" aria-expanded="false" aria-controls="recipe" hidden>See the recipe</button>
+    <section class="recipe" id="recipe" hidden aria-labelledby="recipe-title">
+      <h3 id="recipe-title">One way to cook it</h3>
+      <p class="recipe-meta" id="recipe-meta"></p>
+      <p class="recipe-key"><span class="dot" aria-hidden="true"></span><span id="recipe-key"></span></p>
+      <ul class="recipe-lines" id="recipe-lines"></ul>
+      <ol class="recipe-steps" id="recipe-steps"></ol>
+    </section>
+    <div class="took" id="took"></div>
+    <p class="note">Browser stand-in for the iOS app: same dishes, amounts and scoring. The drag feel, sounds and wok are approximations.</p>
+    <p class="note" id="counted" hidden></p>
+    <div class="actions">
+      <button class="secondary" id="keep">Keep cooking</button>
+      <button class="primary" id="next">Next dish</button>
+    </div>
+   </div>
+   <div class="verdict" id="summary" hidden>
+    <h2 id="summary-title"></h2>
+    <div class="total summary-total" id="summary-total"></div>
+    <p class="summary-caption" id="summary-caption"></p>
+    <p class="judge" id="summary-line"></p>
+    <ul class="summary-rows" id="summary-rows"></ul>
+    <div id="summary-card" hidden>
+      <p class="summary-for" id="summary-card-for"></p>
+      <section class="card">
+        <div class="card-eyebrow">Card</div>
+        <h3 id="summary-card-title"></h3>
+        <p id="summary-card-body"></p>
+        <p class="card-rule" id="summary-card-rule"></p>
+        <p class="card-try"><b>Try this tonight:</b> <span id="summary-card-try"></span></p>
+      </section>
+    </div>
+    <div class="actions single">
+      <button class="primary" id="new-session">New session</button>
+    </div>
+   </div>
+  </section>
+</div>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var RAW = /*__CONTENT__*/null;
+  var E = window.PantryEngine;
+  var content = E.indexContent(RAW.cuisine, RAW.ingredients, RAW.dishes);
+  var methodChoices = E.methodChoices(content);
+  var $ = function (id) { return document.getElementById(id); };
+
+  var METHOD_TITLE = { 'stir-fry': 'Stir-fry', 'deep-fry': 'Deep-fry', 'dry-fry': 'Dry-fry', braise: 'Braise', boil: 'Boil', simmer: 'Simmer', steam: 'Steam', poach: 'Poach', bake: 'Bake' };
+  var FLAME = { 'stir-fry': 1, 'deep-fry': 1, 'dry-fry': 0.8, boil: 0.7, braise: 0.45, steam: 0.45, bake: 0.45, simmer: 0.3, poach: 0.3 };
+  var LOOK = {
+    tofu: ['🧊', '#f5edd6'], meat: ['🥩', '#cc5c5c'], fish: ['🐟', '#8cb8db'], jar: ['🫙', '#a84229'],
+    spice: ['🧂', '#dbc79e'], chili: ['🌶️', '#db2e24'], oil: ['🫗', '#f2c740'], aromatic: ['🧄', '#ede6c7'],
+    vegetable: ['🥬', '#6bb35c'], bottle: ['🍶', '#593829'], nut: ['🥜', '#c79961'], liquid: ['💧', '#80b8eb'],
+    noodle: ['🍜', '#f0d68f'], egg: ['🥚', '#f7f0db'], herb: ['🌿', '#4d9e52'], citrus: ['🍋', '#f5db4d'], dairy: ['🧀', '#fad666']
+  };
+  var WORD = { sizzle: 'Tssss!', boil: 'Blub blub', splash: 'Sploosh!', clatter: 'Clack!', flame: 'Fwoomp!' };
+  function look(ingredient) { return LOOK[ingredient.icon] || ['🥄', '#b8b8b8']; }
+  function chipName(ingredient) { return ingredient.shortName || ingredient.name; }
+
+  // ---------- Round state (mirrors Sources/PantryGame/Round.swift) ----------
+  var round = null;
+  var mode = 'pantry';   // 'pantry': pick what belongs (PD-025). 'kitchen': amounts and a method too.
+  function shuffled(list) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function startRound(dishId) {
+    var dish = content.dishes[dishId];
+    var seen = {};
+    var offered = dish.palette.filter(function (id) { if (seen[id] || !content.ingredients[id]) return false; seen[id] = true; return true; });
+    round = { dish: dish, palette: shuffled(offered), entries: [], method: null, selected: null, vessel: mode === 'pantry' ? 'wok' : null, startedAt: null,
+      limit: E.pantryLimit(dish), essentials: E.pantryEssentials(dish) };
+    scene.clear();
+    scene.setVessel(round.vessel);
+    hideAbout();
+    renderAll();
+  }
+  // Puts a vessel on the burner, or swaps it. What is in it stays in (Round.place in Swift).
+  function place(vessel) {
+    if (mode !== 'kitchen' || round.vessel === vessel) return;
+    touchClock();
+    round.vessel = vessel;
+    scene.setVessel(vessel);
+    scene.twin('clatter');
+    sound.play('clatter');
+    buzz();
+    renderAll();
+  }
+  function nudgeVessel() {
+    var box = $('vessel-choice');
+    box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
+  }
+  function entryFor(id) { for (var i = 0; i < round.entries.length; i++) if (round.entries[i].id === id) return round.entries[i]; return null; }
+  // Measures by region (PD-041): the browser's region decides, as the phone's will. A US region reads
+  // ounces and cups; everywhere else reads grams and millilitres.
+  var MEASURES = /-(US|LR|MM)\b/i.test((navigator.languages && navigator.languages[0]) || navigator.language || '') ? 'us' : 'metric';
+  function ladder(id) { return E.ladderFor(content.ingredients[id], MEASURES); }
+  function measure(id) { var e = entryFor(id); return e ? ladder(id).steps[e.step] : null; }
+  function touchClock() { if (round.startedAt === null) round.startedAt = Date.now(); }
+
+  // What an ingredient tastes like and does in the pan (PD-028). Shown the moment a chip is touched.
+  function showAbout(id) {
+    var ingredient = content.ingredients[id], box = $('about-text');
+    box.textContent = '';
+    var name = document.createElement('b'); name.textContent = chipName(ingredient) + '. ';
+    box.appendChild(name);
+    box.appendChild(document.createTextNode(ingredient.about || ''));
+    clearTimeout(aboutTimer);
+    $('about').classList.remove('idle');
+    $('about').hidden = false;
+  }
+  var aboutTimer = null;
+  var small = window.matchMedia('(max-height: 700px)');
+  function stripNote() { return small.matches && mode === 'pantry'; }
+  function hideAbout() {
+    clearTimeout(aboutTimer);
+    var box = $('about'), strip = stripNote();
+    // Small-phone Pantry keeps the note in its own strip, so it never covers the wok.
+    if (strip && box.parentNode !== $('app-note-slot')) $('app-note-slot').appendChild(box);
+    if (!strip && box.parentNode !== $('stage')) $('stage').appendChild(box);
+    box.classList.toggle('strip', strip); box.classList.toggle('idle', strip);
+    box.hidden = !strip;
+    if (strip) $('about-text').textContent = 'Touch an ingredient to read what it is. Hold it to read without adding it.';
+  }
+  // The note stays up while the chip is held, then lingers long enough to finish reading.
+  function releaseAbout() { clearTimeout(aboutTimer); if (!stripNote()) aboutTimer = setTimeout(hideAbout, 2800); }
+  function nudgePicks() {
+    var box = $('picks');
+    box.classList.remove('nudge'); void box.offsetWidth; box.classList.add('nudge');
+  }
+  function add(id, fraction) {
+    touchClock();
+    if (mode === 'pantry') {
+      // Pantry: a tap puts it in or takes it out, up to the limit.
+      if (entryFor(id)) { if (fraction === undefined) remove(id); return; }
+      if (round.entries.length >= round.limit) { nudgePicks(); return; }
+    }
+    if (!round.vessel) { nudgeVessel(); return; }
+    round.selected = id;
+    if (!entryFor(id)) {
+      var ingredient = content.ingredients[id];
+      var l = ladder(id);
+      round.entries.push({ id: id, step: l.startIndex });
+      var x = fraction === undefined ? undefined : scene.dropX(fraction);
+      scene.setPieces(id, mode === 'pantry' ? 2 : E.pieceCount(l, l.startIndex), look(ingredient), x);
+      scene.twin(ingredient.soundCue, x);
+      sound.play(ingredient.soundCue);
+      buzz();
+    }
+    renderAll();
+  }
+  function setStep(id, index) {
+    var e = entryFor(id); if (!e) return;
+    var l = ladder(id);
+    index = Math.min(Math.max(index, 0), l.steps.length - 1);
+    if (index === e.step) return;
+    e.step = index;
+    scene.setPieces(id, E.pieceCount(l, index), look(content.ingredients[id]));
+    renderAll();
+  }
+  function remove(id) {
+    round.entries = round.entries.filter(function (e) { return e.id !== id; });
+    if (round.selected === id) round.selected = round.entries.length ? round.entries[round.entries.length - 1].id : null;
+    scene.setPieces(id, 0, look(content.ingredients[id]));
+    renderAll();
+  }
+  function choose(method) {
+    touchClock();
+    if (round.method === method) return;
+    round.method = method;
+    scene.setFlame(FLAME[method]);
+    sound.play('flame');
+    buzz();
+    renderAll();
+  }
+  function attempt() {
+    return {
+      dishId: round.dish.id, vessel: round.vessel, method: round.method,
+      lines: round.entries.map(function (e) { var m = ladder(e.id).steps[e.step]; return { ingredientId: e.id, amount: m.amount, unit: m.unit }; })
+    };
+  }
+  function buzz() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (err) { /* not available */ } }
+
+  // ---------- Rendering the controls ----------
+  function renderAll() { renderHeader(); renderMode(); renderMethods(); renderStepper(); renderPalette(); renderServe(); renderSceneLabel(); }
+
+  function renderMode() {
+    var pantry = mode === 'pantry';
+    $('mode-pantry').setAttribute('aria-pressed', pantry ? 'true' : 'false');
+    $('mode-kitchen').setAttribute('aria-pressed', pantry ? 'false' : 'true');
+    $('methods').hidden = pantry;
+    $('stepper').hidden = pantry;
+    $('picks').hidden = !pantry;
+    $('scene').dataset.mode = mode;
+    if (stripNote() !== $('about').classList.contains('strip')) hideAbout();
+    if (pantry) {
+      var used = round.entries.length;
+      // Say how many there are to find (Moe), and show the picks as dots that fill.
+      $('picks-ask').textContent = 'Pick the ' + round.essentials + ' essentials' + (small.matches ? " this dish can't be without." : '');
+      var dots = $('picks-count');
+      dots.textContent = '';
+      for (var n = 0; n < round.limit; n++) { var dot = document.createElement('i'); if (n < used) dot.className = 'on'; dots.appendChild(dot); }
+      dots.setAttribute('aria-label', used + ' of ' + round.limit + ' picked');
+    }
+  }
+
+  function renderHeader() {
+    $('dish-name').textContent = round.dish.name;
+    var session = sessions[mode];
+    $('eyebrow').textContent = content.cuisine.name + ' \u00b7 ' + Math.min(session.records.length + 1, session.dishIds.length) + ' of ' + session.dishIds.length;
+    var kitchen = mode === 'kitchen';
+    $('vessel-choice').hidden = !(kitchen && !round.vessel);
+    $('vessel-switch').hidden = !(kitchen && round.vessel);
+    if (kitchen && round.vessel) {
+      var other = round.vessel === 'wok' ? 'pot' : 'wok';
+      $('vessel-switch').textContent = round.vessel + ' \u21c4';
+      $('vessel-switch').setAttribute('aria-label', VESSEL_TITLE[round.vessel] + '. Switch to the ' + other);
+    }
+    $('brief').textContent = round.dish.brief || '';
+    $('brief').hidden = !round.dish.brief;
+    $('restart').disabled = round.entries.length === 0 && !round.method && !(kitchen && round.vessel);
+  }
+
+  function renderMethods() {
+    var box = $('methods');
+    if (!box.children.length) {
+      methodChoices.forEach(function (method) {
+        var b = document.createElement('button');
+        b.className = 'method'; b.id = 'method-' + method; b.textContent = METHOD_TITLE[method];
+        b.addEventListener('click', function () { choose(method); });
+        box.appendChild(b);
+      });
+    }
+    methodChoices.forEach(function (method) {
+      $('method-' + method).setAttribute('aria-pressed', round.method === method ? 'true' : 'false');
+    });
+  }
+
+  function renderStepper() {
+    var box = $('stepper');
+    var id = round.selected;
+    if (!id || !entryFor(id)) {
+      box.innerHTML = '<div class="hint">' + (round.vessel ? 'Tap an ingredient, or drag it into the ' + round.vessel + '.' : 'Choose a wok or a pot to start.') + '</div>';
+      return;
+    }
+    var ingredient = content.ingredients[id], e = entryFor(id), l = ladder(id), m = l.steps[e.step];
+    var key = id + (small.matches ? '|small' : '');
+    box.classList.toggle('compact', small.matches);
+    if (box.dataset.id !== key || !$('amount-slider')) {
+      box.dataset.id = key;
+      box.innerHTML = small.matches ?
+        '<span class="name" id="stepper-name"></span>' +
+        '<div class="line"><button class="round-button" id="less" aria-label="Less">−</button>' +
+        '<input type="range" id="amount-slider" min="0" step="1" aria-label="Amount">' +
+        '<button class="round-button" id="more" aria-label="More">+</button>' +
+        '<span class="amount" id="amount"></span><button class="remove cross" id="remove" aria-label="Take out">\u00d7</button></div>' :
+        '<div class="line"><span>' + look(ingredient)[0] + '</span><span class="name" id="stepper-name"></span>' +
+        '<span class="amount" id="amount"></span><button class="remove" id="remove">Take out</button></div>' +
+        '<div class="line"><button class="round-button" id="less" aria-label="Less">−</button>' +
+        '<input type="range" id="amount-slider" min="0" step="1" aria-label="Amount">' +
+        '<button class="round-button" id="more" aria-label="More">+</button></div>';
+      $('stepper-name').textContent = ingredient.name;
+      $('remove').addEventListener('click', function () { remove(round.selected); });
+      $('less').addEventListener('click', function () { var en = entryFor(round.selected); if (en) setStep(round.selected, en.step - 1); });
+      $('more').addEventListener('click', function () { var en = entryFor(round.selected); if (en) setStep(round.selected, en.step + 1); });
+      $('amount-slider').addEventListener('input', function (ev) { setStep(round.selected, Number(ev.target.value)); });
+    }
+    var slider = $('amount-slider');
+    slider.max = String(l.steps.length - 1);
+    if (Number(slider.value) !== e.step) slider.value = String(e.step);
+    slider.setAttribute('aria-valuetext', m.label);
+    $('amount').textContent = m.label;
+    $('less').disabled = e.step === 0;
+    $('more').disabled = e.step === l.steps.length - 1;
+  }
+
+  function renderPalette() {
+    var box = $('palette');
+    var key = round.dish.id + '|' + round.palette.join(',');
+    if (box.dataset.key !== key) {
+      box.dataset.key = key;
+      box.innerHTML = '';
+      round.palette.forEach(function (id) {
+        var ingredient = content.ingredients[id];
+        var b = document.createElement('button');
+        b.className = 'chip'; b.id = 'chip-' + id;
+        b.innerHTML = '<span class="label"></span><span class="amt" hidden></span>';
+        b.querySelector('.label').textContent = look(ingredient)[0] + ' ' + chipName(ingredient);
+        attachChipGestures(b, id);
+        box.appendChild(b);
+      });
+    }
+    round.palette.forEach(function (id) {
+      var b = $('chip-' + id), m = measure(id), ingredient = content.ingredients[id];
+      b.classList.toggle('in', !!m);
+      b.classList.toggle('selected', round.selected === id);
+      var amt = b.querySelector('.amt');
+      var showAmount = !!m && mode === 'kitchen';
+      amt.hidden = !showAmount; amt.textContent = showAmount ? m.label : '';
+      b.classList.toggle('selected', mode === 'kitchen' && round.selected === id);
+      b.classList.toggle('removable', !!m && mode === 'pantry');
+      b.setAttribute('aria-pressed', m ? 'true' : 'false');
+      b.setAttribute('aria-label', !m ? ingredient.name : (mode === 'kitchen' ? ingredient.name + ', ' + m.label + ' in the wok' : ingredient.name + ', in the wok. Tap to take it out'));
+    });
+  }
+
+  var VESSEL_TITLE = { wok: 'Wok', pot: 'Pot' };
+  function servePrompt() {
+    if (!round.vessel) return 'Choose a wok or a pot';
+    if (!round.entries.length) return 'Add something to the ' + round.vessel;
+    if (mode === 'pantry') return null;
+    if (!round.method) return 'Choose how to cook it';
+    return null;
+  }
+  function renderServe() {
+    var prompt = servePrompt();
+    $('serve').disabled = prompt !== null;
+    $('serve').textContent = prompt || 'Serve it';
+    if (!prompt && stripNote()) {
+      var count = document.createElement('span'); count.className = 'count';
+      count.textContent = round.entries.length + ' of ' + round.limit;
+      $('serve').appendChild(count);
+    }
+  }
+  function renderSceneLabel() {
+    var title = VESSEL_TITLE[round.vessel];
+    var label = title ? title + ', empty' : 'No vessel yet';
+    if (round.entries.length) {
+      label = title + ' with ' + round.entries.map(function (e) {
+        return (mode === 'kitchen' ? ladder(e.id).steps[e.step].label + ' ' : '') + chipName(content.ingredients[e.id]);
+      }).join(', ');
+    }
+    $('stage').setAttribute('aria-label', label);
+  }
+
+  // ---------- Tap or drag a chip ----------
+  var drag = null;
+  function overScene(x, y) {
+    var r = $('scene').getBoundingClientRect();
+    return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom ? (x - r.left) / r.width : null;
+  }
+  function attachChipGestures(button, id) {
+    button.addEventListener('pointerdown', function (ev) {
+      if (ev.button !== undefined && ev.button > 0) return;
+      sound.unlock();
+      // Pantry: the note shows at a touch. Kitchen: only when held, because there it would cover the vessel.
+      if (mode === 'pantry') showAbout(id);
+      drag = { id: id, x0: ev.clientX, y0: ev.clientY, moved: false, pointer: ev.pointerId, peeked: false };
+      // Held still for a moment: the player is reading, not adding.
+      drag.timer = setTimeout(function () { if (drag && drag.id === id && !drag.moved) { drag.peeked = true; button.classList.add('peek'); showAbout(id); } }, 450);
+      try { button.setPointerCapture(ev.pointerId); } catch (err) { /* older browsers */ }
+    });
+    button.addEventListener('pointermove', function (ev) {
+      if (!drag || drag.id !== id || drag.pointer !== ev.pointerId) return;
+      if (!drag.moved && Math.hypot(ev.clientX - drag.x0, ev.clientY - drag.y0) > 10) {
+        drag.moved = true;
+        button.classList.add('dragging');
+        var ghost = $('ghost');
+        ghost.textContent = look(content.ingredients[id])[0];
+        ghost.hidden = false;
+      }
+      if (drag.moved) {
+        // Hold the ghost a little above the finger so the thumb doesn't cover it.
+        var gy = ev.clientY - 36;
+        $('ghost').style.transform = 'translate(' + ev.clientX + 'px,' + gy + 'px) translate(-50%,-50%)';
+        $('scene').classList.toggle('over', overScene(ev.clientX, gy) !== null);
+      }
+    });
+    function finish(ev, cancelled) {
+      if (!drag || drag.id !== id) return;
+      var d = drag; drag = null;
+      clearTimeout(d.timer);
+      releaseAbout();
+      button.classList.remove('dragging'); button.classList.remove('peek');
+      $('ghost').hidden = true;
+      $('scene').classList.remove('over');
+      if (cancelled) return;
+      if (!d.moved) { if (!d.peeked) add(id); return; }
+      var fraction = overScene(ev.clientX, ev.clientY - 36);
+      if (fraction !== null) add(id, fraction);
+    }
+    button.addEventListener('pointerup', function (ev) { finish(ev, false); });
+    button.addEventListener('pointercancel', function (ev) { finish(ev, true); });
+    // Keyboard and switch access: Enter or Space adds it.
+    button.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); if (mode === 'pantry') showAbout(id); add(id); } });
+    button.addEventListener('focus', function () { if (mode === 'pantry') showAbout(id); });
+    button.addEventListener('blur', releaseAbout);
+    button.addEventListener('contextmenu', function (ev) { ev.preventDefault(); });
+  }
+
+  // ---------- Sound: placeholder cues, synthesised (mirrors PlaceholderSynth.swift) ----------
+  var sound = (function () {
+    var ctx = null, buffers = {}, muted = false;
+    var RATE = 44100;
+    function noise() { return Math.random() * 2 - 1; }
+    function build(cue) {
+      var n, out, i, t;
+      if (cue === 'sizzle') {
+        n = Math.floor(0.75 * RATE); out = new Float32Array(n); var prev = 0, crackle = 1;
+        for (i = 0; i < n; i++) { t = i / RATE; var w = noise(); var hp = w - prev; prev = w; if (i % 441 === 0) crackle = 0.55 + 0.45 * Math.random(); out[i] = hp * crackle * Math.min(1, t / 0.01) * Math.exp(-t * 4.5); }
+      } else if (cue === 'boil') {
+        n = Math.floor(0.85 * RATE); out = new Float32Array(n); var len = Math.floor(0.07 * RATE);
+        for (var b = 0; b < 7; b++) { var start = Math.floor(b * 0.105 * RATE + Math.random() * 0.03 * RATE), base = 260 + Math.random() * 220, phase = 0; for (var j = 0; j < len && start + j < n; j++) { var x = j / len; phase += 2 * Math.PI * base * (1 + 0.9 * x) / RATE; out[start + j] += Math.sin(phase) * Math.sin(Math.PI * x); } }
+      } else if (cue === 'splash') {
+        n = Math.floor(0.45 * RATE); out = new Float32Array(n); var low = 0;
+        for (i = 0; i < n; i++) { t = i / RATE; low += 0.18 * (noise() - low); out[i] = low * Math.min(1, t / 0.006) * Math.exp(-t * 11); }
+      } else if (cue === 'clatter') {
+        n = Math.floor(0.42 * RATE); out = new Float32Array(n);
+        [0, 0.07, 0.13, 0.21].forEach(function (offset) { var s = Math.floor(offset * RATE), f = 1700 + Math.random() * 1500, g = 0.6 + Math.random() * 0.4; for (var k = 0; k < Math.floor(0.09 * RATE) && s + k < n; k++) { var tt = k / RATE; out[s + k] += g * Math.sin(2 * Math.PI * f * tt) * Math.exp(-tt * 60); } });
+      } else {
+        n = Math.floor(0.55 * RATE); out = new Float32Array(n); var lw = 0;
+        for (i = 0; i < n; i++) { t = i / RATE; lw += 0.04 * (noise() - lw); out[i] = (t < 0.004 ? Math.sin(2 * Math.PI * 2400 * t) * 0.8 : 0) + lw * Math.sin(Math.PI * Math.min(1, t / 0.5)) * 3; }
+      }
+      var peak = 0; for (i = 0; i < n; i++) peak = Math.max(peak, Math.abs(out[i]));
+      if (peak > 0) for (i = 0; i < n; i++) out[i] *= 0.6 / peak;
+      return out;
+    }
+    function unlock() {
+      if (ctx || muted) { if (ctx && ctx.state === 'suspended') ctx.resume(); return; }
+      try {
+        var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        ctx = new AC();
+        ['sizzle', 'boil', 'splash', 'clatter', 'flame'].forEach(function (cue) {
+          var data = build(cue), buffer = ctx.createBuffer(1, data.length, RATE);
+          buffer.getChannelData(0).set(data); buffers[cue] = buffer;
+        });
+      } catch (err) { ctx = null; }
+    }
+    function play(cue) {
+      if (muted) return;
+      unlock();
+      if (!ctx || !buffers[cue]) return;
+      try { var src = ctx.createBufferSource(); src.buffer = buffers[cue]; src.connect(ctx.destination); src.start(); } catch (err) { /* stay silent */ }
+      var icon = document.getElementById('mute');
+      icon.classList.remove('playing'); void icon.offsetWidth; icon.classList.add('playing');
+    }
+    return { play: play, unlock: unlock, isMuted: function () { return muted; }, toggle: function () { muted = !muted; return muted; } };
+  })();
+
+  // ---------- The wok scene: pieces under simple physics, and every cue's visual twin ----------
+  var scene = (function () {
+    var canvas = $('canvas'), g = canvas.getContext('2d');
+    var LW = 390, LH = 260, CX = 195, RIM = 112, RADIUS = 140, DEPTH = 86, WALL = 8, R = 12, POT = 112;
+    var vessel = 'wok';
+    var pieces = [], dots = [], words = [], flameLevel = 0, flameKick = 0, shake = 0, last = 0, running = false;
+    var colors = {};
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function readColors() {
+      var s = getComputedStyle(document.documentElement);
+      ['--iron', '--iron-inside', '--burner', '--chili', '--ink'].forEach(function (name) { colors[name] = s.getPropertyValue(name).trim() || '#333'; });
+    }
+    function resize() {
+      var r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.round(r.width * dpr)); canvas.height = Math.max(1, Math.round(r.height * dpr));
+      draw();
+    }
+    // The wok's bowl narrows fast below the rim; the pot's sides are straight.
+    function clampX(x) { var reach = vessel === 'pot' ? POT - WALL - R - 6 : RADIUS - WALL - R - 30; return Math.min(Math.max(x, CX - reach), CX + reach); }
+    // Puts a vessel on the burner, swaps it, or (null) takes it away. Pieces drop back in from above.
+    function setVessel(next) {
+      vessel = next;
+      pieces.forEach(function (p, index) { p.x = clampX(p.x); p.y = RIM - 46 - (index % 6) * 16 - Math.random() * 40; p.vx = 0; p.vy = 0; });
+      wake();
+    }
+    function dropX(fraction) {
+      // The canvas letterboxes the 390x260 scene; map the view fraction back into scene x.
+      var r = canvas.getBoundingClientRect(), scale = Math.min(r.width / LW, r.height / LH);
+      var offset = (r.width - LW * scale) / 2;
+      return clampX((fraction * r.width - offset) / scale);
+    }
+    function setPieces(id, count, lk, x) {
+      var mine = pieces.filter(function (p) { return p.id === id; });
+      while (mine.length > Math.max(count, 0)) { var gone = mine.pop(); pieces.splice(pieces.indexOf(gone), 1); }
+      var landing = x === undefined ? CX - 70 + Math.random() * 140 : x;
+      while (mine.length < count) {
+        var p = { id: id, x: clampX(landing + (Math.random() * 32 - 16)), y: RIM - 46 - mine.length * 16 - Math.random() * 8, vx: 0, vy: 0, emoji: lk[0], tint: lk[1] };
+        pieces.push(p); mine.push(p);
+      }
+      wake();
+    }
+    function clear() { pieces = []; dots = []; words = []; flameLevel = 0; flameKick = 0; wake(); }
+    function setFlame(level) { flameLevel = 0.45 + 0.55 * level; flameKick = 1; word(WORD.flame, CX + 118, LH - 34, '#d9331a'); wake(); }
+
+    function burst(count, x, y, size, color, spread, rise, life, opts) {
+      opts = opts || {};
+      for (var i = 0; i < count; i++) {
+        dots.push({ x: x + Math.random() * 28 - 14, y: y + Math.random() * 12 - 8, vx: (Math.random() * 2 - 1) * spread / life,
+          vy: -(rise[0] + Math.random() * (rise[1] - rise[0])) / life * (opts.falls ? 2 : 1), g: opts.falls ? 2 * (rise[1]) / (life * life) * 1.6 : 0,
+          r: size[0] + Math.random() * (size[1] - size[0]), grow: opts.grow || 1, color: color, hollow: !!opts.hollow, age: 0, life: life });
+      }
+    }
+    function word(text, x, y, color) { words.push({ text: text, x: Math.min(Math.max(x, 70), LW - 60), y: y, color: color, age: 0, life: 0.9, tilt: Math.random() * 0.28 - 0.14 }); }
+    function twin(cue, x) {
+      var ox = clampX(x === undefined ? CX : x), oy = RIM + 8, color;
+      if (cue === 'sizzle') { color = '#e8780d'; burst(10, ox, oy, [2, 4], '#ffbf26', 60, [30, 80], 0.45, { falls: true }); burst(4, ox, oy, [8, 13], 'rgba(255,255,255,0.75)', 22, [60, 100], 0.9, { grow: 2.2 }); }
+      else if (cue === 'boil') { color = '#2673cc'; burst(8, ox, oy, [4, 9], '#4d99f2', 46, [30, 70], 0.8, { grow: 1.5, hollow: true }); }
+      else if (cue === 'splash') { color = '#0d8c99'; burst(9, ox, oy, [3, 6], '#59b3e6', 80, [40, 85], 0.55, { falls: true }); }
+      else { color = '#805426'; shake = 0.2; burst(6, ox, oy, [2, 4], '#9e7340', 50, [25, 55], 0.4, { falls: true }); cue = 'clatter'; }
+      word(WORD[cue], ox, RIM - 40, color);
+      wake();
+    }
+
+    function step(dt) {
+      var i, j, p, q;
+      for (i = 0; i < pieces.length; i++) { p = pieces[i]; p.vy += 900 * dt; p.vx *= 0.985; p.x += p.vx * dt; p.y += p.vy * dt; }
+      var rx = RADIUS - WALL - R, ry = DEPTH - WALL - R;
+      for (var pass = 0; pass < 4; pass++) {
+        for (i = 0; i < pieces.length; i++) {
+          p = pieces[i];
+          for (j = i + 1; j < pieces.length; j++) {
+            q = pieces[j];
+            var dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy);
+            if (d < 2 * R && d > 0.001) {
+              var push = (2 * R - d) / 2, nx = dx / d, ny = dy / d;
+              p.x -= nx * push; p.y -= ny * push; q.x += nx * push; q.y += ny * push;
+              var rel = (q.vx - p.vx) * nx + (q.vy - p.vy) * ny;
+              if (rel < 0) { p.vx += nx * rel * 0.5; p.vy += ny * rel * 0.5; q.vx -= nx * rel * 0.5; q.vy -= ny * rel * 0.5; }
+            }
+          }
+          if (vessel === 'pot') {
+            var hx = POT - WALL - R, floor = RIM + DEPTH - WALL - R;
+            if (p.x < CX - hx) { p.x = CX - hx; p.vx = Math.abs(p.vx) * 0.2; }
+            if (p.x > CX + hx) { p.x = CX + hx; p.vx = -Math.abs(p.vx) * 0.2; }
+            if (p.y > floor) { p.y = floor; if (p.vy > 0) p.vy = -p.vy * 0.2; p.vx *= 0.9; }
+          } else if (p.y > RIM) {
+            var ex = (p.x - CX) / rx, ey = (p.y - RIM) / ry, k = ex * ex + ey * ey;
+            if (k > 1) {
+              var s = 1 / Math.sqrt(k);
+              p.x = CX + (p.x - CX) * s; p.y = RIM + (p.y - RIM) * s;
+              var gx = ex / rx, gy = ey / ry, gl = Math.hypot(gx, gy) || 1; gx /= gl; gy /= gl;
+              var vn = p.vx * gx + p.vy * gy;
+              if (vn > 0) { p.vx -= 1.2 * vn * gx; p.vy -= 1.2 * vn * gy; p.vx *= 0.9; p.vy *= 0.9; }
+            }
+          } else {
+            if (p.x < CX - rx) { p.x = CX - rx; p.vx = Math.abs(p.vx) * 0.2; }
+            if (p.x > CX + rx) { p.x = CX + rx; p.vx = -Math.abs(p.vx) * 0.2; }
+          }
+        }
+      }
+      for (i = dots.length - 1; i >= 0; i--) { var dt2 = dots[i]; dt2.age += dt; dt2.vy += dt2.g * dt; dt2.x += dt2.vx * dt; dt2.y += dt2.vy * dt; if (dt2.age >= dt2.life) dots.splice(i, 1); }
+      for (i = words.length - 1; i >= 0; i--) { words[i].age += dt; if (words[i].age >= words[i].life) words.splice(i, 1); }
+      if (shake > 0) shake = Math.max(0, shake - dt);
+      if (flameKick > 0) flameKick = Math.max(0, flameKick - dt * 3);
+    }
+
+    function halfEllipse(inset) {
+      g.beginPath(); g.ellipse(CX, RIM, RADIUS - inset, DEPTH - inset, 0, 0, Math.PI, false); g.closePath();
+    }
+    function potShape(inset) {
+      var half = POT - inset, bottom = RIM + DEPTH - inset, corner = 16;
+      g.beginPath(); g.moveTo(CX - half, RIM); g.lineTo(CX - half, bottom - corner);
+      g.quadraticCurveTo(CX - half, bottom, CX - half + corner, bottom); g.lineTo(CX + half - corner, bottom);
+      g.quadraticCurveTo(CX + half, bottom, CX + half, bottom - corner); g.lineTo(CX + half, RIM); g.closePath();
+    }
+    function draw() {
+      var w = canvas.width, h = canvas.height, scale = Math.min(w / LW, h / LH);
+      g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, w, h);
+      g.setTransform(scale, 0, 0, scale, (w - LW * scale) / 2, (h - LH * scale) / 2);
+      var now = performance.now() / 1000, i;
+
+      g.fillStyle = colors['--burner']; roundRect(CX - 75, LH - 31, 150, 14, 6); g.fill();
+      if (flameLevel > 0) {
+        var size = flameLevel * (1 + 0.5 * flameKick);
+        for (i = 0; i < 5; i++) {
+          var flick = reduced ? 1 : 1 + 0.15 * Math.sin(now * (9 + i * 1.7) + i);
+          var fx = CX + (i - 2) * 24 * size, base = LH - 31;
+          g.fillStyle = '#ff7a1a'; g.beginPath(); g.ellipse(fx, base - 18 * size * flick, 10 * size, 18 * size * flick, 0, 0, Math.PI * 2); g.fill();
+          g.fillStyle = '#ffd940'; g.beginPath(); g.ellipse(fx, base - 12 * size * flick, 5 * size, 10 * size * flick, 0, 0, Math.PI * 2); g.fill();
+        }
+      }
+
+      g.save();
+      if (shake > 0 && !reduced) g.translate(Math.sin(shake * 90) * 6 * (shake / 0.2), 0);
+      if (vessel) {
+        var half = vessel === 'pot' ? POT : RADIUS, shape = vessel === 'pot' ? potShape : halfEllipse;
+        g.fillStyle = colors['--iron']; shape(0); g.fill();
+        roundRect(CX - half - 29, RIM - 1, 34, 11, 5); g.fill(); roundRect(CX + half - 5, RIM - 1, 34, 11, 5); g.fill();
+        g.fillStyle = colors['--iron-inside']; shape(WALL); g.fill();
+      }
+      g.restore();
+
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      for (i = 0; i < pieces.length; i++) {
+        var p = pieces[i];
+        g.fillStyle = p.tint; g.beginPath(); g.arc(p.x, p.y, R, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = 'rgba(0,0,0,0.25)'; g.lineWidth = 1; g.stroke();
+        g.font = '15px system-ui, "Apple Color Emoji", "Noto Color Emoji", sans-serif'; g.fillStyle = '#000'; g.fillText(p.emoji, p.x, p.y + 1);
+      }
+      for (i = 0; i < dots.length; i++) {
+        var d = dots[i], life = d.age / d.life, rr = d.r * (1 + (d.grow - 1) * life);
+        g.globalAlpha = life < 0.55 ? 1 : Math.max(0, 1 - (life - 0.55) / 0.45);
+        g.beginPath(); g.arc(d.x, d.y, rr, 0, Math.PI * 2);
+        if (d.hollow) { g.strokeStyle = d.color; g.lineWidth = 1.5; g.stroke(); } else { g.fillStyle = d.color; g.fill(); }
+      }
+      for (i = 0; i < words.length; i++) {
+        var wd = words[i], wl = wd.age / wd.life, pop = Math.min(1, wd.age / 0.12);
+        g.globalAlpha = wl < 0.6 ? 1 : Math.max(0, 1 - (wl - 0.6) / 0.4);
+        g.save(); g.translate(wd.x, wd.y - 34 * wl); g.rotate(wd.tilt); g.scale(0.4 + 0.6 * pop, 0.4 + 0.6 * pop);
+        g.font = '700 24px Fredoka, "Avenir Next", system-ui, sans-serif'; g.fillStyle = wd.color; g.fillText(wd.text, 0, 0); g.restore();
+      }
+      g.globalAlpha = 1;
+    }
+    function roundRect(x, y, w, h, r) {
+      g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+    }
+    function settled() {
+      if (dots.length || words.length || shake > 0 || flameKick > 0) return false;
+      for (var i = 0; i < pieces.length; i++) if (Math.abs(pieces[i].vx) + Math.abs(pieces[i].vy) > 6) return false;
+      return true;
+    }
+    var quiet = 0;
+    function frame(t) {
+      var dt = Math.min(0.033, (t - last) / 1000 || 0.016); last = t;
+      step(dt / 2); step(dt / 2); draw();
+      // Keep animating while anything moves, or while a flame flickers; otherwise rest.
+      quiet = settled() ? quiet + dt : 0;
+      if (quiet < 0.6 || (flameLevel > 0 && !reduced)) requestAnimationFrame(frame); else running = false;
+    }
+    function wake() { quiet = 0; if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); } }
+
+    readColors();
+    if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas); else window.addEventListener('resize', resize);
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onTheme = function () { readColors(); draw(); };
+      if (mq.addEventListener) mq.addEventListener('change', onTheme);
+      new MutationObserver(onTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+    resize();
+    return { setVessel: setVessel, setPieces: setPieces, clear: clear, setFlame: setFlame, twin: twin, dropX: dropX, pieceCount: function () { return pieces.length; } };
+  })();
+
+  // ---------- Serving ----------
+  var MISS_TEXT = {
+    missingRequired: function (s) { return 'Missing: ' + s; },
+    partialRequired: function (s) { return 'Thin on ' + s; },
+    wrongAmount: function (s) { return 'There, but far off in amount: ' + s; },
+    offCuisine: function (s) { return 'From another cuisine: ' + ingredientName(s); },
+    forbiddenForDish: function (s) { return 'Wrong for this dish: ' + ingredientName(s); },
+    ratioUndefined: function (s) { return "Can't judge " + s + ' (one side is missing)'; },
+    ratioLow: function (s) { return 'Too little: ' + s; },
+    ratioHigh: function (s) { return 'Too much: ' + s; },
+    signatureLow: function (s) { return 'Not enough ' + axisName(s); },
+    signatureHigh: function (s) { return 'Too much ' + axisName(s); },
+    wrongVessel: function () { return 'This dish wants a different vessel'; },
+    wrongMethod: function (s) { return (METHOD_TITLE[s] || s) + " isn't how this is cooked"; }
+  };
+  function ingredientName(id) { var i = content.ingredients[id]; return i ? chipName(i) : id; }
+  function axisName(axis) { return { heat: 'heat', numbing: 'numbing', acid: 'sourness', umami: 'savoury depth', sweet: 'sweetness' }[axis] || axis; }
+
+  function tookLine() {
+    var seconds = round.startedAt === null ? 0 : Math.round((Date.now() - round.startedAt) / 1000);
+    var target = mode === 'pantry' ? 'about 0:30' : '1:00 to 2:00';
+    return 'This round took ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + '. The target is ' + target + '. (Shown only in this stand-in.)';
+  }
+  // Each item is its own tag: a comma-joined line can't tell "garlic, ginger and scallion" (one thing) from three.
+  function group(wrap, kind, title, items) {
+    var box = document.createElement('div'); box.className = 'group ' + kind;
+    var head = document.createElement('div'); head.className = 'misses-title'; head.textContent = title;
+    var list = document.createElement('ul'); list.className = 'tags';
+    items.forEach(function (text) { var li = document.createElement('li'); li.textContent = text; list.appendChild(li); });
+    box.appendChild(head); box.appendChild(list); wrap.appendChild(box);
+  }
+  function names(ids) { return ids.map(ingredientName); }
+
+  // A recipe's amounts, as Sources/PantryGame/RecipeText.swift writes them.
+  var FRACTIONS = [[0.125, '\u215b'], [0.25, '\u00bc'], [1 / 3, '\u2153'], [0.5, '\u00bd'], [2 / 3, '\u2154'], [0.75, '\u00be']];
+  function recipeNumber(value) {
+    var whole = Math.floor(value), rest = value - whole;
+    if (rest < 0.001) return String(whole);
+    for (var i = 0; i < FRACTIONS.length; i++) if (Math.abs(rest - FRACTIONS[i][0]) < 0.01) return (whole === 0 ? '' : whole) + FRACTIONS[i][1];
+    return value.toFixed(1);
+  }
+  function recipeAmount(amount, unit) {
+    if (unit === 'grams') return amount >= 1000 ? recipeNumber(amount / 1000) + ' kg' : recipeNumber(amount) + ' g';
+    if (unit === 'pinch') return amount === 1 ? 'a pinch' : recipeNumber(amount) + ' pinches';
+    return recipeNumber(amount) + ' ' + (unit === 'cup' && amount > 1 ? 'cups' : unit);
+  }
+  // A recipe amount as the player's measures read it: the nearest step on that ingredient's stepper.
+  function recipeLabel(ingredient, line) {
+    var step = ingredient ? E.recipeMeasure(ingredient, line, MEASURES) : null;
+    return step ? step.label : recipeAmount(line.amount, line.unit);
+  }
+  function lowerFirst(name) {
+    return /^(Sichuan|Shaoxing|Chinkiang|Napa)/.test(name) ? name : name.charAt(0).toLowerCase() + name.slice(1);
+  }
+  // The real thing, after the verdict (PD-029). Never shown before the round is served.
+  function showRecipe() {
+    // One tap away, so the sheet stays one screen (PD-032).
+    var recipe = round.dish.recipe, box = $('recipe');
+    box.hidden = true;
+    $('see-recipe').hidden = !recipe; $('see-recipe').setAttribute('aria-expanded', 'false');
+    if (!recipe) return;
+    $('recipe-meta').textContent = 'Serves ' + recipe.serves + ' \u00b7 ' + (recipe.vessel === 'wok' ? 'Wok' : 'Pot') + ' \u00b7 ' + METHOD_TITLE[recipe.method];
+    var core = {};
+    E.pantryJudge(content, round.dish.id, recipe.lines.map(function (l) { return l.ingredientId; })).found.forEach(function (id) { core[id] = true; });
+    $('recipe-key').textContent = 'Marked: the ' + round.essentials + ' essentials. The rest round the dish out.';
+    var lines = $('recipe-lines'); lines.innerHTML = '';
+    recipe.lines.forEach(function (line) {
+      var ingredient = content.ingredients[line.ingredientId];
+      var li = document.createElement('li'), amount = document.createElement('b');
+      if (core[line.ingredientId]) { li.className = 'core'; li.setAttribute('aria-label', 'Essential: ' + recipeLabel(ingredient, line) + ' ' + (ingredient ? ingredient.name : line.ingredientId)); }
+      amount.textContent = recipeLabel(ingredient, line);
+      li.appendChild(amount);
+      li.appendChild(document.createTextNode(' ' + lowerFirst(ingredient ? ingredient.name : line.ingredientId)));
+      lines.appendChild(li);
+    });
+    var steps = $('recipe-steps'); steps.innerHTML = '';
+    recipe.steps.forEach(function (text) { var li = document.createElement('li'); li.textContent = text; steps.appendChild(li); });
+  }
+
+  // The one card a round ends on (PB-004), in both modes.
+  function showCard() {
+    var card = null;
+    (RAW.cards || []).forEach(function (c) { if (c.id === round.dish.cardId) card = c; });
+    $('card').hidden = !card;
+    if (!card) return;
+    $('card-title').textContent = card.title;
+    $('card-body').textContent = card.body;
+    $('card-rule').textContent = 'Rule: ' + card.rule;
+    $('card-try').textContent = card.tryTonight;
+  }
+  function serve() {
+    $('verdict').hidden = false; $('summary').hidden = true;
+    var served = mode === 'pantry' ? servePantry() : serveKitchen();
+    noteServe(served[0], served[1]);
+    showCard();
+    showRecipe();
+    document.querySelector('.sheet').scrollTop = 0;
+    $('took').textContent = tookLine();
+    $('scrim').hidden = false;
+    $('keep').focus();
+  }
+
+  // Pantry: the count is the score (PD-025). No percentage.
+  function servePantry() {
+    var result = E.pantryJudge(content, round.dish.id, round.entries.map(function (e) { return e.id; }));
+    $('sheet-dish').textContent = round.dish.name;
+    $('total').innerHTML = result.found.length + '<small>of ' + result.essentials + ' essentials found</small>';
+    $('judge-line').textContent = E.judgePantry(content, round.dish.id, result);
+    $('capped').hidden = true;
+    $('parts').innerHTML = '';
+    var wrap = $('misses-wrap');
+    wrap.innerHTML = ''; wrap.className = 'groups';
+    if (result.wrong.length) group(wrap, 'bad', 'Doesn\u2019t belong', names(result.wrong));
+    if (result.missed.length) group(wrap, 'bad', 'Missed', result.missed.map(function (label) { return label.charAt(0).toUpperCase() + label.slice(1); }));
+    if (result.found.length) group(wrap, 'good', 'Found', names(result.found));
+    if (result.alsoBelongs.length) {
+      group(wrap, 'fine', 'Not wrong, just not essential', names(result.alsoBelongs));
+      var why = document.createElement('p'); why.className = 'aside';
+      why.textContent = 'These belong in the dish and may be in the recipe below. This round only counts the ' + result.essentials + ' things the dish can\u2019t be without.';
+      wrap.lastChild.appendChild(why);
+    }
+    $('keep').textContent = 'Try again';
+    return [result.found.length, result.essentials];
+  }
+
+  function serveKitchen() {
+    var result = E.score(content, attempt());
+    var W = E.WEIGHTS;
+    $('sheet-dish').textContent = round.dish.name;
+    $('total').innerHTML = result.total + '<small>out of 100</small>';
+    $('judge-line').textContent = E.judgeKitchen(content, round.dish.id, result);
+    $('capped').hidden = result.cappedAt === null;
+    if (result.cappedAt !== null) {
+      $('capped').textContent = 'Held at ' + result.cappedAt + ': something in the wok doesn\u2019t belong, and the more of the dish it is, the lower the ceiling. The parts below add up to more.';
+    }
+    var parts = [['Ingredients', result.coverage, W.coverage], ['Ratios', result.ratioFit, W.ratioFit], ['Flavour', result.signature, W.signature], ['Technique', result.technique, W.technique]];
+    $('parts').innerHTML = parts.map(function (p) {
+      return '<div class="part"><span>' + p[0] + '</span><span class="bar"><i style="width:' + Math.max(0, Math.min(100, p[1] / p[2] * 100)) + '%"></i></span><span class="num">' + p[1] + ' / ' + p[2] + '</span></div>';
+    }).join('');
+    var seen = {}, lines = [];
+    result.misses.forEach(function (m) {
+      var key = m.kind + ':' + m.subject; if (seen[key]) return; seen[key] = true;
+      var fn = MISS_TEXT[m.kind]; lines.push(fn ? fn(m.subject) : key);
+    });
+    var wrap = $('misses-wrap');
+    wrap.innerHTML = ''; wrap.className = '';
+    if (lines.length) {
+      // Folded away: the judge's line names the one thing to fix, and the card comes next (PD-036).
+      // The full list stays in the stand-in for review; the app doesn't show it.
+      var fold = document.createElement('details'); fold.className = 'misses-fold';
+      var title = document.createElement('summary'); title.className = 'misses-title'; title.textContent = 'Everything that cost points (' + lines.length + ')';
+      var list = document.createElement('ul'); list.className = 'misses';
+      lines.forEach(function (text) { var li = document.createElement('li'); li.textContent = text; list.appendChild(li); });
+      fold.appendChild(title); fold.appendChild(list); wrap.appendChild(fold);
+    } else {
+      var clean = document.createElement('div'); clean.className = 'clean'; clean.textContent = 'Nothing cost you points.'; wrap.appendChild(clean);
+    }
+    $('keep').textContent = 'Keep cooking';
+    return [result.total, 100];
+  }
+  // ---------- The session: five different dishes per mode, then a summary (Session.swift) ----------
+  var SESSION_LENGTH = 5, STORE_KEY = 'pantry-progress-v1';
+  var sessions = { pantry: null, kitchen: null }, finished = { pantry: 0, kitchen: 0 };
+  function deal(avoiding) {
+    var order = shuffled(content.dishOrder);
+    var fresh = order.filter(function (id) { return avoiding.indexOf(id) < 0; });
+    var again = order.filter(function (id) { return avoiding.indexOf(id) >= 0; });
+    return { dishIds: fresh.concat(again).slice(0, SESSION_LENGTH), records: [], served: null };
+  }
+  // Progress is a convenience: where the browser won't keep it, the session lives for this visit only.
+  function saveProgress() {
+    try { window.localStorage.setItem(STORE_KEY, JSON.stringify({ sessions: sessions, finished: finished })); } catch (err) { /* not available */ }
+  }
+  function loadProgress() {
+    var saved = null;
+    try { saved = JSON.parse(window.localStorage.getItem(STORE_KEY)); } catch (err) { saved = null; }
+    ['pantry', 'kitchen'].forEach(function (m) {
+      var s = saved && saved.sessions && saved.sessions[m];
+      var sound_ = s && Array.isArray(s.dishIds) && Array.isArray(s.records) && s.dishIds.every(function (id) { return content.dishes[id]; });
+      sessions[m] = sound_ ? s : deal([]);
+      finished[m] = saved && saved.finished && saved.finished[m] > 0 ? saved.finished[m] : 0;
+    });
+  }
+  function sessionDone(session) { return session.records.length >= session.dishIds.length; }
+  function playCurrent() {
+    var session = sessions[mode];
+    if (sessionDone(session)) { startRound(session.dishIds[session.dishIds.length - 1]); showSummary(); return; }
+    startRound(session.dishIds[session.records.length]);
+  }
+  // The first serve of a round is the one the session keeps: after it the verdict has been seen.
+  function noteServe(points, outOf) {
+    var session = sessions[mode], first = !session.served;
+    if (first) { session.served = { dishId: round.dish.id, points: points, outOf: outOf }; saveProgress(); }
+    var served = session.served, differs = served.points !== points;
+    $('counted').hidden = !differs;
+    if (differs) $('counted').textContent = 'Your first serve, ' + served.points + (mode === 'pantry' ? ' of ' + served.outOf : '') + ', is the one this session keeps.';
+    $('next').textContent = session.records.length === session.dishIds.length - 1 ? 'Finish' : 'Next dish';
+  }
+  function nextDish() {
+    var session = sessions[mode];
+    if (!session.served) return;
+    session.records.push(session.served); session.served = null;
+    saveProgress();
+    if (sessionDone(session)) { showSummary(); return; }
+    $('scrim').hidden = true;
+    playCurrent();
+  }
+  function showSummary() {
+    var session = sessions[mode], summary = E.sessionSummary(mode, session.records);
+    $('verdict').hidden = true; $('summary').hidden = false;
+    $('summary-title').textContent = (mode === 'pantry' ? 'Pantry' : 'Kitchen') + ' session ' + (finished[mode] + 1);
+    $('summary-total').textContent = summary.headlineNumber;
+    $('summary-caption').textContent = summary.headlineCaption;
+    $('summary-line').textContent = summary.line;
+    var rows = $('summary-rows'); rows.textContent = '';
+    session.records.forEach(function (record, index) {
+      var li = document.createElement('li'), name = document.createElement('span'), score = document.createElement('b');
+      name.textContent = content.dishes[record.dishId].name;
+      if (index === summary.best || index === summary.revisit) {
+        var tag = document.createElement('small'); tag.textContent = index === summary.best ? 'Best' : 'Worth another go'; name.appendChild(tag);
+      }
+      score.textContent = mode === 'kitchen' ? record.points : record.points + ' of ' + record.outOf;
+      li.appendChild(name); li.appendChild(score); rows.appendChild(li);
+    });
+    var revisit = summary.revisit >= 0 ? content.dishes[session.records[summary.revisit].dishId] : null, card = null;
+    if (revisit) (RAW.cards || []).forEach(function (c) { if (c.id === revisit.cardId) card = c; });
+    $('summary-card').hidden = !card;
+    if (card) {
+      $('summary-card-for').textContent = 'For ' + revisit.name.charAt(0).toLowerCase() + revisit.name.slice(1) + ' next time';
+      $('summary-card-title').textContent = card.title; $('summary-card-body').textContent = card.body;
+      $('summary-card-rule').textContent = 'Rule: ' + card.rule; $('summary-card-try').textContent = card.tryTonight;
+    }
+    document.querySelector('.sheet').scrollTop = 0;
+    $('scrim').hidden = false;
+  }
+  function newSession() {
+    var done = sessions[mode];
+    finished[mode] += 1;
+    sessions[mode] = deal(done.dishIds);
+    saveProgress();
+    $('scrim').hidden = true;
+    playCurrent();
+  }
+
+  // ---------- Wiring ----------
+  $('new-session').addEventListener('click', newSession);
+  // Start over. A press-and-hold shows what it does without doing it, like holding a chip.
+  (function () {
+    var button = $('restart'), wrap = button.parentNode, held = false, timer = null, hide = null;
+    function show(ms) { wrap.classList.add('show'); clearTimeout(hide); hide = setTimeout(function () { wrap.classList.remove('show'); }, ms); }
+    button.addEventListener('pointerdown', function (ev) {
+      held = false;
+      if (ev.pointerType === 'mouse') return;
+      timer = setTimeout(function () { held = true; show(2600); }, 450);
+    });
+    button.addEventListener('pointerup', function () { clearTimeout(timer); });
+    button.addEventListener('pointercancel', function () { clearTimeout(timer); });
+    button.addEventListener('contextmenu', function (ev) { ev.preventDefault(); });
+    button.addEventListener('click', function () {
+      if (held) { held = false; return; }
+      wrap.classList.remove('show'); button.blur();
+      startRound(round.dish.id);
+    });
+    // A disabled button gets no pointer events, so the wrapper answers a touch on it.
+    wrap.addEventListener('pointerdown', function (ev) { if (button.disabled && ev.pointerType !== 'mouse') show(2200); });
+  })();
+  $('mute').addEventListener('click', function () {
+    var muted = sound.toggle();
+    $('mute').setAttribute('aria-pressed', muted ? 'true' : 'false');
+    $('mute').setAttribute('aria-label', muted ? 'Turn sound on' : 'Turn sound off');
+    if (!muted) sound.unlock();
+  });
+  $('methods').addEventListener('pointerdown', function () { sound.unlock(); });
+  $('serve').addEventListener('click', serve);
+  $('see-recipe').addEventListener('click', function () {
+    this.hidden = true; this.setAttribute('aria-expanded', 'true');
+    $('recipe').hidden = false; $('recipe').scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
+  var onSize = function () { hideAbout(); renderAll(); };
+  if (small.addEventListener) small.addEventListener('change', onSize); else small.addListener(onSize);
+  $('keep').addEventListener('click', function () {
+    $('scrim').hidden = true;
+    // Pantry has shown the answer, so "Try again" deals the dish afresh; Kitchen lets you keep adjusting.
+    if (mode === 'pantry') startRound(round.dish.id);
+  });
+  function setMode(next) {
+    if (mode === next) return;
+    mode = next;
+    playCurrent();
+  }
+  $('vessel-wok').addEventListener('click', function () { place('wok'); });
+  $('vessel-pot').addEventListener('click', function () { place('pot'); });
+  $('vessel-switch').addEventListener('click', function () { place(round.vessel === 'wok' ? 'pot' : 'wok'); });
+  $('mode-pantry').addEventListener('click', function () { setMode('pantry'); });
+  $('mode-kitchen').addEventListener('click', function () { setMode('kitchen'); });
+  $('next').addEventListener('click', nextDish);
+  $('scrim').addEventListener('click', function (ev) { if (ev.target === $('scrim') && $('summary').hidden) $('scrim').hidden = true; });
+
+  // For checks from outside the page.
+  window.__pantry = { sessions: function () { return sessions; }, round: function () { return round; }, mode: function () { return mode; }, pieces: function () { return scene.pieceCount(); } };
+
+  loadProgress();
+  playCurrent();
+})();
+</script>

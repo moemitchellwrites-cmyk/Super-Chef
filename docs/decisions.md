@@ -391,3 +391,11 @@ Addendum to PD-035 (Moe, 2026-10-08): the wok stays in Pantry mode. It is a neut
 - Rationale: A player should picture the amount without converting. Metric keeps spoons because no kitchen scale weighs half a teaspoon of ground pepper, and metric recipes use spoons too.
 - Consequences: An ounce step is not a gram step, so a US round and a metric round of the same dish can differ by a rounding step; tests hold every good golden and every recipe at 85 or better in both systems. Content stays stored once, in grams and cups. The cards have no units (PD-037), so they needed nothing. The UK gets metric, though some UK cooks think in ounces.
 
+
+## PD-042: No sponsored or branded ingredients; affiliate links on the recipe are the only commerce near an ingredient
+- Date: 2026-10-14
+- Made by: Moe proposed paid brand labels on the palette and recipe; Claude objected; Moe agreed with the objection.
+- Status: accepted.
+- Decision: No company pays to appear in the game. The palette, the recipe and the cards name ingredients generically, never a brand. The only commerce near an ingredient is a "get it" link on the recipe (PB-031), which earns a commission without naming a brand in the game, and must be disclosed. Tracks remain the purchase (PD-038).
+- Rationale: A paid label is an ad, which the brief rules out in every tier. A paid brand on the palette says "this belongs" with the game's authority, which is the judgement the score exists to teach; the cooks we court first would catch it. Sponsorship pays by audience, which we don't have, so at our scale it is a sales job for small money.
+- Consequences: PB-033 closed. Any future sponsorship proposal (for instance a chef's "which jar to buy" note) reopens this decision rather than slipping in under it.

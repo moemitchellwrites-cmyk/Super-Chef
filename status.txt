@@ -1,0 +1,14 @@
+alive: iPhone 16 plain launch
+alive: iPhone 16 demo round
+alive: iPhone 16 demo round, served
+alive: iPhone 16 pantry round
+alive: iPhone 16 pantry round, served
+alive: iPhone 16 kitchen, bare burner
+alive: iPhone 16 session summary
+alive: iPhone SE (3rd generation) plain launch
+alive: iPhone SE (3rd generation) demo round
+alive: iPhone SE (3rd generation) demo round, served
+alive: iPhone SE (3rd generation) pantry round
+alive: iPhone SE (3rd generation) pantry round, served
+alive: iPhone SE (3rd generation) kitchen, bare burner
+alive: iPhone SE (3rd generation) session summary
